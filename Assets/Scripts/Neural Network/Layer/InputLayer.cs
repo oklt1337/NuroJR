@@ -1,5 +1,4 @@
 ﻿using Neural_Network.Neurons;
-using Neural_Network.Nodes;
 using Sirenix.OdinInspector;
 using UnityEditor;
 using UnityEngine;

@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using Neural_Network.Neurons;
-using Neural_Network.Nodes;
 using Sirenix.OdinInspector;
 using UnityEditor;
 using UnityEngine;
@@ -16,23 +15,25 @@ namespace Neural_Network.Layer
         
         public Action<NetworkLayer> OnDelete;
         public Action<Neuron> OnNeuronCreated;
-
-        [Button]
+        
         public void DeleteLayer()
         {
             OnDelete?.Invoke(this);
             AssetDatabase.RemoveObjectFromAsset(this);
             AssetDatabase.SaveAssets();
+            
+            Debug.Log($"{name} got deleted");
         }
 
         #region Neuron
 
         public abstract void CreateNeuron();
         
+        [Button]
         public void RemoveNeuron(Neuron neuron)
         {
-            neurons.Remove(neuron);
             neuron.DeleteNeuron();
+            neurons.Remove(neuron);
         }
         
         public List<Neuron> GetNeurons()

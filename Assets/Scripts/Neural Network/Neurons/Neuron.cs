@@ -10,17 +10,17 @@ namespace Neural_Network.Neurons
     {
         [HideInInspector] public Vector2 neuronPosition;
         [HideInInspector] public string guid;
+        public Action<Neuron> OnDelete;
         
         public float value;
         
-        public Action<Neuron> OnDelete;
-        
-        [Button]
         public void DeleteNeuron()
         {
             OnDelete?.Invoke(this);
             AssetDatabase.RemoveObjectFromAsset(this);
             AssetDatabase.SaveAssets();
+            
+            Debug.Log($"{name} got deleted");
         }
     }
 }

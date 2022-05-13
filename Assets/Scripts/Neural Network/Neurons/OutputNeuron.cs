@@ -1,6 +1,4 @@
-﻿using Neural_Network.Neurons;
-
-namespace Neural_Network.Nodes
+﻿namespace Neural_Network.Neurons
 {
     public class OutputNeuron : Neuron
     {

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using Neural_Network.Layer;
 using Neural_Network.Neurons;
-using Neural_Network.Nodes;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;

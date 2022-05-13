@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using Neural_Network.Layer;
 using Neural_Network.Neurons;
-using Neural_Network.Nodes;
 using Sirenix.OdinInspector;
 using UnityEditor;
 using UnityEngine;
 
 namespace Neural_Network
 {
-    [CreateAssetMenu()]
+    [CreateAssetMenu]
     public class NeuralNetwork : ScriptableObject
     {
         public List<NetworkLayer> layers = new();
@@ -26,17 +25,19 @@ namespace Neural_Network
         {
             CreateLayer(typeof(InputLayer));
         }
+
         [Button]
         public void CreateHiddenLayer()
         {
             CreateLayer(typeof(HiddenLayer));
         }
+
         [Button]
         public void CreateOutputLayer()
         {
             CreateLayer(typeof(OutputLayer));
         }
-        
+
         public void CreateLayer(Type type)
         {
             // Make sure not to many Layers can be added.
@@ -57,17 +58,20 @@ namespace Neural_Network
             AssetDatabase.SaveAssets();
 
             layer.OnNeuronCreated += CheckConnections;
+            layer.OnNeuronCreated += neuron => neuron.OnDelete += RemoveDeprecatedObjects;
             layer.OnDelete += ReconnectLayer;
             layer.CreateNeuron();
-            
+
             OnLayerCreated?.Invoke(layer);
             Debug.Log($"Layer has been Created: {layer.name}");
         }
 
+        [Button]
         public void RemoveLayer(NetworkLayer networkLayer)
         {
-            layers.Remove(networkLayer);
+            RemoveDeprecatedObjects(networkLayer);
             networkLayer.DeleteLayer();
+            layers.Remove(networkLayer);
         }
 
         public List<NetworkLayer> GetLayer()
@@ -75,10 +79,26 @@ namespace Neural_Network
             return layers;
         }
 
+        private void RemoveDeprecatedObjects(NetworkLayer networkLayer)
+        {
+            var deprecatedNeurons = networkLayer.GetNeurons();
+            foreach (var deprecatedNeuron in deprecatedNeurons)
+            {
+                RemoveDeprecatedObjects(deprecatedNeuron);
+            }
+            
+            for (var i = deprecatedNeurons.Count - 1; i >= 0; i--)
+            {
+                networkLayer.RemoveNeuron(deprecatedNeurons[i]);
+            }
+
+            Debug.Log("Deprecated Neurons and Connections got deleted.");
+        }
+
         #endregion
 
         #region Connections
-        
+
         public List<Connection> GetConnections()
         {
             return connections;
@@ -87,7 +107,7 @@ namespace Neural_Network
         private void CreateConnection(Neuron parent, Neuron child)
         {
             var connection = CreateInstance<Connection>();
-            if (connection == null) 
+            if (connection == null)
                 return;
 
             connection.guid = GUID.Generate().ToString();
@@ -110,7 +130,15 @@ namespace Neural_Network
 
         private void ReconnectLayer(NetworkLayer networkLayer)
         {
-            
+            var index = layers.FindIndex(x => x == networkLayer);
+            if (index == -1)
+                return;
+
+            if (index - 1 <= 0 || index + 1 >= layers.Count)
+                return;
+
+            CreateConnections(layers[index - 1], layers[index + 1]);
+            Debug.Log($"{layers[index - 1].name} and {layers[index + 1].name} got reconnected.");
         }
 
         private void CheckConnections(Neuron neuron)
@@ -168,7 +196,7 @@ namespace Neural_Network
                     CreateConnections(layers[index - 1], layers[index]);
 
                 // check if layer is not last
-                if (index + 1 >= layers.Count) 
+                if (index + 1 >= layers.Count)
                     return;
                 CreateConnections(layers[index], layers[index + 1]);
             }
@@ -185,18 +213,27 @@ namespace Neural_Network
                 foreach (var childNeuron in from neuron in childNeurons
                          let found = connections.Where(connection =>
                              connection.GetChild() == neuron && connection.GetParent() == parentNeuron)
-                         where !found.Any() select neuron)
+                         where !found.Any()
+                         select neuron)
                 {
                     CreateConnection(parentNeuron, childNeuron);
                 }
             }
         }
+        
+        private void RemoveDeprecatedObjects(Neuron neuron)
+        {
+            var deprecatedConnections = connections.Where(connection => connection._child == neuron || connection._parent == neuron).ToList();
+
+            for (var i = deprecatedConnections.Count - 1; i >= 0; i--)
+            {
+                RemoveConnection(deprecatedConnections[i]);
+            }
+            
+            Debug.Log("Deprecated Connections got deleted.");
+        }
 
         #endregion
-
-        public void Apply()
-        {
-        }
 
         /*public NeuralNetwork Clone()
         {

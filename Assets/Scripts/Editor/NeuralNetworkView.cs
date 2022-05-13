@@ -4,7 +4,6 @@ using System.Linq;
 using Neural_Network;
 using Neural_Network.Layer;
 using Neural_Network.Neurons;
-using Neural_Network.Nodes;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
