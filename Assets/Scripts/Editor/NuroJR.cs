@@ -1,5 +1,10 @@
+using System.Collections.Generic;
+using System.Linq;
 using Neural_Network;
+using Neural_Network.Layer;
+using Sirenix.Utilities;
 using UnityEditor;
+using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -7,14 +12,47 @@ namespace Editor
 {
     public class NuroJR : EditorWindow
     {
+        private static NuroJR _wnd;
+
         private NeuralNetworkView _neuralNetworkView;
         private InspectorView _inspectorView;
-        
+
+        private DropdownField dropdownField;
+        private List<NeuralNetwork> neuralNetworks = new();
+
+
         [MenuItem("NuroJR/Editor ...")]
         public static void OpenWindow()
         {
-            var wnd = GetWindow<NuroJR>();
-            wnd.titleContent = new GUIContent("NuroJR");
+            if (_wnd == null)
+            {
+                _wnd = GetWindow<NuroJR>();
+                _wnd.titleContent = new GUIContent("NuroJR");
+            }
+
+            _wnd.Show();
+        }
+
+        private void OnInspectorUpdate()
+        {
+            /*if (dropdownField.value == null)
+                return;
+
+            var index = neuralNetworks.FindIndex(x => x.name == dropdownField.value);
+            if (index == -1)
+                return;
+            
+            if (_neuralNetworkView.Network == null)
+            {
+                _neuralNetworkView.UnPopulateView();
+                _neuralNetworkView.PopulateView(neuralNetworks[index]);
+            }
+            
+            if (_neuralNetworkView.Network.name == dropdownField.value)
+                return;
+
+            _neuralNetworkView.UnPopulateView();
+            _neuralNetworkView.PopulateView(neuralNetworks[index]);*/
         }
 
         public void CreateGUI()
@@ -30,10 +68,21 @@ namespace Editor
             // The style will be applied to the VisualElement and all of its children.
             var styleSheet = AssetDatabase.LoadAssetAtPath<StyleSheet>("Assets/Scripts/Editor/NuroJR.uss");
             root.styleSheets.Add(styleSheet);
+            
+            //New Button
+            var newButton = root.Q<ToolbarButton>();
+            newButton.clicked += CreateNeuralNetworks.CreateNewNeuralNetwork;
+
+            // DropDownField
+            dropdownField = root.Q<DropdownField>();
+            var refreshButton = dropdownField.Q<ToolbarButton>();
+            refreshButton.clicked += RefreshDropdownValues;
+            dropdownField.choices.Clear();
+            neuralNetworks.Clear();
 
             _neuralNetworkView = root.Q<NeuralNetworkView>();
             _inspectorView = root.Q<InspectorView>();
-            
+
             _neuralNetworkView.OnNodeSelected = OnNodeSelectionChanged;
             _neuralNetworkView.OnLayerSelected = OnLayerSelectionChanged;
             _neuralNetworkView.OnEdgeSelected = OnEdgeSelectionChanged;
@@ -41,11 +90,44 @@ namespace Editor
             OnSelectionChange();
         }
 
+        private void RefreshDropdownValues()
+        {
+            dropdownField.choices.Clear();
+            var networks = Resources.FindObjectsOfTypeAll<NeuralNetwork>();
+            neuralNetworks.Clear();
+            if (networks.Length != 0)
+            {
+                networks.ForEach(x => dropdownField.choices.Add(x.name));
+                neuralNetworks = networks.ToList();
+                
+                if (dropdownField.value is not ("NULL" or "" or null)) 
+                    return;
+                
+                dropdownField.value = dropdownField.choices[0];
+                //SetView(dropdownField.value);
+            }
+            else
+            {
+                dropdownField.value = "NULL";
+            }
+        }
+
+        private void SetView(string value)
+        {
+            if (neuralNetworks.Count == 0 || neuralNetworks == null)
+                return;
+            var index = neuralNetworks.FindIndex(x => x.name == value);
+            if (index == -1)
+                return;
+
+            _neuralNetworkView.UnPopulateView();
+            _neuralNetworkView.PopulateView(neuralNetworks[index]);
+        }
+
         private void OnSelectionChange()
         {
-            var network = Selection.activeObject as NeuralNetwork;
-
-            if (network && AssetDatabase.CanOpenAssetInEditor(network.GetInstanceID()))
+            /*var network = Selection.activeObject as NeuralNetwork;
+            if (network && AssetDatabase.CanOpenAssetInEditor(network!.GetInstanceID()))
             {
                 _neuralNetworkView.PopulateView(network);
             }
@@ -53,19 +135,19 @@ namespace Editor
             {
                 _neuralNetworkView.UnPopulateView();
                 _inspectorView.Clear();
-            }
+            }*/
         }
 
         private void OnNodeSelectionChanged(NeuronView neuronView)
         {
             _inspectorView.UpdateSelection(neuronView);
         }
-        
+
         private void OnLayerSelectionChanged(LayerView layerView)
         {
             _inspectorView.UpdateSelection(layerView);
         }
-        
+
         private void OnEdgeSelectionChanged(EdgeView edgeView)
         {
             _inspectorView.UpdateSelection(edgeView);

@@ -21,7 +21,7 @@ namespace Editor
         public Action<LayerView> OnLayerSelected;
         public Action<EdgeView> OnEdgeSelected;
 
-        private NeuralNetwork _network;
+        public NeuralNetwork Network;
 
         private readonly List<EdgeView> _edgeViews = new();
         private readonly List<GraphElement> _elements = new();
@@ -49,7 +49,7 @@ namespace Editor
 
         public void PopulateView(NeuralNetwork network)
         {
-            _network = network;
+            Network = network;
 
             graphViewChanged -= OnGraphViewChanged;
             DeleteElements(graphElements);
@@ -95,13 +95,13 @@ namespace Editor
                     case LayerView layerView:
                         if (layerView.NetworkLayer.GetType() == typeof(HiddenLayer))
                         {
-                            _network.RemoveLayer(layerView.NetworkLayer);
+                            Network.RemoveLayer(layerView.NetworkLayer);
                             SortLayer();
                         }
 
                         break;
                     case NeuronView nodeView:
-                        foreach (var networkLayer in _network.GetLayer().Where(networkLayer =>
+                        foreach (var networkLayer in Network.GetLayer().Where(networkLayer =>
                                      networkLayer.GetNeurons().Contains(nodeView.Neuron)))
                         {
                             networkLayer.RemoveNeuron(nodeView.Neuron);
@@ -169,9 +169,9 @@ namespace Editor
 
         private void CreateLayer(Type type)
         {
-            if (_network == null)
+            if (Network == null)
                 return;
-            _network.CreateLayer(type);
+            Network.CreateLayer(type);
         }
 
         private void OnLayerDelete(NetworkLayer networkLayer)
@@ -213,15 +213,15 @@ namespace Editor
 
         private void SortLayer()
         {
-            if (_network.GetLayer().Count < 2)
+            if (Network.GetLayer().Count < 2)
                 return;
 
             var layers = new List<NetworkLayer>();
-            foreach (var layer in _network.GetLayer().Where(layer => layer != null))
+            foreach (var layer in Network.GetLayer().Where(layer => layer != null))
             {
                 layers.Add(layer);
 
-                var index = _network.GetLayer().FindIndex(l => l == layer);
+                var index = Network.GetLayer().FindIndex(l => l == layer);
                 if (index != -1)
                 {
                     switch (layer)
@@ -267,7 +267,7 @@ namespace Editor
         {
             var neurons = new List<Neuron>();
 
-            foreach (var layer in _network.GetLayer())
+            foreach (var layer in Network.GetLayer())
             {
                 foreach (var neuron in layer.GetNeurons())
                 {
@@ -294,7 +294,7 @@ namespace Editor
         private void CheckEdges()
         {
             var listOfConnectionsExisting = _edgeViews.Select(edgeView => edgeView.Connection).ToList();
-            foreach (var connection in _network.connections.Where(connection => !listOfConnectionsExisting.Contains(connection)))
+            foreach (var connection in Network.connections.Where(connection => !listOfConnectionsExisting.Contains(connection)))
             {
                 CreateEdgeView(connection);
             }
@@ -320,19 +320,19 @@ namespace Editor
 
         private void CreateInputLayerAndOutputLayer()
         {
-            if (_network == null)
+            if (Network == null)
                 return;
 
-            var inputLayer = _network.GetLayer().OfType<InputLayer>();
-            var outputLayer = _network.GetLayer().OfType<OutputLayer>();
+            var inputLayer = Network.GetLayer().OfType<InputLayer>();
+            var outputLayer = Network.GetLayer().OfType<OutputLayer>();
 
             if (inputLayer.Any() && outputLayer.Any())
                 return;
 
-            _network.CreateLayer(typeof(InputLayer));
-            _network.CreateLayer(typeof(OutputLayer));
+            Network.CreateLayer(typeof(InputLayer));
+            Network.CreateLayer(typeof(OutputLayer));
 
-            EditorUtility.SetDirty(_network);
+            EditorUtility.SetDirty(Network);
             AssetDatabase.SaveAssets();
         }
 
