@@ -3,40 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using Neural_Network.Layer;
 using Neural_Network.Neurons;
-using Sirenix.OdinInspector;
 using UnityEditor;
 using UnityEngine;
 
 namespace Neural_Network
 {
-    [CreateAssetMenu]
     public class NeuralNetwork : ScriptableObject
     {
         public List<NetworkLayer> layers = new();
-        [TableList] public List<Connection> connections = new();
+        public List<Connection> connections = new();
 
         public Action<NetworkLayer> OnLayerCreated;
         public Action<Connection> OnConnectionCreated;
 
         #region Layer
-
-        [Button]
-        public void CreateInputLayer()
-        {
-            CreateLayer(typeof(InputLayer));
-        }
-
-        [Button]
-        public void CreateHiddenLayer()
-        {
-            CreateLayer(typeof(HiddenLayer));
-        }
-
-        [Button]
-        public void CreateOutputLayer()
-        {
-            CreateLayer(typeof(OutputLayer));
-        }
 
         public void CreateLayer(Type type)
         {
@@ -65,8 +45,7 @@ namespace Neural_Network
             OnLayerCreated?.Invoke(layer);
             Debug.Log($"Layer has been Created: {layer.name}");
         }
-
-        [Button]
+        
         public void RemoveLayer(NetworkLayer networkLayer)
         {
             RemoveDeprecatedObjects(networkLayer);

@@ -21,14 +21,13 @@ namespace Editor
             
             title = "Neuron";
             viewDataKey = Neuron.guid;
-
+            capabilities = Capabilities.Selectable | Capabilities.Deletable | Capabilities.Ascendable;
+            
             style.left = Neuron.neuronPosition.x;
             style.top = Neuron.neuronPosition.y;
 
             CreateInputPorts();
             CreateOutputPorts();
-            
-            capabilities = Capabilities.Selectable | Capabilities.Deletable | Capabilities.Ascendable;
         }
 
         #endregion

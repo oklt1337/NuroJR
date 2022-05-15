@@ -1,5 +1,4 @@
 ﻿using Neural_Network.Neurons;
-using Sirenix.OdinInspector;
 using UnityEditor;
 using UnityEngine;
 
@@ -9,7 +8,6 @@ namespace Neural_Network.Layer
     {
         [HideInInspector] public Vector2 position = new(0, 0);
         
-        [Button]
         public override void CreateNeuron()
         {
             // Make sure not to many Neurons can be added.

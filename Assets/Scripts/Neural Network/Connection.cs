@@ -1,13 +1,10 @@
 ﻿using System;
 using Neural_Network.Neurons;
-using Sirenix.OdinInspector;
-using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 
 namespace Neural_Network
 {
-    [InlineEditor(InlineEditorModes.FullEditor)]
     public class Connection : ScriptableObject
     {
         public Neuron _child;

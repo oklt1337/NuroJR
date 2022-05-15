@@ -1,10 +1,12 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
     <Style src="project://database/Assets/Scripts/Editor/NuroJR.uss?fileID=7433441132597879392&amp;guid=712a9d1ecfba062438b4f3da7e18407c&amp;type=3#NuroJR" />
     <uie:Toolbar>
-        <uie:ToolbarButton text="New" display-tooltip-when-elided="true" />
-        <ui:DropdownField label="Dropdown" index="-1" choices="System.Collections.Generic.List`1[System.String]">
+        <uie:ToolbarButton text="New" display-tooltip-when-elided="true" name="new" />
+        <ui:DropdownField label="Dropdown" index="-1" choices="System.Collections.Generic.List`1[System.String]" style="flex-direction: row; align-items: stretch;">
             <uie:ToolbarButton text="Refresh" display-tooltip-when-elided="true" />
         </ui:DropdownField>
+        <uie:ToolbarSpacer style="width: auto; flex-grow: initial;" />
+        <uie:ToolbarButton text="Apply" display-tooltip-when-elided="true" name="apply" style="white-space: nowrap; -unity-text-align: upper-left; align-items: stretch; scale: 1 1; margin-left: 0; width: auto;" />
     </uie:Toolbar>
     <Editor.SplitView fixed-pane-initial-dimension="250">
         <ui:VisualElement name="rightpanel">
@@ -13,7 +15,7 @@
         </ui:VisualElement>
         <ui:VisualElement name="left-panel" style="width: 235px;">
             <ui:Label text="Neural Network View" display-tooltip-when-elided="true" style="background-color: rgb(60, 60, 60);" />
-            <Editor.NeuralNetworkView focusable="true" style="flex-grow: 1;" />
+            <Editor.NeuralNetworkView focusable="true" name="apply" style="flex-grow: 1;" />
         </ui:VisualElement>
     </Editor.SplitView>
 </ui:UXML>

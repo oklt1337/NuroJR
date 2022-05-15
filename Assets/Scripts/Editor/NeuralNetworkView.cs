@@ -17,14 +17,14 @@ namespace Editor
         {
         }
 
-        public Action<NeuronView> OnNodeSelected;
-        public Action<LayerView> OnLayerSelected;
-        public Action<EdgeView> OnEdgeSelected;
-
         public NeuralNetwork Network;
 
         private readonly List<EdgeView> _edgeViews = new();
         private readonly List<GraphElement> _elements = new();
+
+        public Action<NeuronView> OnNodeSelected;
+        public Action<LayerView> OnLayerSelected;
+        public Action<EdgeView> OnEdgeSelected;
 
         #region Constructor
 
@@ -47,16 +47,26 @@ namespace Editor
 
         #region Graph
 
-        public void PopulateView(NeuralNetwork network)
+        public void PopulateView(NeuralNetwork neuralNetwork)
         {
-            Network = network;
+            Network = neuralNetwork;
 
             graphViewChanged -= OnGraphViewChanged;
             DeleteElements(graphElements);
             graphViewChanged += OnGraphViewChanged;
 
-            InitializeEvents(network);
-            InitializeView(network);
+            neuralNetwork.OnLayerCreated += CreateLayerView;
+            neuralNetwork.OnLayerCreated += _ => RemoveEdgeViews();
+
+            InitializeView(neuralNetwork);
+        }
+
+        public void Apply()
+        {
+            if (Network != null)
+            {
+                InitializeView(Network);
+            }
         }
 
         public void UnPopulateView()
@@ -64,17 +74,16 @@ namespace Editor
             _elements.ForEach(RemoveElement);
         }
 
-        private void InitializeView(NeuralNetwork network)
+        private void RemoveEdgeViews()
         {
-            CreateInputLayerAndOutputLayer();
-            network.GetLayer().ForEach(CreateLayerView);
-            network.GetLayer().ForEach(RestoreNeuronView);
-            network.GetConnections().ForEach(CreateEdgeView);
+            _edgeViews.ForEach(RemoveElement);
         }
 
-        private void InitializeEvents(NeuralNetwork network)
+        private void InitializeView(NeuralNetwork neuralNetwork)
         {
-            network.OnLayerCreated += CreateLayerView;
+            neuralNetwork.GetLayer().ForEach(CreateLayerView);
+            neuralNetwork.GetLayer().ForEach(RestoreNeuronView);
+            neuralNetwork.GetConnections().ForEach(CreateEdgeView);
         }
 
         private void AddElements(GraphElement graphElement)
@@ -152,7 +161,7 @@ namespace Editor
         {
             {
                 var type = typeof(HiddenLayer);
-                evt.menu.AppendAction($"[{type.BaseType?.Name}] {type.Name}", _ => CreateLayer(type));
+                evt.menu.AppendAction($"[{type.BaseType?.Name}] {type.Name}", _ => CreateHiddenLayer());
             }
         }
 
@@ -167,23 +176,15 @@ namespace Editor
 
         #region Layer
 
-        private void CreateLayer(Type type)
+        private void CreateHiddenLayer()
         {
             if (Network == null)
                 return;
-            Network.CreateLayer(type);
-        }
-
-        private void OnLayerDelete(NetworkLayer networkLayer)
-        {
-            Debug.Log($"{networkLayer.name} has been deleted.");
-            //Remove Connections and Reconnect 
+            Network.CreateLayer(typeof(HiddenLayer));
         }
 
         private void CreateLayerView(NetworkLayer networkLayer)
         {
-            Debug.Log($"Layer View Creation for Layer: {networkLayer.name}");
-
             var layerView = new LayerView(networkLayer)
             {
                 OnLayerSelected = OnLayerSelected,
@@ -200,8 +201,6 @@ namespace Editor
                 layerView.style.backgroundColor = Color.red;
             }
 
-            networkLayer.OnDelete += OnLayerDelete;
-            layerView.OnNeuronViewCreation += CheckEdges;
             AddElement(layerView);
             SortLayer();
         }
@@ -294,7 +293,8 @@ namespace Editor
         private void CheckEdges()
         {
             var listOfConnectionsExisting = _edgeViews.Select(edgeView => edgeView.Connection).ToList();
-            foreach (var connection in Network.connections.Where(connection => !listOfConnectionsExisting.Contains(connection)))
+            foreach (var connection in Network.connections.Where(connection =>
+                         !listOfConnectionsExisting.Contains(connection)))
             {
                 CreateEdgeView(connection);
             }
@@ -305,35 +305,12 @@ namespace Editor
             var parentView = FindNodeView(connection.GetParent());
             var childView = FindNodeView(connection.GetChild());
 
-
             var edge = parentView.Output.ConnectTo<EdgeView>(childView.Input);
             edge.OnEdgeSelected = OnEdgeSelected;
 
             edge.SetConnection(connection);
             _edgeViews.Add(edge);
             AddElement(edge);
-        }
-
-        #endregion
-
-        #region Checks
-
-        private void CreateInputLayerAndOutputLayer()
-        {
-            if (Network == null)
-                return;
-
-            var inputLayer = Network.GetLayer().OfType<InputLayer>();
-            var outputLayer = Network.GetLayer().OfType<OutputLayer>();
-
-            if (inputLayer.Any() && outputLayer.Any())
-                return;
-
-            Network.CreateLayer(typeof(InputLayer));
-            Network.CreateLayer(typeof(OutputLayer));
-
-            EditorUtility.SetDirty(Network);
-            AssetDatabase.SaveAssets();
         }
 
         #endregion

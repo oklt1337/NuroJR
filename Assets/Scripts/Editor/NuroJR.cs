@@ -1,8 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Neural_Network;
-using Neural_Network.Layer;
-using Sirenix.Utilities;
 using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
@@ -35,24 +33,24 @@ namespace Editor
 
         private void OnInspectorUpdate()
         {
-            /*if (dropdownField.value == null)
+            if (dropdownField.value == null)
                 return;
 
             var index = neuralNetworks.FindIndex(x => x.name == dropdownField.value);
             if (index == -1)
                 return;
-            
+
             if (_neuralNetworkView.Network == null)
             {
                 _neuralNetworkView.UnPopulateView();
                 _neuralNetworkView.PopulateView(neuralNetworks[index]);
             }
-            
+
             if (_neuralNetworkView.Network.name == dropdownField.value)
                 return;
 
             _neuralNetworkView.UnPopulateView();
-            _neuralNetworkView.PopulateView(neuralNetworks[index]);*/
+            _neuralNetworkView.PopulateView(neuralNetworks[index]);
         }
 
         public void CreateGUI()
@@ -69,10 +67,6 @@ namespace Editor
             var styleSheet = AssetDatabase.LoadAssetAtPath<StyleSheet>("Assets/Scripts/Editor/NuroJR.uss");
             root.styleSheets.Add(styleSheet);
             
-            //New Button
-            var newButton = root.Q<ToolbarButton>();
-            newButton.clicked += CreateNeuralNetworks.CreateNewNeuralNetwork;
-
             // DropDownField
             dropdownField = root.Q<DropdownField>();
             var refreshButton = dropdownField.Q<ToolbarButton>();
@@ -87,24 +81,32 @@ namespace Editor
             _neuralNetworkView.OnLayerSelected = OnLayerSelectionChanged;
             _neuralNetworkView.OnEdgeSelected = OnEdgeSelectionChanged;
 
+            // Apply Button
+            var apply = root.Q<ToolbarButton>("apply");
+            apply.clicked += _neuralNetworkView.Apply;
+            
+            // New Button
+            var newButton = root.Q<ToolbarButton>("new");
+            newButton.clicked += CreateNeuralNetworks.CreateNewNeuralNetwork;
+            
             OnSelectionChange();
         }
 
         private void RefreshDropdownValues()
         {
             dropdownField.choices.Clear();
-            var networks = Resources.FindObjectsOfTypeAll<NeuralNetwork>();
+            var networks = Resources.FindObjectsOfTypeAll<NeuralNetwork>().ToList();
             neuralNetworks.Clear();
-            if (networks.Length != 0)
+            if (networks.Count != 0)
             {
                 networks.ForEach(x => dropdownField.choices.Add(x.name));
                 neuralNetworks = networks.ToList();
-                
-                if (dropdownField.value is not ("NULL" or "" or null)) 
+
+                if (dropdownField.value is not ("NULL" or "" or null))
                     return;
-                
+
                 dropdownField.value = dropdownField.choices[0];
-                //SetView(dropdownField.value);
+                SetView(dropdownField.value);
             }
             else
             {

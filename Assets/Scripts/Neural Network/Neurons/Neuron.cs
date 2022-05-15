@@ -1,11 +1,9 @@
 using System;
-using Sirenix.OdinInspector;
 using UnityEditor;
 using UnityEngine;
 
 namespace Neural_Network.Neurons
 {
-    [InlineEditor(InlineEditorModes.FullEditor)]
     public class Neuron : ScriptableObject
     {
         [HideInInspector] public Vector2 neuronPosition;

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Neural_Network.Layer;
 using Neural_Network.Neurons;
 using UnityEditor.Experimental.GraphView;
@@ -14,18 +13,19 @@ namespace Editor
 
         public Action<LayerView> OnLayerSelected;
         public Action<NeuronView> OnNodeSelected;
-        public Action OnNeuronViewCreation;
+
+        public Action<NeuronView> OnNeuronViewCreated;
 
         #region Constructor
 
         public LayerView(NetworkLayer networkLayer)
         {
             NetworkLayer = networkLayer;
-
             networkLayer.OnNeuronCreated += CreateNeuronView;
             
             title = networkLayer.GetType().Name;
             viewDataKey = NetworkLayer.guid;
+            capabilities = Capabilities.Selectable | Capabilities.Deletable;
             
             var button = new Button
             {
@@ -54,8 +54,6 @@ namespace Editor
                     break;
             }
             Add(button);
-
-            capabilities = Capabilities.Selectable | Capabilities.Deletable;
         }
 
         #endregion
@@ -113,25 +111,25 @@ namespace Editor
                 return;
 
             neuron.neuronPosition = new Vector2(16f, (index + 1) * 105);
-            var nodeView = new NeuronView(neuron)
+            var neuronView = new NeuronView(neuron)
             {
                 OnNodeSelected = OnNodeSelected
             };
             
             if (NetworkLayer.GetType() == typeof(InputLayer))
             {
-                nodeView.style.backgroundColor = Color.green;
+                neuronView.style.backgroundColor = Color.green;
             }
             else if (NetworkLayer.GetType() == typeof(OutputLayer))
             {
-                nodeView.style.backgroundColor = Color.red;
+                neuronView.style.backgroundColor = Color.red;
             }
             else if (NetworkLayer.GetType() == typeof(HiddenLayer))
             {
             }
             
-            Add(nodeView);
-            OnNeuronViewCreation?.Invoke();
+            Add(neuronView);
+            OnNeuronViewCreated?.Invoke(neuronView);
         }
 
         #endregion

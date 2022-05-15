@@ -1,13 +1,11 @@
 using System;
 using System.Collections.Generic;
 using Neural_Network.Neurons;
-using Sirenix.OdinInspector;
 using UnityEditor;
 using UnityEngine;
 
 namespace Neural_Network.Layer
 {
-    [InlineEditor(InlineEditorModes.FullEditor)]
     public abstract class NetworkLayer : ScriptableObject
     {
         [HideInInspector] public string guid;
@@ -29,7 +27,6 @@ namespace Neural_Network.Layer
 
         public abstract void CreateNeuron();
         
-        [Button]
         public void RemoveNeuron(Neuron neuron)
         {
             neuron.DeleteNeuron();
