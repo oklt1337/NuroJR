@@ -4,9 +4,17 @@ using UnityEngine;
 
 namespace Neural_Network.Layer
 {
-    public class HiddenLayer : NetworkLayer
+    public class InputLayerObj : NetworkLayerObj
     {
-        [HideInInspector] public Vector2 position;
+        [HideInInspector] public Vector2 position = new(0, 0);
+
+        public override NetworkLayer Clone()
+        {
+            var layer = new InputLayer();
+            neurons.ForEach(x=> layer.Neurons.Add(x.Clone()));
+
+            return layer;
+        }
         
         public override void CreateNeuron()
         {
@@ -14,11 +22,11 @@ namespace Neural_Network.Layer
             if (neurons.Count >= 7)
                 return;
             
-            var neuron = CreateInstance(typeof(HiddenNeuron)) as Neuron;
+            var neuron = CreateInstance(typeof(InputNeuronObj)) as NeuronObj;
             if (neuron == null)
                 return;
 
-            neuron.name = "HiddenNeuron";
+            neuron.name = "InputNeuron";
             neuron.guid = GUID.Generate().ToString();
 
             neurons.Add(neuron);
@@ -26,8 +34,13 @@ namespace Neural_Network.Layer
             AssetDatabase.AddObjectToAsset(neuron, this);
             AssetDatabase.SaveAssets();
 
-            Debug.Log("Created HiddenNeuron");
+            Debug.Log("Created InputNeuron");
             OnNeuronCreated?.Invoke(neuron);
         }
+    }
+
+    public class InputLayer : NetworkLayer
+    {
+        
     }
 }

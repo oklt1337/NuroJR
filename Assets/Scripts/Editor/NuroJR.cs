@@ -16,7 +16,7 @@ namespace Editor
         private InspectorView _inspectorView;
 
         private DropdownField dropdownField;
-        private List<NeuralNetwork> neuralNetworks = new();
+        private List<NeuralNetworkObj> neuralNetworks = new();
 
 
         [MenuItem("NuroJR/Editor ...")]
@@ -44,13 +44,13 @@ namespace Editor
             if (index == -1)
                 return;
 
-            if (_neuralNetworkView.Network == null)
+            if (_neuralNetworkView.NetworkObj == null)
             {
                 _neuralNetworkView.UnPopulateView();
                 _neuralNetworkView.PopulateView(neuralNetworks[index]);
             }
 
-            if (_neuralNetworkView.Network.name == dropdownField.value)
+            if (_neuralNetworkView.NetworkObj.name == dropdownField.value)
                 return;
 
             _neuralNetworkView.UnPopulateView();
@@ -100,10 +100,6 @@ namespace Editor
             _neuralNetworkView.OnLayerSelected = OnLayerSelectionChanged;
             _neuralNetworkView.OnEdgeSelected = OnEdgeSelectionChanged;
 
-            // Apply Button
-            var apply = root.Q<ToolbarButton>("apply");
-            apply.clicked += _neuralNetworkView.Apply;
-            
             // New Button
             var newButton = root.Q<ToolbarButton>("new");
             newButton.clicked += CreateNeuralNetworks.CreateNewNeuralNetwork;
@@ -112,7 +108,7 @@ namespace Editor
         private void RefreshDropdownValues()
         {
             dropdownField.choices.Clear();
-            var networks = Resources.FindObjectsOfTypeAll<NeuralNetwork>().ToList();
+            var networks = Resources.FindObjectsOfTypeAll<NeuralNetworkObj>().ToList();
             neuralNetworks.Clear();
             if (networks.Count != 0)
             {

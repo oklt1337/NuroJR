@@ -6,7 +6,6 @@
             <uie:ToolbarButton text="Refresh" display-tooltip-when-elided="true" />
         </ui:DropdownField>
         <uie:ToolbarSpacer style="width: auto; flex-grow: initial;" />
-        <uie:ToolbarButton text="Apply" display-tooltip-when-elided="true" name="apply" style="white-space: nowrap; -unity-text-align: upper-left; align-items: stretch; scale: 1 1; margin-left: 0; width: auto;" />
     </uie:Toolbar>
     <Editor.SplitView fixed-pane-initial-dimension="250">
         <ui:VisualElement name="rightpanel">

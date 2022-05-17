@@ -3,26 +3,26 @@ using Neural_Network.Layer;
 
 namespace Neural_Network
 {
-    public class LayerComparer : IComparer<NetworkLayer>
+    public class LayerComparer : IComparer<NetworkLayerObj>
     {
-        public int Compare(NetworkLayer x, NetworkLayer y)
+        public int Compare(NetworkLayerObj x, NetworkLayerObj y)
         {
-            if (x != null && x.GetType() == typeof(InputLayer))
+            if (x != null && x.GetType() == typeof(InputLayerObj))
             {
                 return -1;
             }
 
-            if (y != null && y.GetType() == typeof(InputLayer))
+            if (y != null && y.GetType() == typeof(InputLayerObj))
             {
                 return 1;
             }
 
-            if (x != null && x.GetType() == typeof(OutputLayer))
+            if (x != null && x.GetType() == typeof(OutputLayerObj))
             {
                 return 1;
             }
 
-            if (y != null && y.GetType() == typeof(OutputLayer))
+            if (y != null && y.GetType() == typeof(OutputLayerObj))
             {
                 return -1;
             }

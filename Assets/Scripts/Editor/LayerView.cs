@@ -9,24 +9,22 @@ namespace Editor
 {
     public sealed class LayerView : Node
     {
-        public readonly NetworkLayer NetworkLayer;
+        public readonly NetworkLayerObj NetworkLayerObj;
 
         public Action<LayerView> OnLayerSelected;
         public Action<NeuronView> OnNodeSelected;
 
         public Action<NeuronView> OnNeuronViewCreated;
-        public Action<NetworkLayer> OnDelete;
 
         #region Constructor
 
-        public LayerView(NetworkLayer networkLayer)
+        public LayerView(NetworkLayerObj networkLayerObj)
         {
-            NetworkLayer = networkLayer;
-            NetworkLayer.OnNeuronCreated += CreateNeuronView;
-            NetworkLayer.OnDelete = OnDelete;
+            NetworkLayerObj = networkLayerObj;
+            NetworkLayerObj.OnNeuronCreated += CreateNeuronView;
             
-            title = networkLayer.GetType().Name;
-            viewDataKey = NetworkLayer.guid;
+            title = networkLayerObj.GetType().Name;
+            viewDataKey = NetworkLayerObj.guid;
             capabilities = Capabilities.Selectable | Capabilities.Deletable;
             
             var button = new Button
@@ -34,21 +32,21 @@ namespace Editor
                 text = "Add new Neuron"
             };
 
-            switch (NetworkLayer)
+            switch (NetworkLayerObj)
             {
-                case InputLayer inputLayer:
+                case InputLayerObj inputLayer:
                     style.left = inputLayer.position.x;
                     style.top = inputLayer.position.y;
                     
                     button.clicked += () => inputLayer.CreateNeuron();
                     break;
-                case OutputLayer outputLayer:
+                case OutputLayerObj outputLayer:
                     style.left = outputLayer.position.x;
                     style.top = outputLayer.position.y;
                     
                     button.clicked += () => outputLayer.CreateNeuron();
                     break;
-                case HiddenLayer hiddenLayer:
+                case HiddenLayerObj hiddenLayer:
                     style.left = hiddenLayer.position.x;
                     style.top = hiddenLayer.position.y;
                     
@@ -66,17 +64,17 @@ namespace Editor
         {
             base.SetPosition(newPos);
 
-            switch (NetworkLayer)
+            switch (NetworkLayerObj)
             {
-                case InputLayer inputLayer:
+                case InputLayerObj inputLayer:
                     inputLayer.position.x = newPos.xMin;
                     inputLayer.position.y = newPos.yMin;
                     break;
-                case OutputLayer outputLayer:
+                case OutputLayerObj outputLayer:
                     outputLayer.position.x = newPos.xMin;
                     outputLayer.position.y = newPos.yMin;
                     break;
-                case HiddenLayer hiddenLayer:
+                case HiddenLayerObj hiddenLayer:
                     hiddenLayer.position.x = newPos.xMin;
                     hiddenLayer.position.y = newPos.yMin;
                     break;
@@ -85,17 +83,17 @@ namespace Editor
         
         public void RemapView()
         {
-            switch (NetworkLayer)
+            switch (NetworkLayerObj)
             {
-                case InputLayer inputLayer:
+                case InputLayerObj inputLayer:
                     style.left = inputLayer.position.x;
                     style.top = inputLayer.position.y;
                     break;
-                case OutputLayer outputLayer:
+                case OutputLayerObj outputLayer:
                     style.left = outputLayer.position.x;
                     style.top = outputLayer.position.y;
                     break;
-                case HiddenLayer hiddenLayer:
+                case HiddenLayerObj hiddenLayer:
                     style.left = hiddenLayer.position.x;
                     style.top = hiddenLayer.position.y;
                     break;
@@ -106,27 +104,27 @@ namespace Editor
 
         #region Creation
 
-        public void CreateNeuronView(Neuron neuron)
+        public void CreateNeuronView(NeuronObj neuronObj)
         {
-            var index = NetworkLayer.GetNeurons().FindIndex(n => n == neuron);
+            var index = NetworkLayerObj.GetNeurons().FindIndex(n => n == neuronObj);
             if (index == -1)
                 return;
 
-            neuron.neuronPosition = new Vector2(16f, (index + 1) * 105);
-            var neuronView = new NeuronView(neuron)
+            neuronObj.neuronPosition = new Vector2(16f, (index + 1) * 105);
+            var neuronView = new NeuronView(neuronObj)
             {
                 OnNodeSelected = OnNodeSelected
             };
             
-            if (NetworkLayer.GetType() == typeof(InputLayer))
+            if (NetworkLayerObj.GetType() == typeof(InputLayerObj))
             {
                 neuronView.style.backgroundColor = Color.green;
             }
-            else if (NetworkLayer.GetType() == typeof(OutputLayer))
+            else if (NetworkLayerObj.GetType() == typeof(OutputLayerObj))
             {
                 neuronView.style.backgroundColor = Color.red;
             }
-            else if (NetworkLayer.GetType() == typeof(HiddenLayer))
+            else if (NetworkLayerObj.GetType() == typeof(HiddenLayerObj))
             {
             }
             

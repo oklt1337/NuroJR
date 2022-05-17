@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-6546726687822662576
+--- !u!114 &-2583943935615440556
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -12,56 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e7f06b3bbf44269af096971cb95c63d, type: 3}
   m_Name: Connection
   m_EditorClassIdentifier: 
-  guid: f386a42b736e5d043ad16c47cd2d008a
+  guid: b8ccd005475f41541878dbdc926aa5b9
   weight: 0
---- !u!114 &-5032066339075050447
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f859c580cc4b4f97856f94c99650c9bf, type: 3}
-  m_Name: InputNeuron
-  m_EditorClassIdentifier: 
-  neuronPosition: {x: 0, y: 0}
-  guid: 5cc98f012ad77f040b2afab8b76ba95c
-  value: 0
---- !u!114 &-1144373758110405119
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dda32112acac409fb0c3e7eb902a85b9, type: 3}
-  m_Name: OutputLayer
-  m_EditorClassIdentifier: 
-  guid: c423a5ac26270d949b5c0052daf5e805
-  neurons:
-  - {fileID: 7928252933763383427}
-  position: {x: 150, y: 0}
---- !u!114 &11400000
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1240baa53615e4b469aaa0e068f1ebb7, type: 3}
-  m_Name: New Neural Network_2
-  m_EditorClassIdentifier: 
-  layers:
-  - {fileID: 8207589907149259963}
-  - {fileID: -1144373758110405119}
-  connections: []
---- !u!114 &7928252933763383427
+--- !u!114 &-1638594439054296215
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -74,9 +27,9 @@ MonoBehaviour:
   m_Name: OutputNeuron
   m_EditorClassIdentifier: 
   neuronPosition: {x: 0, y: 0}
-  guid: ac3966c0ce4f14842a90f9c6ff31454e
+  guid: 60d677313000ead41be65bfcbe577053
   value: 0
---- !u!114 &8207589907149259963
+--- !u!114 &-138535347602178546
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -88,7 +41,54 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95539a4d51934229ac8ed54585b34944, type: 3}
   m_Name: InputLayer
   m_EditorClassIdentifier: 
-  guid: b119cc5ccdee7424186bdaa779aded08
+  guid: ae8290ae5c7f57840803f763f6301203
   neurons:
-  - {fileID: -5032066339075050447}
+  - {fileID: 6087887611808811361}
   position: {x: 0, y: 0}
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1240baa53615e4b469aaa0e068f1ebb7, type: 3}
+  m_Name: New Neural Network_1
+  m_EditorClassIdentifier: 
+  layers:
+  - {fileID: -138535347602178546}
+  - {fileID: 5478611843753540282}
+  connections: []
+--- !u!114 &5478611843753540282
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dda32112acac409fb0c3e7eb902a85b9, type: 3}
+  m_Name: OutputLayer
+  m_EditorClassIdentifier: 
+  guid: 2e2d845ecd2d3ec49b43decb381653ea
+  neurons:
+  - {fileID: -1638594439054296215}
+  position: {x: 150, y: 0}
+--- !u!114 &6087887611808811361
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f859c580cc4b4f97856f94c99650c9bf, type: 3}
+  m_Name: InputNeuron
+  m_EditorClassIdentifier: 
+  neuronPosition: {x: 0, y: 0}
+  guid: a2770386b40d3f0458038600ecb905c0
+  value: 0

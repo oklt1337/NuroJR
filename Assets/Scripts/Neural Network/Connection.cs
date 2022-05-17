@@ -7,8 +7,8 @@ namespace Neural_Network
 {
     public class Connection : ScriptableObject
     {
-        private Neuron child;
-        private Neuron parent;
+        private NeuronObj child;
+        private NeuronObj parent;
         [HideInInspector] public string guid;
         
         public float weight;
@@ -22,22 +22,22 @@ namespace Neural_Network
             AssetDatabase.SaveAssets();
         }
         
-        public void AddChild(Neuron neuron)
+        public void AddChild(NeuronObj neuronObj)
         {
-            child = neuron;
+            child = neuronObj;
         }
 
-        public void AddParent(Neuron neuron)
+        public void AddParent(NeuronObj neuronObj)
         {
-            parent = neuron;
+            parent = neuronObj;
         }
 
-        public Neuron GetChild()
+        public NeuronObj GetChild()
         {
             return child;
         }
         
-        public Neuron GetParent()
+        public NeuronObj GetParent()
         {
             return parent;
         }

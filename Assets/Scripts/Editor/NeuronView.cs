@@ -5,26 +5,26 @@ using UnityEngine;
 
 namespace Editor
 {
-    public class NeuronView : Node
+    public sealed class NeuronView : Node
     {
         public Action<NeuronView> OnNodeSelected;
-        
-        public readonly Neuron Neuron;
+
+        public readonly NeuronObj NeuronObj;
         public Port Input;
         public Port Output;
 
         #region Constructor
 
-        public NeuronView(Neuron neuron)
+        public NeuronView(NeuronObj neuronObj)
         {
-            Neuron = neuron;
-            
+            NeuronObj = neuronObj;
+
             title = "Neuron";
-            viewDataKey = Neuron.guid;
+            viewDataKey = NeuronObj.guid;
             capabilities = Capabilities.Selectable | Capabilities.Deletable | Capabilities.Ascendable;
             
-            style.left = Neuron.neuronPosition.x;
-            style.top = Neuron.neuronPosition.y;
+            style.left = NeuronObj.neuronPosition.x;
+            style.top = NeuronObj.neuronPosition.y;
 
             CreateInputPorts();
             CreateOutputPorts();
@@ -38,14 +38,14 @@ namespace Editor
         {
             base.SetPosition(newPos);
 
-            Neuron.neuronPosition.x = newPos.xMin;
-            Neuron.neuronPosition.y = newPos.yMin;
+            NeuronObj.neuronPosition.x = newPos.xMin;
+            NeuronObj.neuronPosition.y = newPos.yMin;
         }
         
         public void RemapView()
         {
-            style.left = Neuron.neuronPosition.x;
-            style.top = Neuron.neuronPosition.y;
+            style.left = NeuronObj.neuronPosition.x;
+            style.top = NeuronObj.neuronPosition.y;
         }
 
         #endregion
@@ -54,7 +54,7 @@ namespace Editor
 
         private void CreateInputPorts()
         {
-            if (Neuron.GetType() == typeof(HiddenNeuron) || Neuron.GetType() == typeof(OutputNeuron))
+            if (NeuronObj.GetType() == typeof(HiddenNeuronObj) || NeuronObj.GetType() == typeof(OutputNeuronObj))
                 Input = InstantiatePort(Orientation.Horizontal, Direction.Input, Port.Capacity.Multi, typeof(bool));
 
             if (Input == null) 
@@ -66,7 +66,7 @@ namespace Editor
 
         private void CreateOutputPorts()
         {
-            if (Neuron.GetType() == typeof(HiddenNeuron) || Neuron.GetType() == typeof(InputNeuron))
+            if (NeuronObj.GetType() == typeof(HiddenNeuronObj) || NeuronObj.GetType() == typeof(InputNeuronObj))
                 Output = InstantiatePort(Orientation.Horizontal, Direction.Output, Port.Capacity.Multi, typeof(bool));
 
             if (Output == null) 

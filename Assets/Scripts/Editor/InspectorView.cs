@@ -17,7 +17,7 @@ namespace Editor
             if (neuronView == null)
                 return;
 
-            _editor = UnityEditor.Editor.CreateEditor(neuronView.Neuron);
+            _editor = UnityEditor.Editor.CreateEditor(neuronView.NeuronObj);
             
             if (_editor.target == null)
             {
@@ -37,7 +37,7 @@ namespace Editor
             
             if (layerView == null)
                 return;
-            _editor = UnityEditor.Editor.CreateEditor(layerView.NetworkLayer);
+            _editor = UnityEditor.Editor.CreateEditor(layerView.NetworkLayerObj);
 
             if (_editor.target == null)
             {

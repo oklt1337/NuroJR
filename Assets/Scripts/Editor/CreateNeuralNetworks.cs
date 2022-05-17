@@ -25,17 +25,17 @@ namespace Editor
             var path = $"Assets/Resources/Neural_Networks/{networkName}.asset";
             Debug.Log(networkName);
             
-            var network = ScriptableObject.CreateInstance<NeuralNetwork>();
+            var network = ScriptableObject.CreateInstance<NeuralNetworkObj>();
             AssetDatabase.CreateAsset(network, path);
             AssetDatabase.SaveAssets();
 
-            network.CreateLayer(typeof(InputLayer));
-            network.CreateLayer(typeof(OutputLayer));
+            network.CreateLayer(typeof(InputLayerObj));
+            network.CreateLayer(typeof(OutputLayerObj));
         }
 
         private static string CheckName()
         {
-            var networks = Resources.FindObjectsOfTypeAll<NeuralNetwork>();
+            var networks = Resources.FindObjectsOfTypeAll<NeuralNetworkObj>();
             const string networkName = "New Neural Network";
             var finalName = networkName;
             var count = 0;
