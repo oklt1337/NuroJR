@@ -14,20 +14,29 @@ namespace Editor
             Clear();
 
             Object.DestroyImmediate(_editor);
-            _editor = UnityEditor.Editor.CreateEditor(neuronView.Neuron);
+            if (neuronView == null)
+                return;
 
-            var container = new IMGUIContainer(() =>
+            _editor = UnityEditor.Editor.CreateEditor(neuronView.Neuron);
+            
+            if (_editor.target == null)
             {
-                _editor.OnInspectorGUI();
-            });
+                Clear();
+                return;
+            }
+
+            var container = new IMGUIContainer(() => { _editor.OnInspectorGUI(); });
             Add(container);
         }
-        
+
         public void UpdateSelection(LayerView layerView)
         {
             Clear();
 
             Object.DestroyImmediate(_editor);
+            
+            if (layerView == null)
+                return;
             _editor = UnityEditor.Editor.CreateEditor(layerView.NetworkLayer);
 
             if (_editor.target == null)
@@ -35,19 +44,19 @@ namespace Editor
                 Clear();
                 return;
             }
-            
-            var container = new IMGUIContainer(() =>
-            {
-                _editor.OnInspectorGUI();
-            });
+
+            var container = new IMGUIContainer(() => { _editor.OnInspectorGUI(); });
             Add(container);
         }
-        
+
         public void UpdateSelection(EdgeView edgeView)
         {
             Clear();
-            
+
             Object.DestroyImmediate(_editor);
+            
+            if (edgeView == null)
+                return;
             _editor = UnityEditor.Editor.CreateEditor(edgeView.Connection);
 
             if (_editor.target == null)
@@ -55,13 +64,9 @@ namespace Editor
                 Clear();
                 return;
             }
-            
-            var container = new IMGUIContainer(() =>
-            {
-                _editor.OnInspectorGUI();
-            });
+
+            var container = new IMGUIContainer(() => { _editor.OnInspectorGUI(); });
             Add(container);
         }
-        
     }
 }

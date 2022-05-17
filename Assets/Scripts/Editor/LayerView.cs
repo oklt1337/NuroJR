@@ -15,13 +15,15 @@ namespace Editor
         public Action<NeuronView> OnNodeSelected;
 
         public Action<NeuronView> OnNeuronViewCreated;
+        public Action<NetworkLayer> OnDelete;
 
         #region Constructor
 
         public LayerView(NetworkLayer networkLayer)
         {
             NetworkLayer = networkLayer;
-            networkLayer.OnNeuronCreated += CreateNeuronView;
+            NetworkLayer.OnNeuronCreated += CreateNeuronView;
+            NetworkLayer.OnDelete = OnDelete;
             
             title = networkLayer.GetType().Name;
             viewDataKey = NetworkLayer.guid;

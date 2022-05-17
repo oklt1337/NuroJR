@@ -9,7 +9,7 @@ namespace Neural_Network.Layer
     public abstract class NetworkLayer : ScriptableObject
     {
         [HideInInspector] public string guid;
-        public List<Neuron> neurons = new();
+        [HideInInspector] public List<Neuron> neurons = new();
         
         public Action<NetworkLayer> OnDelete;
         public Action<Neuron> OnNeuronCreated;

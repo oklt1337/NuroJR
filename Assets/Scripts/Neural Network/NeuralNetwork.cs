@@ -40,9 +40,10 @@ namespace Neural_Network
             layer.OnNeuronCreated += CheckConnections;
             layer.OnNeuronCreated += neuron => neuron.OnDelete += RemoveDeprecatedObjects;
             layer.OnDelete += ReconnectLayer;
-            layer.CreateNeuron();
-
+            
             OnLayerCreated?.Invoke(layer);
+            
+            layer.CreateNeuron();
             Debug.Log($"Layer has been Created: {layer.name}");
         }
         
@@ -202,7 +203,7 @@ namespace Neural_Network
         
         private void RemoveDeprecatedObjects(Neuron neuron)
         {
-            var deprecatedConnections = connections.Where(connection => connection._child == neuron || connection._parent == neuron).ToList();
+            var deprecatedConnections = connections.Where(connection => connection.GetChild() == neuron || connection.GetParent() == neuron).ToList();
 
             for (var i = deprecatedConnections.Count - 1; i >= 0; i--)
             {

@@ -35,6 +35,10 @@ namespace Editor
         {
             if (dropdownField.value == null)
                 return;
+            
+            CheckForNullNetworks();
+            if (neuralNetworks.Count == 0)
+                return;
 
             var index = neuralNetworks.FindIndex(x => x.name == dropdownField.value);
             if (index == -1)
@@ -51,6 +55,21 @@ namespace Editor
 
             _neuralNetworkView.UnPopulateView();
             _neuralNetworkView.PopulateView(neuralNetworks[index]);
+        }
+
+        private void CheckForNullNetworks()
+        {
+            if (!neuralNetworks.Any()) 
+                return;
+            
+            //TODO: fix null Check
+            var nullNetworks = neuralNetworks.Where(neuralNetwork => neuralNetwork == null).ToList();
+            if (!nullNetworks.Any()) 
+                return;
+            for (var i = nullNetworks.Count - 1; i >= 0; i--)
+            {
+                neuralNetworks.Remove(nullNetworks[i]);
+            }
         }
 
         public void CreateGUI()
@@ -88,8 +107,6 @@ namespace Editor
             // New Button
             var newButton = root.Q<ToolbarButton>("new");
             newButton.clicked += CreateNeuralNetworks.CreateNewNeuralNetwork;
-            
-            OnSelectionChange();
         }
 
         private void RefreshDropdownValues()
@@ -100,7 +117,7 @@ namespace Editor
             if (networks.Count != 0)
             {
                 networks.ForEach(x => dropdownField.choices.Add(x.name));
-                neuralNetworks = networks.ToList();
+                neuralNetworks = networks;
 
                 if (dropdownField.value is not ("NULL" or "" or null))
                     return;
@@ -124,20 +141,6 @@ namespace Editor
 
             _neuralNetworkView.UnPopulateView();
             _neuralNetworkView.PopulateView(neuralNetworks[index]);
-        }
-
-        private void OnSelectionChange()
-        {
-            /*var network = Selection.activeObject as NeuralNetwork;
-            if (network && AssetDatabase.CanOpenAssetInEditor(network!.GetInstanceID()))
-            {
-                _neuralNetworkView.PopulateView(network);
-            }
-            else
-            {
-                _neuralNetworkView.UnPopulateView();
-                _inspectorView.Clear();
-            }*/
         }
 
         private void OnNodeSelectionChanged(NeuronView neuronView)

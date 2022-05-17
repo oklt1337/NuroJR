@@ -11,7 +11,7 @@ namespace Neural_Network.Layer
         public override void CreateNeuron()
         {
             // Make sure not to many Neurons can be added.
-            if (neurons.Count >= 8)
+            if (neurons.Count >= 7)
                 return;
             
             var neuron = CreateInstance(typeof(OutputNeuron)) as Neuron;
