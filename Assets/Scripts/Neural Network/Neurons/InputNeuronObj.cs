@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Neural_Network.Neurons
 {
@@ -26,15 +26,24 @@ namespace Neural_Network.Neurons
         {
             var neuron = new InputNeuron
             {
-                Value = value
+                NeuronObj = this
             };
-
+            connectionObjs.ForEach(x => neuron.Connections.Add(x.Clone()));
             return neuron;
         }
     }
 
     public class InputNeuron : Neuron
     {
-        
+        private float input;
+        public override float GetValue(Neuron neuron)
+        {
+            return input;
+        }
+
+        public void SetInput(float value)
+        {
+            input = value;
+        }
     }
 }

@@ -1,23 +1,18 @@
-﻿using System;
-using Neural_Network.Neurons;
+﻿using Neural_Network.Neurons;
 using UnityEditor;
 using UnityEngine;
 
 namespace Neural_Network
 {
-    public class Connection : ScriptableObject
+    public class ConnectionObj : ScriptableObject
     {
         private NeuronObj child;
         private NeuronObj parent;
-        [HideInInspector] public string guid;
         
         public float weight;
 
-        public Action<Connection> OnDeleted;
-
         public void DeleteConnection()
         {
-            OnDeleted?.Invoke(this);
             AssetDatabase.RemoveObjectFromAsset(this);
             AssetDatabase.SaveAssets();
         }
@@ -41,5 +36,24 @@ namespace Neural_Network
         {
             return parent;
         }
+
+        public Connection Clone()
+        {
+            var connection = new Connection
+            {
+                Weight = weight,
+                ChildObj = GetChild(),
+                ParentObj = GetParent()
+            };
+
+            return connection;
+        }
+    }
+
+    public class Connection
+    {
+        public float Weight;
+        public NeuronObj ParentObj { get; set; }
+        public NeuronObj ChildObj { get; set; }
     }
 }

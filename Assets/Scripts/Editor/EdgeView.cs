@@ -7,7 +7,7 @@ namespace Editor
     public class EdgeView : Edge
     {
         public Action<EdgeView> OnEdgeSelected;
-        public Connection Connection;
+        public ConnectionObj ConnectionObj;
 
         public EdgeView()
         {
@@ -20,9 +20,9 @@ namespace Editor
             OnEdgeSelected?.Invoke(this);
         }
 
-        public void SetConnection(Connection connection)
+        public void SetConnection(ConnectionObj connectionObj)
         {
-            Connection = connection;
+            ConnectionObj = connectionObj;
         }
     }
 }

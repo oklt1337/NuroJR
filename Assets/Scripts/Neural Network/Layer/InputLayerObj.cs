@@ -11,8 +11,7 @@ namespace Neural_Network.Layer
         public override NetworkLayer Clone()
         {
             var layer = new InputLayer();
-            neurons.ForEach(x=> layer.Neurons.Add(x.Clone()));
-
+            neurons.ForEach(x => layer.Neurons.Add(x.Clone()));
             return layer;
         }
         

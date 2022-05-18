@@ -8,20 +8,22 @@ using UnityEngine;
 
 namespace Neural_Network
 {
+    #region Object
+
     public class NeuralNetworkObj : ScriptableObject
     {
-        public List<NetworkLayerObj> layers = new();
-        public List<Connection> connections = new();
+        public List<NetworkLayerObj> layersObj = new();
+        public List<ConnectionObj> connectionsObj = new();
+        private float fitness;
 
         public Action<NetworkLayerObj> OnLayerCreated;
-        public Action<Connection> OnConnectionCreated;
 
         #region Layer
 
         public void CreateLayer(Type type)
         {
             // Make sure not to many Layers can be added.
-            if (layers.Count >= 8)
+            if (layersObj.Count >= 8)
                 return;
 
             var layer = CreateInstance(type) as NetworkLayerObj;
@@ -31,8 +33,8 @@ namespace Neural_Network
             layer.name = type.Name;
             layer.guid = GUID.Generate().ToString();
 
-            layers.Add(layer);
-            layers.Sort(new LayerComparer());
+            layersObj.Add(layer);
+            layersObj.Sort(new LayerComparer());
 
             AssetDatabase.AddObjectToAsset(layer, this);
             AssetDatabase.SaveAssets();
@@ -40,23 +42,23 @@ namespace Neural_Network
             layer.OnNeuronCreated += CheckConnections;
             layer.OnNeuronCreated += neuron => neuron.OnDelete += RemoveDeprecatedObjects;
             layer.OnDelete += ReconnectLayer;
-            
+
             OnLayerCreated?.Invoke(layer);
-            
+
             layer.CreateNeuron();
             Debug.Log($"Layer has been Created: {layer.name}");
         }
-        
+
         public void RemoveLayer(NetworkLayerObj networkLayerObj)
         {
             RemoveDeprecatedObjects(networkLayerObj);
             networkLayerObj.DeleteLayer();
-            layers.Remove(networkLayerObj);
+            layersObj.Remove(networkLayerObj);
         }
 
         public List<NetworkLayerObj> GetLayer()
         {
-            return layers;
+            return layersObj;
         }
 
         private void RemoveDeprecatedObjects(NetworkLayerObj networkLayerObj)
@@ -66,7 +68,7 @@ namespace Neural_Network
             {
                 RemoveDeprecatedObjects(deprecatedNeuron);
             }
-            
+
             for (var i = deprecatedNeurons.Count - 1; i >= 0; i--)
             {
                 networkLayerObj.RemoveNeuron(deprecatedNeurons[i]);
@@ -79,18 +81,17 @@ namespace Neural_Network
 
         #region Connections
 
-        public List<Connection> GetConnections()
+        public List<ConnectionObj> GetConnections()
         {
-            return connections;
+            return connectionsObj;
         }
 
         private void CreateConnection(NeuronObj parent, NeuronObj child)
         {
-            var connection = CreateInstance<Connection>();
+            var connection = CreateInstance<ConnectionObj>();
             if (connection == null)
                 return;
 
-            connection.guid = GUID.Generate().ToString();
             connection.name = "Connection";
             connection.AddParent(parent);
             connection.AddChild(child);
@@ -98,34 +99,38 @@ namespace Neural_Network
             AssetDatabase.AddObjectToAsset(connection, this);
             AssetDatabase.SaveAssets();
 
-            connections.Add(connection);
-            OnConnectionCreated?.Invoke(connection);
+            parent.connectionObjs.Add(connection);
+            connectionsObj.Add(connection);
         }
 
-        private void RemoveConnection(Connection connection)
+        private void RemoveConnection(ConnectionObj connectionObj)
         {
-            connections.Remove(connection);
-            connection.DeleteConnection();
+            connectionsObj.Remove(connectionObj);
+            connectionObj.GetParent().connectionObjs.Remove(connectionObj);
+            connectionObj.DeleteConnection();
         }
 
         private void ReconnectLayer(NetworkLayerObj networkLayerObj)
         {
-            var index = layers.FindIndex(x => x == networkLayerObj);
+            var index = layersObj.FindIndex(x => x == networkLayerObj);
             if (index == -1)
                 return;
 
-            if (index - 1 <= 0 || index + 1 >= layers.Count)
+            if (index - 1 <= 0 || index + 1 >= layersObj.Count)
                 return;
 
-            CreateConnections(layers[index - 1], layers[index + 1]);
-            Debug.Log($"{layers[index - 1].name} and {layers[index + 1].name} got reconnected.");
+            CreateConnections(layersObj[index - 1], layersObj[index + 1]);
+            Debug.Log($"{layersObj[index - 1].name} and {layersObj[index + 1].name} got reconnected.");
         }
 
         private void CheckConnections(NeuronObj neuronObj)
         {
             // get layer of neuron
             var layerOfNeuron =
-                (from layer in layers let neurons = layer.GetNeurons() where neurons.Contains(neuronObj) select layer)
+                (from layer in layersObj
+                    let neurons = layer.GetNeurons()
+                    where neurons.Contains(neuronObj)
+                    select layer)
                 .FirstOrDefault();
 
             // null if no layer found
@@ -135,7 +140,7 @@ namespace Neural_Network
             //check if is 1st neuron of layer
             if (layerOfNeuron.GetNeurons().Count == 1)
             {
-                var index = layers.FindIndex(x => x == layerOfNeuron);
+                var index = layersObj.FindIndex(x => x == layerOfNeuron);
                 if (index == -1)
                     return;
 
@@ -144,11 +149,10 @@ namespace Neural_Network
                     return;
 
                 // get neurons that are the parents
-                var parentNeurons = layers[index - 1].GetNeurons();
-
-                //TODO: InvalidOperationException: Collection was modified; enumeration operation may not execute.
+                var parentNeurons = layersObj[index - 1].GetNeurons();
+                
                 // check if parent is in list and Delete Connection form asset
-                var connectionsToRemove = connections.Where(connection =>
+                var connectionsToRemove = connectionsObj.Where(connection =>
                     parentNeurons.Contains(connection.GetParent())).ToList();
 
                 for (var i = connectionsToRemove.Count - 1; i >= 0; i--)
@@ -157,28 +161,28 @@ namespace Neural_Network
                 }
 
                 // create new connections 
-                CreateConnections(layers[index - 1], layers[index]);
+                CreateConnections(layersObj[index - 1], layersObj[index]);
 
-                if (index + 1 >= layers.Count)
+                if (index + 1 >= layersObj.Count)
                     return;
 
-                CreateConnections(layers[index], layers[index + 1]);
+                CreateConnections(layersObj[index], layersObj[index + 1]);
             }
             else
             {
                 // find layer index
-                var index = layers.FindIndex(x => x == layerOfNeuron);
+                var index = layersObj.FindIndex(x => x == layerOfNeuron);
                 if (index == -1)
                     return;
 
                 // check if layer is not first
                 if (index - 1 >= 0)
-                    CreateConnections(layers[index - 1], layers[index]);
+                    CreateConnections(layersObj[index - 1], layersObj[index]);
 
                 // check if layer is not last
-                if (index + 1 >= layers.Count)
+                if (index + 1 >= layersObj.Count)
                     return;
-                CreateConnections(layers[index], layers[index + 1]);
+                CreateConnections(layersObj[index], layersObj[index + 1]);
             }
         }
 
@@ -191,7 +195,7 @@ namespace Neural_Network
             {
                 // check if connection already exists if not create it
                 foreach (var childNeuron in from neuron in childNeurons
-                         let found = connections.Where(connection =>
+                         let found = connectionsObj.Where(connection =>
                              connection.GetChild() == neuron && connection.GetParent() == parentNeuron)
                          where !found.Any()
                          select neuron)
@@ -200,44 +204,158 @@ namespace Neural_Network
                 }
             }
         }
-        
+
         private void RemoveDeprecatedObjects(NeuronObj neuronObj)
         {
-            var deprecatedConnections = connections.Where(connection => connection.GetChild() == neuronObj || connection.GetParent() == neuronObj).ToList();
+            var deprecatedConnections = connectionsObj.Where(connection =>
+                connection.GetChild() == neuronObj || connection.GetParent() == neuronObj).ToList();
 
             for (var i = deprecatedConnections.Count - 1; i >= 0; i--)
             {
                 RemoveConnection(deprecatedConnections[i]);
             }
-            
+
             Debug.Log("Deprecated Connections got deleted.");
         }
 
         #endregion
 
+        #region General
+
         public NeuralNetwork Clone()
         {
             var network = new NeuralNetwork();
-            layers.ForEach(x => network.Layers.Add(x.Clone()));
-
+            layersObj.ForEach(x => network.Layers.Add(x.Clone()));
             return network;
         }
+
+        public void Save(NeuralNetwork network)
+        {
+            fitness = network.Fitness;
+
+            // Saving bias
+            for (var i = 0; i < layersObj.Count; i++)
+            {
+                for (var j = 0; j < layersObj[i].neurons.Count; j++)
+                {
+                    if (layersObj[i].neurons[j] is HiddenNeuronObj hiddenNeuronObj)
+                    {
+                        hiddenNeuronObj.bias = (network.Layers[i].Neurons[j] as HiddenNeuron)!.Bias;
+                    }
+                }
+            }
+
+            // Save Weights
+            foreach (var layer in network.Layers)
+            {
+                foreach (var neuron in layer.Neurons)
+                {
+                    foreach (var connection in neuron.Connections)
+                    {
+                        foreach (var connectionObj in connectionsObj.Where(connectionObj => connectionObj.GetChild() == connection.ChildObj &&
+                                     connectionObj.GetParent() == connection.ChildObj))
+                        {
+                            connectionObj.weight = connection.Weight;
+                        }
+                    }
+                }
+            }
+        }
+
+        #endregion
     }
-    
+
+    #endregion
+
+    #region Neural Network
+
     public class NeuralNetwork : IComparable<NeuralNetwork>
     {
         public readonly List<NetworkLayer> Layers = new();
-        public float fitness;
-        
+        public float Fitness;
+
+        /// <summary>
+        /// Generate Outputs
+        /// </summary>
+        /// <returns>float[] Outputs</returns>
+        public float[] FeedForward()
+        {
+            var inputLayer = Layers[0] as InputLayer;
+            var outputLayer = Layers.Last() as OutputLayer;
+            var hiddenLayers = new List<HiddenLayer>();
+            for (var i = 1; i < Layers.Count - 1; i++)
+            {
+                hiddenLayers.Add(Layers[i] as HiddenLayer);
+            }
+
+            if (outputLayer == null || inputLayer == null)
+                return null;
+
+            var output = new List<float>();
+            for (var i = 0; i < hiddenLayers.Count; i++)
+            {
+                if (i == 0)
+                {
+                    foreach (var neuron in hiddenLayers[0].Neurons)
+                    {
+                        (neuron as HiddenNeuron)!.SumInputs(inputLayer.Neurons);
+                    }
+                }
+                else if (i == Layers.Count)
+                {
+                    output.AddRange(outputLayer.Neurons.Select(neuron => (neuron as OutputNeuron)!.GetValue(null)));
+                }
+                else
+                {
+                    foreach (var neuron in hiddenLayers[i].Neurons)
+                    {
+                        (neuron as HiddenNeuron)!.SumInputs(hiddenLayers[i - 1].Neurons);
+                    }
+                }
+            }
+
+            return output.ToArray();
+        }
+
+        public void Mutate(float mutationChance, float mutationStrength)
+        {
+            // Mutate Bias
+            foreach (var neuron in Layers.SelectMany(layer => layer.Neurons))
+            {
+                if (neuron is not HiddenNeuron hiddenNeuron)
+                    continue;
+
+                if (UnityEngine.Random.Range(0f, 1f) < mutationChance)
+                {
+                    hiddenNeuron.Bias += UnityEngine.Random.Range(-mutationStrength, mutationStrength);
+                }
+            }
+
+            // Mutate weight
+            foreach (var connection in from layer in Layers
+                     from neuron in layer.Neurons
+                     where neuron.Connections != null
+                     from connection in neuron.Connections
+                     where connection != null
+                     where UnityEngine.Random.Range(0f, 1f) < mutationChance
+                     select connection)
+            {
+                connection.Weight += UnityEngine.Random.Range(-mutationStrength, mutationStrength);
+            }
+        }
+
         public int CompareTo(NeuralNetwork other)
         {
-            if (other == null) return 1;
-
-            if (fitness > other.fitness)
+            if (other == null)
                 return 1;
-            if (fitness < other.fitness)
+
+            if (Fitness > other.Fitness)
+                return 1;
+            if (Fitness < other.Fitness)
                 return -1;
             return 0;
         }
     }
+
+    #endregion
 }

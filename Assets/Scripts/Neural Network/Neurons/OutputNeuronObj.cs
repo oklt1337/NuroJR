@@ -6,15 +6,20 @@
         {
             var neuron = new OutputNeuron
             {
-                Value = value
+                NeuronObj = this
             };
-
+            connectionObjs.ForEach(x => neuron.Connections.Add(x.Clone()));
             return neuron;
         }
     }
 
     public class OutputNeuron : Neuron
     {
-        
+        private float output;
+
+        public override float GetValue(Neuron neuron)
+        {
+            return output;
+        }
     }
 }

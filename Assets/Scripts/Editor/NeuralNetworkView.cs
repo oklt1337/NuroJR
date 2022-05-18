@@ -72,7 +72,7 @@ namespace Editor
 
         private void InitializeEvents(NeuralNetworkObj neuralNetworkObj)
         {
-            foreach (var networkLayer in neuralNetworkObj.layers)
+            foreach (var networkLayer in neuralNetworkObj.layersObj)
             {
                 foreach (var neuron in networkLayer.neurons)
                 {
@@ -171,13 +171,13 @@ namespace Editor
                         }
                         break;
                     case NeuronView nodeView:
-                        var index = NetworkObj.layers.FindIndex(x => x.neurons.Contains(nodeView.NeuronObj));
+                        var index = NetworkObj.layersObj.FindIndex(x => x.neurons.Contains(nodeView.NeuronObj));
                         if (index == -1)
                             return;
-                        if(NetworkObj.layers[index].neurons.Count == 1)
+                        if(NetworkObj.layersObj[index].neurons.Count == 1)
                             return;
                         
-                        NetworkObj.layers[index].RemoveNeuron(nodeView.NeuronObj);
+                        NetworkObj.layersObj[index].RemoveNeuron(nodeView.NeuronObj);
                         SortNeurons();
                         break;
                     case Edge edge:
@@ -366,15 +366,15 @@ namespace Editor
             neuron.OnDelete += DeleteNeuron;
             
             // Check if 1st Neuron in Layer
-            var index = NetworkObj.layers.FindIndex(x => x.neurons.Contains(neuron));
+            var index = NetworkObj.layersObj.FindIndex(x => x.neurons.Contains(neuron));
             if (index == -1)
                 return;
-            if (NetworkObj.layers[index].neurons.Count == 1)
+            if (NetworkObj.layersObj[index].neurons.Count == 1)
             {
                 RemoveOldEdges();
             }
             
-            var connectionsToCreate = NetworkObj.connections.Where(connection => connection.GetChild() == neuron || connection.GetParent() == neuron).ToList();
+            var connectionsToCreate = NetworkObj.connectionsObj.Where(connection => connection.GetChild() == neuron || connection.GetParent() == neuron).ToList();
 
             foreach (var connection in connectionsToCreate.Where(connection => !CheckIfEdgeExists(connection)))
             {
@@ -391,7 +391,7 @@ namespace Editor
                     edgeViews.Add(edgeView);
             }
 
-            return edgeViews.Any(edgeView => edgeView.Connection == connection);
+            return edgeViews.Any(edgeView => edgeView.ConnectionObj == connection);
         }
 
         private void RemoveOldEdges()
@@ -400,7 +400,7 @@ namespace Editor
 
             for (var i = edgeViews.Count - 1; i >= 0; i-- )
             {
-                if (NetworkObj.connections.Contains(edgeViews[i].Connection)) 
+                if (NetworkObj.connectionsObj.Contains(edgeViews[i].ConnectionObj)) 
                     continue;
                 
                 _elements.Remove(edgeViews[i]);
@@ -408,10 +408,10 @@ namespace Editor
             }
         }
 
-        private void CreateEdgeView(Connection connection )
+        private void CreateEdgeView(ConnectionObj connectionObj )
         {
-            var parentView = FindNodeView(connection.GetParent());
-            var childView = FindNodeView(connection.GetChild());
+            var parentView = FindNodeView(connectionObj.GetParent());
+            var childView = FindNodeView(connectionObj.GetChild());
 
             if (parentView == null || childView == null)
                 return;
@@ -419,7 +419,7 @@ namespace Editor
             var edge = parentView.Output.ConnectTo<EdgeView>(childView.Input);
             edge.OnEdgeSelected = OnEdgeSelected;
 
-            edge.SetConnection(connection);
+            edge.SetConnection(connectionObj);
             
             AddElements(edge);
             AddElement(edge);

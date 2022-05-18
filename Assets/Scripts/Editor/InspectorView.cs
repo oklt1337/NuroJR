@@ -57,7 +57,7 @@ namespace Editor
             
             if (edgeView == null)
                 return;
-            _editor = UnityEditor.Editor.CreateEditor(edgeView.Connection);
+            _editor = UnityEditor.Editor.CreateEditor(edgeView.ConnectionObj);
 
             if (_editor.target == null)
             {
