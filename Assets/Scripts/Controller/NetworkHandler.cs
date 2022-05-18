@@ -9,9 +9,9 @@ namespace Controller
     {
         [SerializeField] private NeuralNetworkObj reference;
 
-        [SerializeField] private  int populationSize = 20;
-        [SerializeField] private  GameObject learnerPrefab;
-        [SerializeField] private  int generation;
+        [SerializeField] private int populationSize = 20;
+        [SerializeField] private GameObject learnerPrefab;
+        [SerializeField] private int generation;
 
         [SerializeField, Range(0f, 1f)] private float mutationChance = 0.01f;
 
@@ -27,14 +27,14 @@ namespace Controller
         {
             InitNetworks();
         }
-        
+
         private void FixedUpdate()
         {
             var anyAlive = false;
             // Check if not null and count > 0
-            if (learners is not { Count: > 0 }) 
+            if (learners is not { Count: > 0 })
                 return;
-            
+
             // Check if any learner is still alive
             learners.ForEach(learner =>
             {
@@ -42,7 +42,7 @@ namespace Controller
                     anyAlive = true;
             });
 
-            if (anyAlive) 
+            if (anyAlive)
                 return;
             ClearLearners();
         }
@@ -66,8 +66,8 @@ namespace Controller
             bestNet = networks[0];
             CreateLearners();
         }
-        
-        
+
+
         /// <summary>
         /// Destroys Learner and Creates new once.
         /// </summary>
@@ -78,16 +78,17 @@ namespace Controller
             {
                 generation++;
                 SortNetworks();
-                
+
                 foreach (var learner in learners)
                 {
                     Destroy(learner.gameObject);
                 }
             }
+
             learners.Clear();
             Invoke(nameof(CreateLearners), Time.fixedDeltaTime);
         }
-        
+
         /// <summary>
         /// Sort Networks and check for best
         /// Creates new Mutations

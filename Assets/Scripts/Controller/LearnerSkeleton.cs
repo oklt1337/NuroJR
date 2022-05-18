@@ -26,15 +26,16 @@ namespace Controller
             // Create Inputs
             var inputs = new float[3];
             // Set Inputs
-            inputs[0] = 1;
-            inputs[1] = 1;
-            inputs[2] = 1;
+            var position = transform.position;
+            inputs[0] = position.x;
+            inputs[1] = position.y;
 
             // Generate Outputs
             var outputs = learner.Think(inputs);
             
             // This is an example of how you could use the output (the output is a float between -1 and 1)
-            transform.position += new Vector3(outputs[0], 0, outputs[1]) * Time.fixedDeltaTime;
+            position += new Vector3(outputs[0], 0, outputs[1]) * Time.fixedDeltaTime;
+            transform.position = position;
 
             // Check if time is up
             if (!(lifeTime < Time.time)) 
@@ -42,16 +43,12 @@ namespace Controller
             // Set Learner to Not Alive
             learner.Alive = false;
         }
-
-        #endregion
         
-        #region Private Methods
-
         /// <summary>
         /// Increase Fitness of Network
         /// </summary>
         /// <param name="fitness">float increase value</param>
-        private void AddFitness(float fitness)
+        public void AddFitness(float fitness)
         {
             // Null Check
             if (learner == null)

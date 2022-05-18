@@ -9,8 +9,7 @@ namespace Neural_Network.Neurons
     {
         [HideInInspector] public Vector2 neuronPosition;
         [HideInInspector] public string guid;
-        
-        public List<ConnectionObj> connectionObjs = new();
+        [HideInInspector] public List<ConnectionObj> connectionObjs = new();
 
         public Action<NeuronObj> OnDelete;
 
