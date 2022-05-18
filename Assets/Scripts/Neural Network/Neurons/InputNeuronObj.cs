@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 
 namespace Neural_Network.Neurons
 {
@@ -22,13 +23,13 @@ namespace Neural_Network.Neurons
             return _children;
         }
 
-        public override Neuron Clone()
+        public override Neuron Clone(bool random)
         {
             var neuron = new InputNeuron
             {
                 NeuronObj = this
             };
-            connectionObjs.ForEach(x => neuron.Connections.Add(x.Clone()));
+            connectionObjs.ForEach(x => neuron.Connections.Add(x.Clone(random)));
             return neuron;
         }
     }
@@ -36,7 +37,7 @@ namespace Neural_Network.Neurons
     public class InputNeuron : Neuron
     {
         private float input;
-        public override float GetValue(Neuron neuron)
+        public override float GetValue([Optional] Neuron neuron)
         {
             return input;
         }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Neural_Network;
@@ -8,23 +9,27 @@ namespace Controller
     public class NetworkHandler : MonoBehaviour
     {
         [SerializeField] private NeuralNetworkObj reference;
-
+        [SerializeField] private bool randomInit;
+        
+        [SerializeField] private float timeScale;
         [SerializeField] private int populationSize = 20;
         [SerializeField] private GameObject learnerPrefab;
         [SerializeField] private int generation;
 
         [SerializeField, Range(0f, 1f)] private float mutationChance = 0.01f;
-
         [SerializeField, Range(0f, 1f)] private float mutationStrength = 0.5f;
 
         private NeuralNetwork bestNet;
         private List<NeuralNetwork> networks;
         private readonly List<Learner> learners = new();
 
+        public static Action OnNewGeneration;
+
         #region Unity Methods
 
         private void Start()
         {
+            Time.timeScale = timeScale;
             InitNetworks();
         }
 
@@ -59,7 +64,7 @@ namespace Controller
             networks = new List<NeuralNetwork>();
             for (var i = 0; i < populationSize; i++)
             {
-                var net = reference.Clone();
+                var net = reference.Clone(randomInit);
                 networks.Add(net);
             }
 
@@ -86,6 +91,7 @@ namespace Controller
             }
 
             learners.Clear();
+            OnNewGeneration?.Invoke();
             Invoke(nameof(CreateLearners), Time.fixedDeltaTime);
         }
 
@@ -102,6 +108,7 @@ namespace Controller
             var lastNetwork = networks.Last();
             if (bestNet.Fitness < lastNetwork.Fitness)
             {
+                Debug.Log(bestNet.Name);
                 bestNet = lastNetwork;
                 reference.Save(bestNet);
             }
@@ -129,6 +136,7 @@ namespace Controller
                 learner.Network = networks[i];
                 learners.Add(learner);
                 learner.name = "Learner " + i + " Generation " + generation;
+                learner.Network.Name = learner.name;
                 learner.transform.parent = gameObject.transform;
             }
         }

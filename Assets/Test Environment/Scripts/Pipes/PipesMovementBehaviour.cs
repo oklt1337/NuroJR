@@ -19,13 +19,14 @@ namespace Test_Environment.Scripts.Pipes
                 Destroy(gameObject);
 
             _timer += Time.deltaTime;
-            transform.position += Vector3.left * Speed * Time.deltaTime;
+            transform.position += Vector3.left * (Speed * Time.deltaTime);
         }
 
         private void OnTriggerEnter2D(Collider2D other)
         {
             if (!other.CompareTag("Learner")) 
                 return;
+
             var learner = other.GetComponent<Learner>();
             learner.Alive = false;
         }

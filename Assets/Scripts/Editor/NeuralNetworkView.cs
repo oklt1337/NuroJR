@@ -50,7 +50,7 @@ namespace Editor
         public void PopulateView(NeuralNetworkObj neuralNetworkObj)
         {
             NetworkObj = neuralNetworkObj;
-
+            
             graphViewChanged -= OnGraphViewChanged;
             DeleteElements(graphElements);
             graphViewChanged += OnGraphViewChanged;
@@ -330,7 +330,8 @@ namespace Editor
             var neurons = new List<NeuronObj>();
 
             foreach (var layer in NetworkObj.GetLayer())
-            {
+            { 
+                //asda
                 foreach (var neuron in layer.GetNeurons())
                 {
                     neurons.Add(neuron);

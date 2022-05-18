@@ -37,8 +37,11 @@ namespace Neural_Network
             return parent;
         }
 
-        public Connection Clone()
+        public Connection Clone(bool random)
         {
+            if (random)
+                weight = Random.Range(-1, 1);
+
             var connection = new Connection
             {
                 Weight = weight,

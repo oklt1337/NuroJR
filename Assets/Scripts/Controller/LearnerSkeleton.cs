@@ -1,4 +1,6 @@
 ﻿using System;
+using Test_Environment.Scripts.Pipes;
+using Test_Environment.Scripts.Player;
 using UnityEngine;
 
 namespace Controller
@@ -7,7 +9,11 @@ namespace Controller
     public class LearnerSkeleton : MonoBehaviour
     {
         private Learner learner;
-        [SerializeField, Tooltip("Max Lifetime")] private float lifeTime = 10f;
+
+        [SerializeField, Tooltip("Max Lifetime")]
+        private float lifeTime = 10f;
+
+        [SerializeField] private PlayerController playerController;
 
         #region Unity Methods
 
@@ -16,34 +22,37 @@ namespace Controller
             learner = GetComponent<Learner>();
             lifeTime += Time.time;
         }
-        
+
         private void FixedUpdate()
         {
             // Check if Learner is alive
-            if (!learner.Alive) 
+            if (!learner.Alive)
                 return;
-            
+
             // Create Inputs
             var inputs = new float[3];
             // Set Inputs
             var position = transform.position;
-            inputs[0] = position.x;
-            inputs[1] = position.y;
+            inputs[0] = position.y;
+
+            var pipeTrans = PipeManager.Instance.GetFirstPipe();
+            inputs[1] = pipeTrans.x;
+            inputs[2] = pipeTrans.y;
 
             // Generate Outputs
             var outputs = learner.Think(inputs);
-            
-            // This is an example of how you could use the output (the output is a float between -1 and 1)
-            position += new Vector3(outputs[0], 0, outputs[1]) * Time.fixedDeltaTime;
-            transform.position = position;
+            if (outputs[0] < outputs[1])
+            {
+                playerController.Jump();
+            }
 
             // Check if time is up
-            if (!(lifeTime < Time.time)) 
+            if (!(lifeTime < Time.time))
                 return;
             // Set Learner to Not Alive
             learner.Alive = false;
         }
-        
+
         /// <summary>
         /// Increase Fitness of Network
         /// </summary>

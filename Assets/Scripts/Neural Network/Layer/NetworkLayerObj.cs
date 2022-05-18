@@ -23,7 +23,7 @@ namespace Neural_Network.Layer
             Debug.Log($"{name} got deleted");
         }
 
-        public abstract NetworkLayer Clone();
+        public abstract NetworkLayer Clone(bool random);
 
         #region Neuron
 
@@ -45,6 +45,6 @@ namespace Neural_Network.Layer
 
     public abstract class NetworkLayer
     {
-        public List<Neuron> Neurons;
+        public List<Neuron> Neurons = new();
     }
 }

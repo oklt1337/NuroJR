@@ -14,7 +14,7 @@ namespace Neural_Network
     {
         public List<NetworkLayerObj> layersObj = new();
         public List<ConnectionObj> connectionsObj = new();
-        private float fitness;
+        public float fitness;
 
         public Action<NetworkLayerObj> OnLayerCreated;
 
@@ -150,7 +150,7 @@ namespace Neural_Network
 
                 // get neurons that are the parents
                 var parentNeurons = layersObj[index - 1].GetNeurons();
-                
+
                 // check if parent is in list and Delete Connection form asset
                 var connectionsToRemove = connectionsObj.Where(connection =>
                     parentNeurons.Contains(connection.GetParent())).ToList();
@@ -222,10 +222,10 @@ namespace Neural_Network
 
         #region General
 
-        public NeuralNetwork Clone()
+        public NeuralNetwork Clone(bool random)
         {
             var network = new NeuralNetwork();
-            layersObj.ForEach(x => network.Layers.Add(x.Clone()));
+            layersObj.ForEach(x => network.Layers.Add(x.Clone(random)));
             return network;
         }
 
@@ -252,7 +252,8 @@ namespace Neural_Network
                 {
                     foreach (var connection in neuron.Connections)
                     {
-                        foreach (var connectionObj in connectionsObj.Where(connectionObj => connectionObj.GetChild() == connection.ChildObj &&
+                        foreach (var connectionObj in connectionsObj.Where(connectionObj =>
+                                     connectionObj.GetChild() == connection.ChildObj &&
                                      connectionObj.GetParent() == connection.ChildObj))
                         {
                             connectionObj.weight = connection.Weight;
@@ -274,6 +275,8 @@ namespace Neural_Network
         public readonly List<NetworkLayer> Layers = new();
         public float Fitness;
 
+        public string Name { get; set; }
+
         /// <summary>
         /// Generate Outputs
         /// </summary>
@@ -289,31 +292,40 @@ namespace Neural_Network
             }
 
             if (outputLayer == null || inputLayer == null)
+            {
+                Debug.Log("output or input layer == null");
                 return null;
+            }
+
 
             var output = new List<float>();
             for (var i = 0; i < hiddenLayers.Count; i++)
             {
                 if (i == 0)
                 {
-                    foreach (var neuron in hiddenLayers[0].Neurons)
+                    foreach (var hiddenNeuron in hiddenLayers[0].Neurons.Select(neuron => neuron as HiddenNeuron))
                     {
-                        (neuron as HiddenNeuron)!.SumInputs(inputLayer.Neurons);
+                        hiddenNeuron?.SumInputs(inputLayer.Neurons);
                     }
-                }
-                else if (i == Layers.Count)
-                {
-                    output.AddRange(outputLayer.Neurons.Select(neuron => (neuron as OutputNeuron)!.GetValue(null)));
                 }
                 else
                 {
-                    foreach (var neuron in hiddenLayers[i].Neurons)
+                    foreach (var hiddenNeuron in hiddenLayers[i].Neurons.Select(neuron => neuron as HiddenNeuron))
                     {
-                        (neuron as HiddenNeuron)!.SumInputs(hiddenLayers[i - 1].Neurons);
+                        hiddenNeuron?.SumInputs(hiddenLayers[i - 1].Neurons);
                     }
                 }
             }
 
+            foreach (var outputNeuron in outputLayer.Neurons.Select(neuron => neuron as OutputNeuron))
+            {
+                outputNeuron?.SumInputs(hiddenLayers.Last().Neurons);
+            }
+
+            output.AddRange(outputLayer.Neurons.Select(neuron => (neuron as OutputNeuron)!.GetValue()));
+            if (!output.Any())
+                Debug.Log("outputs are null");
+            
             return output.ToArray();
         }
 

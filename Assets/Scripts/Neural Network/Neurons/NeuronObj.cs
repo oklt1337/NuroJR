@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using UnityEditor;
 using UnityEngine;
 
@@ -13,7 +14,7 @@ namespace Neural_Network.Neurons
 
         public Action<NeuronObj> OnDelete;
 
-        public abstract Neuron Clone();
+        public abstract Neuron Clone(bool random);
         
         public void DeleteNeuron()
         {
@@ -29,7 +30,7 @@ namespace Neural_Network.Neurons
     {
         public NeuronObj NeuronObj;
         
-        public List<Connection> Connections;
+        public List<Connection> Connections = new();
         public abstract float GetValue(Neuron neuron);
     }
 }

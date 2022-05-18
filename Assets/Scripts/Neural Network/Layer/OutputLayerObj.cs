@@ -8,10 +8,10 @@ namespace Neural_Network.Layer
     {
         [HideInInspector] public Vector2 position = new(150, 0);
 
-        public override NetworkLayer Clone()
+        public override NetworkLayer Clone(bool random)
         {
             var layer = new OutputLayer();
-            neurons.ForEach(x => layer.Neurons.Add(x.Clone()));
+            neurons.ForEach(x => layer.Neurons.Add(x.Clone(random)));
             return layer;
         }
 

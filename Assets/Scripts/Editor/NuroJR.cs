@@ -38,7 +38,13 @@ namespace Editor
             
             CheckForNullNetworks();
             if (neuralNetworks.Count == 0)
+            {
+                _inspectorView.Clear();
+                _neuralNetworkView.UnPopulateView();
+                RefreshDropdownValues();
                 return;
+            }
+                
 
             var index = neuralNetworks.FindIndex(x => x.name == dropdownField.value);
             if (index == -1)
@@ -64,8 +70,9 @@ namespace Editor
             
             //TODO: fix null Check
             var nullNetworks = neuralNetworks.Where(neuralNetwork => neuralNetwork == null).ToList();
-            if (!nullNetworks.Any()) 
+            if (!nullNetworks.Any())
                 return;
+
             for (var i = nullNetworks.Count - 1; i >= 0; i--)
             {
                 neuralNetworks.Remove(nullNetworks[i]);

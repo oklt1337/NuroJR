@@ -1,11 +1,14 @@
-using UnityEngine;
+using System;
 using UnityEngine.UIElements;
+using Object = UnityEngine.Object;
 
 namespace Editor
 {
     public class InspectorView : VisualElement
     {
-        public new class UxmlFactory : UxmlFactory<InspectorView, UxmlTraits> {}
+        public new class UxmlFactory : UxmlFactory<InspectorView, UxmlTraits>
+        {
+        }
 
         private UnityEditor.Editor _editor;
 
@@ -18,7 +21,9 @@ namespace Editor
                 return;
 
             _editor = UnityEditor.Editor.CreateEditor(neuronView.NeuronObj);
-            
+
+            if (_editor == null)
+                return;
             if (_editor.target == null)
             {
                 Clear();
@@ -34,11 +39,13 @@ namespace Editor
             Clear();
 
             Object.DestroyImmediate(_editor);
-            
+
             if (layerView == null)
                 return;
             _editor = UnityEditor.Editor.CreateEditor(layerView.NetworkLayerObj);
 
+            if (_editor == null)
+                return;
             if (_editor.target == null)
             {
                 Clear();
@@ -54,11 +61,13 @@ namespace Editor
             Clear();
 
             Object.DestroyImmediate(_editor);
-            
+
             if (edgeView == null)
                 return;
             _editor = UnityEditor.Editor.CreateEditor(edgeView.ConnectionObj);
 
+            if (_editor == null)
+                return;
             if (_editor.target == null)
             {
                 Clear();

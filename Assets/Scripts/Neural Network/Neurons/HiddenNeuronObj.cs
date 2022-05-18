@@ -24,14 +24,18 @@ namespace Neural_Network.Neurons
             return _children;
         }
 
-        public override Neuron Clone()
+        public override Neuron Clone(bool random)
         {
+            if (random)
+                bias = UnityEngine.Random.Range(0, 5);
+            
             var neuron = new HiddenNeuron
             {
-                NeuronObj = this
+                NeuronObj = this,
+                Bias = bias
             };
 
-            connectionObjs.ForEach(x => neuron.Connections.Add(x.Clone()));
+            connectionObjs.ForEach(x => neuron.Connections.Add(x.Clone(random)));
             return neuron;
         }
     }
