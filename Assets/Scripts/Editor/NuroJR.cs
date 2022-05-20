@@ -44,8 +44,7 @@ namespace Editor
                 RefreshDropdownValues();
                 return;
             }
-                
-
+            
             var index = neuralNetworks.FindIndex(x => x.name == dropdownField.value);
             if (index == -1)
                 return;
@@ -53,6 +52,7 @@ namespace Editor
             if (_neuralNetworkView.NetworkObj == null)
             {
                 _neuralNetworkView.UnPopulateView();
+                _inspectorView.Clear();
                 _neuralNetworkView.PopulateView(neuralNetworks[index]);
             }
 
@@ -60,6 +60,7 @@ namespace Editor
                 return;
 
             _neuralNetworkView.UnPopulateView();
+            _inspectorView.Clear();
             _neuralNetworkView.PopulateView(neuralNetworks[index]);
         }
 
@@ -143,6 +144,7 @@ namespace Editor
                 return;
 
             _neuralNetworkView.UnPopulateView();
+            _inspectorView.Clear();
             _neuralNetworkView.PopulateView(neuralNetworks[index]);
         }
 
