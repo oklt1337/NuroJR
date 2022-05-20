@@ -21,7 +21,7 @@ namespace Editor
         public LayerView(NetworkLayerObj networkLayerObj)
         {
             NetworkLayerObj = networkLayerObj;
-            NetworkLayerObj.OnNeuronCreated += CreateNeuronView;
+            //NetworkLayerObj.OnNeuronCreated += CreateNeuronView;
             
             title = networkLayerObj.GetType().Name;
             viewDataKey = NetworkLayerObj.guid;

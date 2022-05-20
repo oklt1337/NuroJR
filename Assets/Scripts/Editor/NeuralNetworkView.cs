@@ -60,7 +60,6 @@ namespace Editor
             onNeuronViewCreated += CreateEdge;
 
             InitializeView(neuralNetworkObj);
-            InitializeEvents(neuralNetworkObj);
         }
 
         public void UnPopulateView()
@@ -72,12 +71,15 @@ namespace Editor
 
         private void InitializeEvents(NeuralNetworkObj neuralNetworkObj)
         {
-            foreach (var networkLayer in neuralNetworkObj.layersObj)
+            // Reconnect layer Events
+            foreach (var layerObj in NetworkObj.layersObj)
             {
-                foreach (var neuron in networkLayer.neurons)
-                {
-                    neuron.OnDelete += DeleteNeuron;
-                }
+                NetworkObj.ConnectEvents(layerObj);
+            }
+
+            foreach (var neuron in neuralNetworkObj.layersObj.SelectMany(networkLayer => networkLayer.neurons))
+            {
+                neuron.OnDelete += DeleteNeuron;
             }
         }
 
@@ -146,6 +148,9 @@ namespace Editor
             neuralNetworkObj.GetLayer().ForEach(CreateLayerView);
             neuralNetworkObj.GetLayer().ForEach(RestoreNeuronView);
             neuralNetworkObj.GetConnections().ForEach(CreateEdgeView);
+            
+            
+            InitializeEvents(neuralNetworkObj);
         }
 
         private void AddElements(GraphElement graphElement)
@@ -254,6 +259,8 @@ namespace Editor
                 expanded = false
             };
 
+            NetworkObj.OnConnectionCreated += layerView.CreateNeuronView;
+            
             if (networkLayerObj.GetType() == typeof(InputLayerObj))
             {
                 layerView.style.backgroundColor = Color.green;

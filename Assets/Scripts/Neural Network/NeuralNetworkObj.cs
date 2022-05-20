@@ -17,6 +17,7 @@ namespace Neural_Network
         public float fitness;
 
         public Action<NetworkLayerObj> OnLayerCreated;
+        public Action<NeuronObj> OnConnectionCreated;
 
         #region Layer
 
@@ -39,9 +40,7 @@ namespace Neural_Network
             AssetDatabase.AddObjectToAsset(layer, this);
             AssetDatabase.SaveAssets();
 
-            layer.OnNeuronCreated += CheckConnections;
-            layer.OnNeuronCreated += neuron => neuron.OnDelete += RemoveDeprecatedObjects;
-            layer.OnDelete += ReconnectLayer;
+            ConnectEvents(layer);
 
             OnLayerCreated?.Invoke(layer);
 
@@ -59,6 +58,13 @@ namespace Neural_Network
         public List<NetworkLayerObj> GetLayer()
         {
             return layersObj;
+        }
+
+        public void ConnectEvents(NetworkLayerObj layerObj)
+        {
+            layerObj.OnNeuronCreated += CheckConnections;
+            layerObj.OnNeuronCreated += neuron => neuron.OnDelete += RemoveDeprecatedObjects;
+            layerObj.OnDelete += ReconnectLayer;
         }
 
         private void RemoveDeprecatedObjects(NetworkLayerObj networkLayerObj)
@@ -163,10 +169,8 @@ namespace Neural_Network
                 // create new connections 
                 CreateConnections(layersObj[index - 1], layersObj[index]);
 
-                if (index + 1 >= layersObj.Count)
-                    return;
-
-                CreateConnections(layersObj[index], layersObj[index + 1]);
+                if (index + 1 < layersObj.Count)
+                    CreateConnections(layersObj[index], layersObj[index + 1]);
             }
             else
             {
@@ -180,10 +184,10 @@ namespace Neural_Network
                     CreateConnections(layersObj[index - 1], layersObj[index]);
 
                 // check if layer is not last
-                if (index + 1 >= layersObj.Count)
-                    return;
-                CreateConnections(layersObj[index], layersObj[index + 1]);
+                if (index + 1 < layersObj.Count)
+                    CreateConnections(layersObj[index], layersObj[index + 1]);
             }
+            OnConnectionCreated?.Invoke(neuronObj);
         }
 
         private void CreateConnections(NetworkLayerObj parent, NetworkLayerObj child)

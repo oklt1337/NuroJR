@@ -24,7 +24,7 @@ namespace Neural_Network.Layer
             var neuron = CreateInstance(typeof(HiddenNeuronObj)) as NeuronObj;
             if (neuron == null)
                 return;
-
+            
             neuron.name = "HiddenNeuron";
             neuron.guid = GUID.Generate().ToString();
 
