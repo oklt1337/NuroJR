@@ -7,13 +7,6 @@ namespace Neural_Network.Layer
     public class InputLayerObj : NetworkLayerObj
     {
         [HideInInspector] public Vector2 position = new(0, 0);
-
-        public override NetworkLayer Clone(bool random)
-        {
-            var layer = new InputLayer();
-            neurons.ForEach(x => layer.Neurons.Add(x.Clone(random)));
-            return layer;
-        }
         
         public override void CreateNeuron()
         {
@@ -36,10 +29,5 @@ namespace Neural_Network.Layer
             Debug.Log("Created InputNeuron");
             OnNeuronCreated?.Invoke(neuron);
         }
-    }
-
-    public class InputLayer : NetworkLayer
-    {
-        
     }
 }

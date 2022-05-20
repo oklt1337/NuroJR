@@ -179,7 +179,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 27261334}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 5, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -865,6 +865,7 @@ MonoBehaviour:
   parent: {fileID: 462431398}
   spawnPos: {fileID: 27261335}
   speed: 3
+  pipes: []
 --- !u!1 &2082465462
 GameObject:
   m_ObjectHideFlags: 0
@@ -890,7 +891,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2082465462}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -6, y: 0, z: 0}
+  m_LocalPosition: {x: -6, y: 1.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -911,12 +912,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   reference: {fileID: 11400000, guid: f133cfa0d5a696c489b340934a33e5d3, type: 2}
   randomInit: 1
-  timeScale: 3
-  populationSize: 200
+  timeScale: 1
+  populationSize: 50
   learnerPrefab: {fileID: 3099393493073357100, guid: 9a6d17dff6238e04ea584259ed46596d, type: 3}
   generation: 0
-  mutationChance: 0.01
-  mutationStrength: 0.1
+  mutationChance: 0.25
+  mutationStrength: 0.5
 --- !u!1 &2139214283
 GameObject:
   m_ObjectHideFlags: 0

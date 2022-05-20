@@ -5,6 +5,7 @@ namespace Test_Environment.Scripts.Pipes
 {
     public class Done : MonoBehaviour
     {
+        [SerializeField] private PipesMovementBehaviour pipesMovementBehaviour;
         [SerializeField] private float reward = 1f;
         
         private void OnTriggerEnter2D(Collider2D other)
@@ -13,6 +14,7 @@ namespace Test_Environment.Scripts.Pipes
                 return;
             var learner = other.GetComponent<LearnerSkeleton>();
             learner.AddFitness(reward);
+            pipesMovementBehaviour.Delete();
         }
     }
 }

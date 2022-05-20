@@ -18,8 +18,7 @@ namespace Test_Environment.Scripts.Pipes
         [SerializeField] private Transform parent;
         [SerializeField] private Transform spawnPos;
         [SerializeField] private float speed;
-
-        private readonly List<PipesMovementBehaviour> pipes = new();
+        [SerializeField] public List<PipesMovementBehaviour> pipes = new();
 
         private float _timer;
         private bool _spawn;
@@ -30,15 +29,10 @@ namespace Test_Environment.Scripts.Pipes
             {
                 Destroy(gameObject);
             }
-
             Instance = this;
             
             NetworkHandler.OnNewGeneration += Restart;
-        }
-
-        private void Start()
-        {
-            ResetValues();
+            InstantiatePipe();
         }
 
         private void ResetValues()
@@ -51,7 +45,6 @@ namespace Test_Environment.Scripts.Pipes
             if (_timer > spawnTime)
             {
                 _timer = 0;
-
                 InstantiatePipe();
             }
             else
@@ -66,7 +59,7 @@ namespace Test_Environment.Scripts.Pipes
             var pipesMovementBehaviour = Instantiate(prefab, pos, Quaternion.identity, parent)
                 .GetComponent<PipesMovementBehaviour>();
             pipesMovementBehaviour.Initialize(speed);
-            
+            pipesMovementBehaviour.OnDelete += behaviour => pipes.Remove(behaviour);
             pipes.Add(pipesMovementBehaviour);
         }
 
@@ -74,17 +67,13 @@ namespace Test_Environment.Scripts.Pipes
         {
             for (var i = pipes.Count - 1; i >= 0; i--)
             {
-                Destroy(pipes[i].gameObject);
+                if (pipes[i] != null)
+                {
+                    Destroy(pipes[i].gameObject);
+                }
             }
             pipes.Clear();
             ResetValues();
-        }
-
-        public Vector2 GetFirstPipe()
-        {
-            if (pipes != null && pipes.Any())
-                return pipes.First().transform.position;
-            return new Vector2(0, 0);
         }
     }
 }

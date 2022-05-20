@@ -10,7 +10,7 @@ namespace Controller
     {
         [SerializeField] private NeuralNetworkObj reference;
         [SerializeField] private bool randomInit;
-        
+
         [SerializeField] private float timeScale;
         [SerializeField] private int populationSize = 20;
         [SerializeField] private GameObject learnerPrefab;
@@ -19,8 +19,8 @@ namespace Controller
         [SerializeField, Range(0f, 1f)] private float mutationChance = 0.01f;
         [SerializeField, Range(0f, 1f)] private float mutationStrength = 0.5f;
 
-        private NeuralNetwork bestNet;
-        private List<NeuralNetwork> networks;
+        private TestNeuralNetwork bestNet;
+        private List<TestNeuralNetwork> networks;
         private readonly List<Learner> learners = new();
 
         public static Action OnNewGeneration;
@@ -37,7 +37,7 @@ namespace Controller
         {
             var anyAlive = false;
             // Check if not null and count > 0
-            if (learners is not { Count: > 0 })
+            if (learners.Count == 0 || learners == null)
                 return;
 
             // Check if any learner is still alive
@@ -61,14 +61,18 @@ namespace Controller
         /// </summary>
         private void InitNetworks()
         {
-            networks = new List<NeuralNetwork>();
+            networks = new List<TestNeuralNetwork>();
             for (var i = 0; i < populationSize; i++)
             {
-                var net = reference.Clone(randomInit);
-                networks.Add(net);
+                //var net = reference.Clone(randomInit);
+                var testNet = new TestNeuralNetwork();
+                testNet.Initialize(reference);
+                networks.Add(testNet);
             }
 
-            bestNet = networks[0];
+            bestNet = new TestNeuralNetwork();
+            bestNet.Initialize(reference);
+            bestNet.Copy(networks[0]);
             CreateLearners();
         }
 
@@ -106,18 +110,18 @@ namespace Controller
 
             // Check if new best Network
             var lastNetwork = networks.Last();
-            if (bestNet.Fitness < lastNetwork.Fitness)
+            if (bestNet.fitness < lastNetwork.fitness)
             {
+                bestNet.Copy(lastNetwork);
+                //reference.Save(bestNet);
                 Debug.Log(bestNet.Name);
-                bestNet = lastNetwork;
-                reference.Save(bestNet);
             }
 
             // Set Networks to best one and Mutate it.
-            for (var i = 0; i < networks.Count; i++)
+            foreach (var network in networks)
             {
-                networks[i] = bestNet;
-                networks[i].Mutate(mutationChance, mutationStrength);
+                network.Copy(bestNet);
+                network.Mutate(mutationChance, mutationStrength);
             }
         }
 
@@ -134,6 +138,7 @@ namespace Controller
             {
                 var learner = Instantiate(learnerPrefab, transform).GetComponent<Learner>();
                 learner.Network = networks[i];
+                learner.Network.fitness = 0;
                 learners.Add(learner);
                 learner.name = "Learner " + i + " Generation " + generation;
                 learner.Network.Name = learner.name;

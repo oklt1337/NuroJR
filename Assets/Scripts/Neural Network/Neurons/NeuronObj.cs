@@ -13,8 +13,6 @@ namespace Neural_Network.Neurons
 
         public Action<NeuronObj> OnDelete;
 
-        public abstract Neuron Clone(bool random);
-        
         public void DeleteNeuron()
         {
             OnDelete?.Invoke(this);
@@ -28,13 +26,5 @@ namespace Neural_Network.Neurons
         {
             guid = GUID.Generate().ToString();
         }
-    }
-
-    public abstract class Neuron
-    {
-        public NeuronObj NeuronObj;
-        
-        public List<Connection> Connections = new();
-        public abstract float GetValue(Neuron neuron);
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using Controller;
 using UnityEngine;
 
@@ -5,11 +6,19 @@ namespace Test_Environment.Scripts.Pipes
 {
     public class PipesMovementBehaviour : MonoBehaviour
     {
+        [SerializeField] private Transform top;
+        [SerializeField] private Transform bottom;
+        
         private const float MaxLifetime = 10f;
         private bool _init;
         private float _timer;
+        
+        public Vector2 Top => top.position;
+        public Vector2 Bottom => bottom.position;
 
         private float Speed { get; set; }
+
+        public Action<PipesMovementBehaviour> OnDelete;
 
         private void Update()
         {
@@ -35,6 +44,12 @@ namespace Test_Environment.Scripts.Pipes
         {
             Speed = givenSpeed;
             _init = true;
+        }
+
+        public void Delete()
+        {
+            OnDelete?.Invoke(this);
+            Destroy(gameObject);
         }
     }
 }

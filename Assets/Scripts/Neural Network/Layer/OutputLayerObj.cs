@@ -8,13 +8,6 @@ namespace Neural_Network.Layer
     {
         [HideInInspector] public Vector2 position = new(150, 0);
 
-        public override NetworkLayer Clone(bool random)
-        {
-            var layer = new OutputLayer();
-            neurons.ForEach(x => layer.Neurons.Add(x.Clone(random)));
-            return layer;
-        }
-
         public override void CreateNeuron()
         {
             // Make sure not to many Neurons can be added.
@@ -36,10 +29,5 @@ namespace Neural_Network.Layer
             Debug.Log("Created OutputNeuron");
             OnNeuronCreated?.Invoke(neuron);
         }
-    }
-
-    public class OutputLayer : NetworkLayer
-    {
-        
     }
 }

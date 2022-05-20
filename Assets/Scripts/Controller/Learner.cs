@@ -10,10 +10,13 @@ namespace Controller
     {
         [SerializeField] private float fitness;
         [SerializeField] private bool alive = true;
+        [SerializeField] private SpriteRenderer renderer;
 
+        public TestNeuralNetwork Network;
+        
         #region Properties
 
-        public NeuralNetwork Network { get; set; }
+        //public TestNeuralNetwork Network { get; set; }
 
         public float Fitness
         {
@@ -24,7 +27,14 @@ namespace Controller
         public bool Alive
         {
             get => alive;
-            set => alive = value;
+            set
+            {
+                alive = value;
+                if (value == false)
+                {
+                    renderer.color = Color.red;
+                }
+            }
         }
 
         #endregion
@@ -41,7 +51,7 @@ namespace Controller
         {
             input = NormalizeInputs(input);
 
-            foreach (var layer in Network.Layers)
+            /*foreach (var layer in Network.Layers)
             {
                 // get inputLayer
                 if (layer is not InputLayer inputLayer)
@@ -57,8 +67,9 @@ namespace Controller
                     if (inputLayer.Neurons[i] is InputNeuron inputNeuron)
                         inputNeuron.SetInput(input[i]);
                 }
-            }
+            }*/
 
+            Network.SetInputs(input);
             return Network.FeedForward();
         }
 
@@ -67,16 +78,20 @@ namespace Controller
         /// </summary>
         public void SetFitness()
         {
-            Network.Fitness = fitness;
+            Network.fitness = fitness;
         }
 
-        private static float[] NormalizeInputs(float[] input)
+        private float[] NormalizeInputs(float[] input)
         {
             var sum = input.Sum();
-            for (var i = 0; i < input.Length; i++)
+            if (sum != 0)
             {
-                input[i] /= sum;
+                for (var i = 0; i < input.Length; i++)
+                {
+                    input[i] /= sum;
+                }
             }
+            
             return input;
         }
 

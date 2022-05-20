@@ -8,12 +8,10 @@ using UnityEngine;
 
 namespace Neural_Network
 {
-    #region Object
-
     public class NeuralNetworkObj : ScriptableObject
     {
         [HideInInspector] public List<NetworkLayerObj> layersObj = new();
-        [HideInInspector] public List<ConnectionObj> connectionsObj = new();
+        public List<ConnectionObj> connectionsObj = new();
         public float fitness;
 
         public Action<NetworkLayerObj> OnLayerCreated;
@@ -249,152 +247,11 @@ namespace Neural_Network
 
         #region General
 
-        public NeuralNetwork Clone(bool random)
+        public void Save(TestNeuralNetwork network)
         {
-            var network = new NeuralNetwork();
-            layersObj.ForEach(x => network.Layers.Add(x.Clone(random)));
-            return network;
-        }
-
-        public void Save(NeuralNetwork network)
-        {
-            fitness = network.Fitness;
-
-            // Saving bias
-            for (var i = 0; i < layersObj.Count; i++)
-            {
-                for (var j = 0; j < layersObj[i].neurons.Count; j++)
-                {
-                    if (layersObj[i].neurons[j] is HiddenNeuronObj hiddenNeuronObj)
-                    {
-                        hiddenNeuronObj.bias = (network.Layers[i].Neurons[j] as HiddenNeuron)!.Bias;
-                    }
-                }
-            }
-
-            // Save Weights
-            foreach (var layer in network.Layers)
-            {
-                foreach (var neuron in layer.Neurons)
-                {
-                    foreach (var connection in neuron.Connections)
-                    {
-                        foreach (var connectionObj in connectionsObj.Where(connectionObj =>
-                                     connectionObj.GetChild() == connection.ChildObj &&
-                                     connectionObj.GetParent() == connection.ChildObj))
-                        {
-                            connectionObj.weight = connection.Weight;
-                        }
-                    }
-                }
-            }
+            
         }
 
         #endregion
     }
-
-    #endregion
-
-    #region Neural Network
-
-    public class NeuralNetwork : IComparable<NeuralNetwork>
-    {
-        public readonly List<NetworkLayer> Layers = new();
-        public float Fitness;
-
-        public string Name { get; set; }
-
-        /// <summary>
-        /// Generate Outputs
-        /// </summary>
-        /// <returns>float[] Outputs</returns>
-        public float[] FeedForward()
-        {
-            var inputLayer = Layers[0] as InputLayer;
-            var outputLayer = Layers.Last() as OutputLayer;
-            var hiddenLayers = new List<HiddenLayer>();
-            for (var i = 1; i < Layers.Count - 1; i++)
-            {
-                hiddenLayers.Add(Layers[i] as HiddenLayer);
-            }
-
-            if (outputLayer == null || inputLayer == null)
-            {
-                Debug.Log("output or input layer == null");
-                return null;
-            }
-
-
-            var output = new List<float>();
-            for (var i = 0; i < hiddenLayers.Count; i++)
-            {
-                if (i == 0)
-                {
-                    foreach (var hiddenNeuron in hiddenLayers[0].Neurons.Select(neuron => neuron as HiddenNeuron))
-                    {
-                        hiddenNeuron?.SumInputs(inputLayer.Neurons);
-                    }
-                }
-                else
-                {
-                    foreach (var hiddenNeuron in hiddenLayers[i].Neurons.Select(neuron => neuron as HiddenNeuron))
-                    {
-                        hiddenNeuron?.SumInputs(hiddenLayers[i - 1].Neurons);
-                    }
-                }
-            }
-
-            foreach (var outputNeuron in outputLayer.Neurons.Select(neuron => neuron as OutputNeuron))
-            {
-                outputNeuron?.SumInputs(hiddenLayers.Last().Neurons);
-            }
-
-            output.AddRange(outputLayer.Neurons.Select(neuron => (neuron as OutputNeuron)!.GetValue()));
-            if (!output.Any())
-                Debug.Log("outputs are null");
-            
-            return output.ToArray();
-        }
-
-        public void Mutate(float mutationChance, float mutationStrength)
-        {
-            // Mutate Bias
-            foreach (var neuron in Layers.SelectMany(layer => layer.Neurons))
-            {
-                if (neuron is not HiddenNeuron hiddenNeuron)
-                    continue;
-
-                if (UnityEngine.Random.Range(0f, 1f) < mutationChance)
-                {
-                    hiddenNeuron.Bias += UnityEngine.Random.Range(-mutationStrength, mutationStrength);
-                }
-            }
-
-            // Mutate weight
-            foreach (var connection in from layer in Layers
-                     from neuron in layer.Neurons
-                     where neuron.Connections != null
-                     from connection in neuron.Connections
-                     where connection != null
-                     where UnityEngine.Random.Range(0f, 1f) < mutationChance
-                     select connection)
-            {
-                connection.Weight += UnityEngine.Random.Range(-mutationStrength, mutationStrength);
-            }
-        }
-
-        public int CompareTo(NeuralNetwork other)
-        {
-            if (other == null)
-                return 1;
-
-            if (Fitness > other.Fitness)
-                return 1;
-            if (Fitness < other.Fitness)
-                return -1;
-            return 0;
-        }
-    }
-
-    #endregion
 }

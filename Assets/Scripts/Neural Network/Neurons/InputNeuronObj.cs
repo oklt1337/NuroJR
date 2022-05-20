@@ -22,29 +22,5 @@ namespace Neural_Network.Neurons
         {
             return children;
         }
-
-        public override Neuron Clone(bool random)
-        {
-            var neuron = new InputNeuron
-            {
-                NeuronObj = this
-            };
-            connectionObjs.ForEach(x => neuron.Connections.Add(x.Clone(random)));
-            return neuron;
-        }
-    }
-
-    public class InputNeuron : Neuron
-    {
-        private float input;
-        public override float GetValue([Optional] Neuron neuron)
-        {
-            return input;
-        }
-
-        public void SetInput(float value)
-        {
-            input = value;
-        }
     }
 }
