@@ -14,10 +14,12 @@ namespace Editor
 {
     public class NeuralNetworkView : GraphView
     {
-        public new class UxmlFactory : UxmlFactory<NeuralNetworkView, UxmlTraits>{}
+        public new class UxmlFactory : UxmlFactory<NeuralNetworkView, UxmlTraits>
+        {
+        }
 
         public NeuralNetworkObj NetworkObj;
-        
+
         private readonly List<GraphElement> _elements = new();
 
         public Action<NeuronView> OnNodeSelected;
@@ -50,7 +52,7 @@ namespace Editor
         public void PopulateView(NeuralNetworkObj neuralNetworkObj)
         {
             NetworkObj = neuralNetworkObj;
-            
+
             graphViewChanged -= OnGraphViewChanged;
             DeleteElements(graphElements);
             graphViewChanged += OnGraphViewChanged;
@@ -60,6 +62,7 @@ namespace Editor
             onNeuronViewCreated += CreateEdge;
 
             InitializeView(neuralNetworkObj);
+            InitializeEvents(neuralNetworkObj);
         }
 
         public void UnPopulateView()
@@ -69,17 +72,12 @@ namespace Editor
             RemoveLayerViews();
         }
 
-        private void InitializeEvents(NeuralNetworkObj neuralNetworkObj)
+        private static void InitializeEvents(NeuralNetworkObj neuralNetworkObj)
         {
             // Reconnect layer Events
-            foreach (var layerObj in NetworkObj.layersObj)
+            foreach (var layerObj in neuralNetworkObj.layersObj)
             {
-                NetworkObj.ConnectEvents(layerObj);
-            }
-
-            foreach (var neuron in neuralNetworkObj.layersObj.SelectMany(networkLayer => networkLayer.neurons))
-            {
-                neuron.OnDelete += DeleteNeuron;
+                neuralNetworkObj.ConnectEvents(layerObj);
             }
         }
 
@@ -89,9 +87,9 @@ namespace Editor
             // get all edgeViews in elements
             foreach (var element in _elements)
             {
-                if (element is not EdgeView edgeView) 
+                if (element is not EdgeView edgeView)
                     continue;
-                
+
                 edgeViews.Add(edgeView);
             }
 
@@ -109,9 +107,9 @@ namespace Editor
             // get all neuronViews in elements
             foreach (var element in _elements)
             {
-                if (element is not NeuronView neuronView) 
+                if (element is not NeuronView neuronView)
                     continue;
-                
+
                 neuronViews.Add(neuronView);
             }
 
@@ -129,9 +127,9 @@ namespace Editor
             // get all layerViews in elements
             foreach (var element in _elements)
             {
-                if (element is not LayerView layerView) 
+                if (element is not LayerView layerView)
                     continue;
-                
+
                 layerViews.Add(layerView);
             }
 
@@ -148,9 +146,6 @@ namespace Editor
             neuralNetworkObj.GetLayer().ForEach(CreateLayerView);
             neuralNetworkObj.GetLayer().ForEach(RestoreNeuronView);
             neuralNetworkObj.GetConnections().ForEach(CreateEdgeView);
-            
-            
-            InitializeEvents(neuralNetworkObj);
         }
 
         private void AddElements(GraphElement graphElement)
@@ -174,14 +169,15 @@ namespace Editor
                             NetworkObj.RemoveLayer(layerView.NetworkLayerObj);
                             SortLayer();
                         }
+
                         break;
                     case NeuronView nodeView:
                         var index = NetworkObj.layersObj.FindIndex(x => x.neurons.Contains(nodeView.NeuronObj));
                         if (index == -1)
                             return;
-                        if(NetworkObj.layersObj[index].neurons.Count == 1)
+                        if (NetworkObj.layersObj[index].neurons.Count == 1)
                             return;
-                        
+
                         NetworkObj.layersObj[index].RemoveNeuron(nodeView.NeuronObj);
                         SortNeurons();
                         break;
@@ -199,6 +195,7 @@ namespace Editor
                                 neuron.RemoveChild(childView!.NeuronObj);
                                 break;
                         }
+
                         break;
                     }
                 }
@@ -260,7 +257,7 @@ namespace Editor
             };
 
             NetworkObj.OnConnectionCreated += layerView.CreateNeuronView;
-            
+
             if (networkLayerObj.GetType() == typeof(InputLayerObj))
             {
                 layerView.style.backgroundColor = Color.green;
@@ -337,8 +334,7 @@ namespace Editor
             var neurons = new List<NeuronObj>();
 
             foreach (var layer in NetworkObj.GetLayer())
-            { 
-                //asda
+            {
                 foreach (var neuron in layer.GetNeurons())
                 {
                     neurons.Add(neuron);
@@ -357,13 +353,6 @@ namespace Editor
             }
         }
 
-        private void DeleteNeuron(NeuronObj neuronObj)
-        {
-            Debug.Log("Deleted Neuron");
-            
-            RemoveOldEdges();
-        }
-
         #endregion
 
         #region Edge
@@ -371,8 +360,7 @@ namespace Editor
         private void CreateEdge(NeuronView neuronView)
         {
             var neuron = neuronView.NeuronObj;
-            neuron.OnDelete += DeleteNeuron;
-            
+
             // Check if 1st Neuron in Layer
             var index = NetworkObj.layersObj.FindIndex(x => x.neurons.Contains(neuron));
             if (index == -1)
@@ -381,8 +369,9 @@ namespace Editor
             {
                 RemoveOldEdges();
             }
-            
-            var connectionsToCreate = NetworkObj.connectionsObj.Where(connection => connection.GetChild() == neuron || connection.GetParent() == neuron).ToList();
+
+            var connectionsToCreate = NetworkObj.connectionsObj
+                .Where(connection => connection.GetChild() == neuron || connection.GetParent() == neuron).ToList();
 
             foreach (var connection in connectionsToCreate.Where(connection => !CheckIfEdgeExists(connection)))
             {
@@ -404,19 +393,21 @@ namespace Editor
 
         private void RemoveOldEdges()
         {
-            var edgeViews = (from element in _elements where element.GetType() == typeof(EdgeView) select element as EdgeView).ToList();
+            var edgeViews = (from element in _elements
+                where element.GetType() == typeof(EdgeView)
+                select element as EdgeView).ToList();
 
-            for (var i = edgeViews.Count - 1; i >= 0; i-- )
+            for (var i = edgeViews.Count - 1; i >= 0; i--)
             {
-                if (NetworkObj.connectionsObj.Contains(edgeViews[i].ConnectionObj)) 
+                if (NetworkObj.connectionsObj.Contains(edgeViews[i].ConnectionObj))
                     continue;
-                
+
                 _elements.Remove(edgeViews[i]);
                 RemoveElement(edgeViews[i]);
             }
         }
 
-        private void CreateEdgeView(ConnectionObj connectionObj )
+        private void CreateEdgeView(ConnectionObj connectionObj)
         {
             var parentView = FindNodeView(connectionObj.GetParent());
             var childView = FindNodeView(connectionObj.GetChild());
@@ -426,11 +417,20 @@ namespace Editor
 
             var edge = parentView.Output.ConnectTo<EdgeView>(childView.Input);
             edge.OnEdgeSelected = OnEdgeSelected;
-
             edge.SetConnection(connectionObj);
-            
+            edge.ConnectionObj.OnDeleted += RemoveEdge;
+
             AddElements(edge);
             AddElement(edge);
+        }
+
+        /// <summary>
+        /// Remove Old Edges
+        /// </summary>
+        /// <param name="connection"></param>
+        private void RemoveEdge(ConnectionObj connection)
+        {
+            RemoveOldEdges();
         }
 
         #endregion

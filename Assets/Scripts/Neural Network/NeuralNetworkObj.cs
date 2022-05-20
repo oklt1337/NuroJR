@@ -65,6 +65,11 @@ namespace Neural_Network
             layerObj.OnNeuronCreated += CheckConnections;
             layerObj.OnNeuronCreated += neuron => neuron.OnDelete += RemoveDeprecatedObjects;
             layerObj.OnDelete += ReconnectLayer;
+
+            foreach (var neuron in layerObj.neurons)
+            {
+                neuron.OnDelete += RemoveDeprecatedObjects;
+            }
         }
 
         private void RemoveDeprecatedObjects(NetworkLayerObj networkLayerObj)
@@ -101,6 +106,7 @@ namespace Neural_Network
             connection.name = "Connection";
             connection.AddParent(parent);
             connection.AddChild(child);
+            connection.OnDeleted += con => connectionsObj.Remove(con);
 
             AssetDatabase.AddObjectToAsset(connection, this);
             AssetDatabase.SaveAssets();

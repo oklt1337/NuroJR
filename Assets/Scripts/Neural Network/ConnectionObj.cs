@@ -1,6 +1,8 @@
-﻿using Neural_Network.Neurons;
+﻿using System;
+using Neural_Network.Neurons;
 using UnityEditor;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Neural_Network
 {
@@ -10,9 +12,14 @@ namespace Neural_Network
         private NeuronObj parent;
         
         public float weight;
+        public Action<ConnectionObj> OnDeleted;
 
+        /// <summary>
+        /// Delete Connection Obj
+        /// </summary>
         public void DeleteConnection()
         {
+            OnDeleted?.Invoke(this);
             AssetDatabase.RemoveObjectFromAsset(this);
             AssetDatabase.SaveAssets();
         }
