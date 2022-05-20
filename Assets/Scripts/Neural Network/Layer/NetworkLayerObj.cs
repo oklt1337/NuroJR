@@ -40,6 +40,11 @@ namespace Neural_Network.Layer
             return neurons;
         }
 
+        public void GenerateNewGuid()
+        {
+            guid = GUID.Generate().ToString();
+        }
+
         #endregion
     }
 

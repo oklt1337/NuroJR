@@ -1,26 +1,26 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
+using UnityEngine;
 
 namespace Neural_Network.Neurons
 {
     public class InputNeuronObj : NeuronObj
     {
-        private readonly List<NeuronObj> _children = new();
+        [HideInInspector] public List<NeuronObj> children = new();
 
         public void AddChild(NeuronObj child)
         {
-            _children.Add(child);
+            children.Add(child);
         }
 
         public void RemoveChild(NeuronObj child)
         {
-            _children.Remove(child);
+            children.Remove(child);
         }
         
         public List<NeuronObj> GetChildren()
         {
-            return _children;
+            return children;
         }
 
         public override Neuron Clone(bool random)

@@ -26,7 +26,7 @@ namespace Neural_Network.Layer
                 return;
 
             neuron.name = "InputNeuron";
-            neuron.guid = GUID.Generate().ToString();
+            neuron.GenerateNewGuid();
 
             neurons.Add(neuron);
             

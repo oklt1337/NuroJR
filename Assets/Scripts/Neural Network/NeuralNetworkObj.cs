@@ -12,8 +12,8 @@ namespace Neural_Network
 
     public class NeuralNetworkObj : ScriptableObject
     {
-        public List<NetworkLayerObj> layersObj = new();
-        public List<ConnectionObj> connectionsObj = new();
+        [HideInInspector] public List<NetworkLayerObj> layersObj = new();
+        [HideInInspector] public List<ConnectionObj> connectionsObj = new();
         public float fitness;
 
         public Action<NetworkLayerObj> OnLayerCreated;
@@ -32,19 +32,18 @@ namespace Neural_Network
                 return;
 
             layer.name = type.Name;
-            layer.guid = GUID.Generate().ToString();
+            layer.GenerateNewGuid();
 
             layersObj.Add(layer);
             layersObj.Sort(new LayerComparer());
+            ConnectEvents(layer);
 
             AssetDatabase.AddObjectToAsset(layer, this);
             AssetDatabase.SaveAssets();
-
-            ConnectEvents(layer);
-
+            
             OnLayerCreated?.Invoke(layer);
-
             layer.CreateNeuron();
+            
             Debug.Log($"Layer has been Created: {layer.name}");
         }
 
@@ -69,6 +68,18 @@ namespace Neural_Network
             foreach (var neuron in layerObj.neurons)
             {
                 neuron.OnDelete += RemoveDeprecatedObjects;
+            }
+        }
+
+        public void GenerateNewGuids()
+        {
+            foreach (var layerObj in layersObj)
+            {
+                foreach (var neuronObj in layerObj.neurons)
+                {
+                    neuronObj.GenerateNewGuid();
+                }
+                layerObj.GenerateNewGuid();
             }
         }
 
@@ -107,12 +118,12 @@ namespace Neural_Network
             connection.AddParent(parent);
             connection.AddChild(child);
             connection.OnDeleted += con => connectionsObj.Remove(con);
+            
+            parent.connectionObjs.Add(connection);
+            connectionsObj.Add(connection);
 
             AssetDatabase.AddObjectToAsset(connection, this);
             AssetDatabase.SaveAssets();
-
-            parent.connectionObjs.Add(connection);
-            connectionsObj.Add(connection);
         }
 
         private void RemoveConnection(ConnectionObj connectionObj)

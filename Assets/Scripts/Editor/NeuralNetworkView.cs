@@ -52,6 +52,7 @@ namespace Editor
         public void PopulateView(NeuralNetworkObj neuralNetworkObj)
         {
             NetworkObj = neuralNetworkObj;
+            neuralNetworkObj.GenerateNewGuids();
 
             graphViewChanged -= OnGraphViewChanged;
             DeleteElements(graphElements);
@@ -70,6 +71,13 @@ namespace Editor
             RemoveEdgeViews();
             RemoveNeuronViews();
             RemoveLayerViews();
+        }
+        
+        private void InitializeView(NeuralNetworkObj neuralNetworkObj)
+        {
+            neuralNetworkObj.GetLayer().ForEach(CreateLayerView);
+            neuralNetworkObj.GetLayer().ForEach(RestoreNeuronView);
+            neuralNetworkObj.GetConnections().ForEach(CreateEdgeView);
         }
 
         private static void InitializeEvents(NeuralNetworkObj neuralNetworkObj)
@@ -139,13 +147,6 @@ namespace Editor
                 _elements.Remove(layerViews[i]);
                 RemoveElement(layerViews[i]);
             }
-        }
-
-        private void InitializeView(NeuralNetworkObj neuralNetworkObj)
-        {
-            neuralNetworkObj.GetLayer().ForEach(CreateLayerView);
-            neuralNetworkObj.GetLayer().ForEach(RestoreNeuronView);
-            neuralNetworkObj.GetConnections().ForEach(CreateEdgeView);
         }
 
         private void AddElements(GraphElement graphElement)

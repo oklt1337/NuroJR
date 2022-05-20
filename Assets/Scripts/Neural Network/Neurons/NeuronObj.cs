@@ -23,6 +23,11 @@ namespace Neural_Network.Neurons
             
             Debug.Log($"{name} got deleted");
         }
+
+        public void GenerateNewGuid()
+        {
+            guid = GUID.Generate().ToString();
+        }
     }
 
     public abstract class Neuron

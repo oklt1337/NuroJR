@@ -8,10 +8,11 @@ namespace Neural_Network
 {
     public class ConnectionObj : ScriptableObject
     {
-        private NeuronObj child;
-        private NeuronObj parent;
+        [HideInInspector] public NeuronObj child;
+        [HideInInspector] public NeuronObj parent;
         
         public float weight;
+        
         public Action<ConnectionObj> OnDeleted;
 
         /// <summary>
