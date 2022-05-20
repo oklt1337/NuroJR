@@ -122,11 +122,17 @@ namespace Neural_Network
             if (index == -1)
                 return;
 
-            if (index - 1 <= 0 || index + 1 >= layersObj.Count)
+            layersObj.Remove(networkLayerObj);
+            
+            if (index - 1 < 0 || index >= layersObj.Count)
                 return;
 
-            CreateConnections(layersObj[index - 1], layersObj[index + 1]);
-            Debug.Log($"{layersObj[index - 1].name} and {layersObj[index + 1].name} got reconnected.");
+            foreach (var neuronObj in layersObj[index].neurons)
+            {
+                CheckConnections(neuronObj);
+            }
+
+            Debug.Log($"{layersObj[index - 1].name} and {layersObj[index].name} got reconnected.");
         }
 
         private void CheckConnections(NeuronObj neuronObj)
