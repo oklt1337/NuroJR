@@ -12,7 +12,6 @@ namespace Neural_Network
     {
         [SerializeField] private float fitness;
         [SerializeField] private List<NetworkLayer> layers = new();
-        private List<float[,]> weights = new();
 
         public string Name { get; set; }
 
@@ -23,7 +22,7 @@ namespace Neural_Network
         }
 
         public List<NetworkLayer> Layers => layers;
-        public List<float[,]> Weights => weights;
+        public List<float[,]> Weights { get; } = new();
 
         public void Initialize(NeuralNetworkObj networkObj)
         {
@@ -58,11 +57,11 @@ namespace Neural_Network
             {
                 if (i + 1 < layers.Count)
                 {
-                    weights.Add(new float[layers[i].neurons.Length, layers[i + 1].neurons.Length]);
+                    Weights.Add(new float[layers[i].neurons.Length, layers[i + 1].neurons.Length]);
                 }
             }
 
-            foreach (var floatArray in weights)
+            foreach (var floatArray in Weights)
             {
                 for (var i = 0; i < floatArray.GetLength(0); i++)
                 {
@@ -147,11 +146,11 @@ namespace Neural_Network
                         {
                             if (i == 0)
                             {
-                                input[j] += weights[i][j, k] * layers[i].neurons[j];
+                                input[j] += Weights[i][j, k] * layers[i].neurons[j];
                             }
                             else
                             {
-                                input[j] += ActivationFunction(weights[i][j, k] * layers[i].neurons[j] +
+                                input[j] += ActivationFunction(Weights[i][j, k] * layers[i].neurons[j] +
                                                                layers[i].bias[j]);
                             }
                         }
@@ -179,6 +178,11 @@ namespace Neural_Network
             return (float)(1.0 / (1.0 + Math.Pow(Math.E, -value)));
         }
 
+        private float ReLu(float value)
+        {
+            return Math.Max(0, value);
+        }
+
         private static float NextFloat(float min, float max)
         {
             var random = new System.Random();
@@ -204,7 +208,7 @@ namespace Neural_Network
             }
 
             // Mutate Weight
-            foreach (var weight in weights)
+            foreach (var weight in Weights)
             {
                 for (var j = 0; j < weight.GetLength(0); j++)
                 {
@@ -236,13 +240,13 @@ namespace Neural_Network
             Name = neuralNetwork.Name;
             fitness = neuralNetwork.fitness;
 
-            for (var i = 0; i < neuralNetwork.weights.Count; i++)
+            for (var i = 0; i < neuralNetwork.Weights.Count; i++)
             {
-                for (var j = 0; j < neuralNetwork.weights[i].GetLength(0); j++)
+                for (var j = 0; j < neuralNetwork.Weights[i].GetLength(0); j++)
                 {
-                    for (var k = 0; k < neuralNetwork.weights[i].GetLength(1); k++)
+                    for (var k = 0; k < neuralNetwork.Weights[i].GetLength(1); k++)
                     {
-                        weights[i][j, k] = neuralNetwork.weights[i][j, k];
+                        Weights[i][j, k] = neuralNetwork.Weights[i][j, k];
                     }
                 }
             }
