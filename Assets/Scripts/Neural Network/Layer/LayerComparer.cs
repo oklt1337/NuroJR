@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using Neural_Network.Layer;
 
-namespace Neural_Network
+namespace Neural_Network.Layer
 {
     public class LayerComparer : IComparer<NetworkLayerObj>
     {

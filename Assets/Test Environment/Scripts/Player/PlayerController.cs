@@ -1,4 +1,6 @@
+using System.Linq;
 using Controller;
+using Test_Environment.Scripts.Pipes;
 using UnityEngine;
 
 namespace Test_Environment.Scripts.Player
@@ -11,8 +13,9 @@ namespace Test_Environment.Scripts.Player
         [SerializeField] private Transform top;
         [SerializeField] private Transform bottom;
         [SerializeField] private LearnerSkeleton learner;
-        [SerializeField] private float fitnessInterval = 0.1f;
-        [SerializeField] private float fitnessToAdd = 0.01f;
+        [SerializeField] private float fitnessInterval = 1f;
+        [SerializeField] private float fitnessToAdd = 1f;
+        [SerializeField] private float fitnessMultiplier = 2f;
 
         public Vector2 RayOrigin => rayOrigin.position;
         public Vector2 Top => top.position;
@@ -33,7 +36,22 @@ namespace Test_Environment.Scripts.Player
         {
             if (timer >= fitnessInterval)
             {
-                learner.AddFitness(fitnessToAdd);
+                var firstPipe = PipeManager.Instance.pipes.First();
+                
+                if (transform.position.y < firstPipe.Top.y && 
+                    transform.position.y > firstPipe.Bottom.y)
+                {
+                    learner.AddFitness(fitnessToAdd * fitnessMultiplier);
+                }
+                else
+                {
+                    var position = transform.position;
+                    var distanceTop = Vector2.Distance(position, new Vector2(position.x, firstPipe.Top.y));
+                    var distanceBottom = Vector2.Distance(position, new Vector2(position.x, firstPipe.Top.y));
+                    var value = distanceTop > distanceBottom ? distanceBottom : distanceTop;
+
+                    learner.AddFitness(fitnessToAdd / value);
+                }
                 timer = 0;
             }
             else

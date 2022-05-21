@@ -9,9 +9,7 @@ namespace Controller
     public class NetworkHandler : MonoBehaviour
     {
         [SerializeField] private NeuralNetworkObj reference;
-        [SerializeField] private bool randomInit;
 
-        [SerializeField] private float timeScale;
         [SerializeField] private int populationSize = 20;
         [SerializeField] private GameObject learnerPrefab;
         [SerializeField] private int generation;
@@ -19,8 +17,8 @@ namespace Controller
         [SerializeField, Range(0f, 1f)] private float mutationChance = 0.01f;
         [SerializeField, Range(0f, 1f)] private float mutationStrength = 0.5f;
 
-        private TestNeuralNetwork bestNet;
-        private List<TestNeuralNetwork> networks;
+        private NeuralNetwork bestNet;
+        private List<NeuralNetwork> networks;
         private readonly List<Learner> learners = new();
 
         public static Action OnNewGeneration;
@@ -29,7 +27,6 @@ namespace Controller
 
         private void Start()
         {
-            Time.timeScale = timeScale;
             InitNetworks();
         }
 
@@ -61,18 +58,20 @@ namespace Controller
         /// </summary>
         private void InitNetworks()
         {
-            networks = new List<TestNeuralNetwork>();
+            networks = new List<NeuralNetwork>();
             for (var i = 0; i < populationSize; i++)
             {
                 //var net = reference.Clone(randomInit);
-                var testNet = new TestNeuralNetwork();
-                testNet.Initialize(reference);
-                networks.Add(testNet);
+                var net = new NeuralNetwork();
+                //testNet.Initialize(reference);
+                net.Load(reference);
+                networks.Add(net);
             }
 
-            bestNet = new TestNeuralNetwork();
-            bestNet.Initialize(reference);
-            bestNet.Copy(networks[0]);
+            bestNet = new NeuralNetwork();
+            //bestNet.Initialize(reference);
+            //bestNet.Copy(networks[0]);
+            bestNet.Load(reference);
             CreateLearners();
         }
 
@@ -110,11 +109,13 @@ namespace Controller
 
             // Check if new best Network
             var lastNetwork = networks.Last();
-            if (bestNet.fitness < lastNetwork.fitness)
+            if (bestNet.Fitness < lastNetwork.Fitness)
             {
                 bestNet.Copy(lastNetwork);
-                //reference.Save(bestNet);
-                Debug.Log(bestNet.Name);
+                if (!reference.Save(bestNet))
+                {
+                    Debug.Log("Failed To Save");
+                }
             }
 
             // Set Networks to best one and Mutate it.
@@ -138,7 +139,7 @@ namespace Controller
             {
                 var learner = Instantiate(learnerPrefab, transform).GetComponent<Learner>();
                 learner.Network = networks[i];
-                learner.Network.fitness = 0;
+                learner.Network.Fitness = 0;
                 learners.Add(learner);
                 learner.name = "Learner " + i + " Generation " + generation;
                 learner.Network.Name = learner.name;

@@ -58,8 +58,8 @@ MonoBehaviour:
   top: {fileID: 7176634994159164700}
   bottom: {fileID: 8085295776248717990}
   learner: {fileID: 3099393493073357101}
-  fitnessInterval: 0.01
-  fitnessToAdd: 0.01
+  fitnessInterval: 1
+  fitnessToAdd: 1
 --- !u!114 &3099393493073357106
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -4,7 +4,7 @@ using UnityEditor;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace Neural_Network
+namespace Neural_Network.Connection
 {
     public class ConnectionObj : ScriptableObject
     {

@@ -1,7 +1,5 @@
 ﻿using System.Linq;
 using Neural_Network;
-using Neural_Network.Layer;
-using Neural_Network.Neurons;
 using UnityEngine;
 
 namespace Controller
@@ -10,13 +8,12 @@ namespace Controller
     {
         [SerializeField] private float fitness;
         [SerializeField] private bool alive = true;
-        [SerializeField] private SpriteRenderer renderer;
 
-        public TestNeuralNetwork Network;
+        public NeuralNetwork Network;
         
         #region Properties
 
-        //public TestNeuralNetwork Network { get; set; }
+        //public NeuralNetwork Network { get; set; }
 
         public float Fitness
         {
@@ -27,14 +24,7 @@ namespace Controller
         public bool Alive
         {
             get => alive;
-            set
-            {
-                alive = value;
-                if (value == false)
-                {
-                    renderer.color = Color.red;
-                }
-            }
+            set => alive = value;
         }
 
         #endregion
@@ -50,25 +40,6 @@ namespace Controller
         public float[] Think(float[] input)
         {
             input = NormalizeInputs(input);
-
-            /*foreach (var layer in Network.Layers)
-            {
-                // get inputLayer
-                if (layer is not InputLayer inputLayer)
-                    continue;
-
-                // check if inputs match neurons in input layer
-                if (inputLayer.Neurons.Count != input.Length)
-                    return null;
-
-                // Set input
-                for (var i = 0; i < inputLayer.Neurons.Count; i++)
-                {
-                    if (inputLayer.Neurons[i] is InputNeuron inputNeuron)
-                        inputNeuron.SetInput(input[i]);
-                }
-            }*/
-
             Network.SetInputs(input);
             return Network.FeedForward();
         }
@@ -78,20 +49,19 @@ namespace Controller
         /// </summary>
         public void SetFitness()
         {
-            Network.fitness = fitness;
+            Network.Fitness = fitness;
         }
 
-        private float[] NormalizeInputs(float[] input)
+        private static float[] NormalizeInputs(float[] input)
         {
             var sum = input.Sum();
-            if (sum != 0)
-            {
-                for (var i = 0; i < input.Length; i++)
-                {
-                    input[i] /= sum;
-                }
-            }
+            if (sum == 0) 
+                return input;
             
+            for (var i = 0; i < input.Length; i++)
+            {
+                input[i] /= sum;
+            }
             return input;
         }
 

@@ -351,7 +351,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pipesMovementBehaviour: {fileID: -644140365130380028}
-  reward: 1
+  reward: 10
 --- !u!61 &3961344603262467738
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -421,7 +421,7 @@ GameObject:
   - component: {fileID: 4923573306515349004}
   m_Layer: 0
   m_Name: Square
-  m_TagString: Untagged
+  m_TagString: PipeDistance
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

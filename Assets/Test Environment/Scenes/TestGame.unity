@@ -910,10 +910,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9ba4bb383ee61644b98135df1b639c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  reference: {fileID: 11400000, guid: f133cfa0d5a696c489b340934a33e5d3, type: 2}
-  randomInit: 1
-  timeScale: 1
-  populationSize: 50
+  reference: {fileID: 11400000, guid: 158b4a66937ffca4c87f89d59bc82dc5, type: 2}
+  populationSize: 100
   learnerPrefab: {fileID: 3099393493073357100, guid: 9a6d17dff6238e04ea584259ed46596d, type: 3}
   generation: 0
   mutationChance: 0.25

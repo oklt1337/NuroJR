@@ -6,7 +6,7 @@ namespace Test_Environment.Scripts.Pipes
     public class Done : MonoBehaviour
     {
         [SerializeField] private PipesMovementBehaviour pipesMovementBehaviour;
-        [SerializeField] private float reward = 1f;
+        [SerializeField] private float reward = 10f;
         
         private void OnTriggerEnter2D(Collider2D other)
         {

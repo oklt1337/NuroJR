@@ -38,7 +38,10 @@ namespace Controller
             if (hit.collider != null)
             {
                 if (hit.collider.CompareTag("PipeDistance"))
+                {
                     distanceHorizontal = hit.distance;
+                }
+                    
             }
 
             // Create Inputs

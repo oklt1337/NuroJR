@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Neural_Network.Connection;
 using Neural_Network.Layer;
 using Neural_Network.Neurons;
 using UnityEditor;
@@ -38,10 +39,10 @@ namespace Neural_Network
 
             AssetDatabase.AddObjectToAsset(layer, this);
             AssetDatabase.SaveAssets();
-            
+
             OnLayerCreated?.Invoke(layer);
             layer.CreateNeuron();
-            
+
             Debug.Log($"Layer has been Created: {layer.name}");
         }
 
@@ -77,6 +78,7 @@ namespace Neural_Network
                 {
                     neuronObj.GenerateNewGuid();
                 }
+
                 layerObj.GenerateNewGuid();
             }
         }
@@ -116,7 +118,7 @@ namespace Neural_Network
             connection.AddParent(parent);
             connection.AddChild(child);
             connection.OnDeleted += con => connectionsObj.Remove(con);
-            
+
             parent.connectionObjs.Add(connection);
             connectionsObj.Add(connection);
 
@@ -138,7 +140,7 @@ namespace Neural_Network
                 return;
 
             layersObj.Remove(networkLayerObj);
-            
+
             if (index - 1 < 0 || index >= layersObj.Count)
                 return;
 
@@ -208,6 +210,7 @@ namespace Neural_Network
                 if (index + 1 < layersObj.Count)
                     CreateConnections(layersObj[index], layersObj[index + 1]);
             }
+
             OnConnectionCreated?.Invoke(neuronObj);
         }
 
@@ -247,9 +250,49 @@ namespace Neural_Network
 
         #region General
 
-        public void Save(TestNeuralNetwork network)
+        public bool Save(NeuralNetwork network)
         {
+            if (network.Layers.Count != layersObj.Count)
+            {
+                Debug.Log("Layer count doesnt match.");
+                return false;
+            }
+
+            for (var i = 0; i < layersObj.Count; i++)
+            {
+                if (network.Layers[i].neurons.Length != layersObj[i].neurons.Count)
+                {
+                    Debug.Log($"Neuron count doesnt match in layer {layersObj[i].name} at index {i}.");
+                    return false;
+                }
+
+                for (var j = 0; j < layersObj[i].neurons.Count; j++)
+                {
+                    if (layersObj[i] is HiddenLayerObj)
+                    {
+                        ((HiddenNeuronObj)layersObj[i].neurons[j]).bias = network.Layers[i].bias[j];
+                    }
+                }
+            }
             
+            foreach (var connectionObj in connectionsObj)
+            {
+                for (var i = 0; i < layersObj.Count; i++)
+                {
+                    var index = layersObj[i].neurons.FindIndex(x => x == connectionObj.parent);
+                    if (index == -1) continue;
+                    {
+                        var index1 = layersObj[i + 1].neurons.FindIndex(x => x == connectionObj.child);
+                        if (index1 != -1)
+                        {
+                            connectionObj.weight = network.Weights[i][index, index1];
+                        }
+                    }
+                }
+            }
+
+            fitness = network.Fitness;
+            return true;
         }
 
         #endregion

@@ -10,7 +10,7 @@ namespace Test_Environment.Scripts.Pipes
     public class PipeManager : MonoBehaviour
     {
         public static PipeManager Instance;
-        
+
         [SerializeField] private float spawnTime;
         [SerializeField] private float minHeight;
         [SerializeField] private float maxHeight;
@@ -22,6 +22,7 @@ namespace Test_Environment.Scripts.Pipes
 
         private float _timer;
         private bool _spawn;
+        private int pipesindex;
 
         private void Awake()
         {
@@ -29,14 +30,16 @@ namespace Test_Environment.Scripts.Pipes
             {
                 Destroy(gameObject);
             }
+
             Instance = this;
-            
+
             NetworkHandler.OnNewGeneration += Restart;
             InstantiatePipe();
         }
 
         private void ResetValues()
         {
+            pipesindex = 0;
             _timer = spawnTime;
         }
 
@@ -55,12 +58,14 @@ namespace Test_Environment.Scripts.Pipes
 
         private void InstantiatePipe()
         {
-            var pos = spawnPos.position;// + new Vector3(0, Random.Range(minHeight, maxHeight), 0);
+            var pos = spawnPos.position + Vector3.down; //+ new Vector3(0, Random.Range(minHeight, maxHeight), 0);
             var pipesMovementBehaviour = Instantiate(prefab, pos, Quaternion.identity, parent)
                 .GetComponent<PipesMovementBehaviour>();
+
             pipesMovementBehaviour.Initialize(speed);
             pipesMovementBehaviour.OnDelete += behaviour => pipes.Remove(behaviour);
             pipes.Add(pipesMovementBehaviour);
+            pipesindex++;
         }
 
         private void Restart()
@@ -72,6 +77,7 @@ namespace Test_Environment.Scripts.Pipes
                     Destroy(pipes[i].gameObject);
                 }
             }
+
             pipes.Clear();
             ResetValues();
         }
