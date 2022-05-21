@@ -61,18 +61,26 @@ namespace Controller
             networks = new List<NeuralNetwork>();
             for (var i = 0; i < populationSize; i++)
             {
-                //var net = reference.Clone(randomInit);
-                var net = new NeuralNetwork();
-                //testNet.Initialize(reference);
-                net.Load(reference);
-                networks.Add(net);
+                networks.Add(LoadNetwork());
             }
 
             bestNet = new NeuralNetwork();
-            //bestNet.Initialize(reference);
-            //bestNet.Copy(networks[0]);
-            bestNet.Load(reference);
+            bestNet.Copy(networks[0]);
             CreateLearners();
+        }
+
+        private NeuralNetwork LoadNetwork()
+        {
+            var net = new NeuralNetwork();
+            net.Load(reference);
+            return net;
+        }
+
+        private NeuralNetwork CreateNewNetwork()
+        {
+            var net = new NeuralNetwork();
+            net.Initialize(reference);
+            return net;
         }
 
 
