@@ -197,7 +197,6 @@ namespace Editor
                                 neuron.RemoveChild(childView!.NeuronObj);
                                 break;
                         }
-
                         break;
                     }
                 }

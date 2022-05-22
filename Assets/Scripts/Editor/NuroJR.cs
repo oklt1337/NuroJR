@@ -69,7 +69,6 @@ namespace Editor
             if (!neuralNetworks.Any()) 
                 return;
             
-            //TODO: fix null Check
             var nullNetworks = neuralNetworks.Where(neuralNetwork => neuralNetwork == null).ToList();
             if (!nullNetworks.Any())
                 return;
@@ -103,6 +102,9 @@ namespace Editor
 
             _neuralNetworkView = root.Q<NeuralNetworkView>();
             _inspectorView = root.Q<InspectorView>();
+            
+            var statsButton = root.Q<ToolbarButton>("Stats");
+            statsButton.clicked += () => _inspectorView.ShowStats(_neuralNetworkView.NetworkObj);
 
             _neuralNetworkView.OnNodeSelected = OnNodeSelectionChanged;
             _neuralNetworkView.OnLayerSelected = OnLayerSelectionChanged;

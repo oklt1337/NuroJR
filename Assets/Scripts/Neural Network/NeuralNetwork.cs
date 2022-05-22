@@ -49,7 +49,7 @@ namespace Neural_Network
                         }
                     }
                 }
-                
+
                 layers.Add(layer);
             }
 
@@ -77,12 +77,12 @@ namespace Neural_Network
         {
             Initialize(networkObj);
             fitness = networkObj.fitness;
-            
+
             for (var i = 0; i < networkObj.layersObj.Count; i++)
             {
-                if (i == 0 || i == networkObj.layersObj.Count - 1) 
+                if (i == 0 || i == networkObj.layersObj.Count - 1)
                     continue;
-                
+
                 for (var j = 0; j < networkObj.layersObj[i].neurons.Count; j++)
                 {
                     if (networkObj.layersObj[i] is HiddenLayerObj)
@@ -91,7 +91,7 @@ namespace Neural_Network
                     }
                 }
             }
-            
+
             foreach (var connectionObj in networkObj.connectionsObj)
             {
                 for (var i = 0; i < networkObj.layersObj.Count; i++)
@@ -170,12 +170,17 @@ namespace Neural_Network
 
         private float ActivationFunction(float value)
         {
-            return Sigmoid(value);
+            return TanH(value);
         }
 
         private float Sigmoid(float value)
         {
             return (float)(1.0 / (1.0 + Math.Pow(Math.E, -value)));
+        }
+
+        private float TanH(float value)
+        {
+            return (float)Math.Tanh(value);
         }
 
         private float ReLu(float value)

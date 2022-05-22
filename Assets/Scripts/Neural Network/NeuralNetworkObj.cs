@@ -12,7 +12,10 @@ namespace Neural_Network
     public class NeuralNetworkObj : ScriptableObject
     {
         [HideInInspector] public List<NetworkLayerObj> layersObj = new();
-        public List<ConnectionObj> connectionsObj = new();
+        [HideInInspector] public List<ConnectionObj> connectionsObj = new(); 
+        public float totalTime;
+        public int generation;
+        public float lifeTime;
         public float fitness;
 
         public Action<NetworkLayerObj> OnLayerCreated;

@@ -1,4 +1,4 @@
-using System;
+using Neural_Network;
 using UnityEngine.UIElements;
 using Object = UnityEngine.Object;
 
@@ -11,6 +11,28 @@ namespace Editor
         }
 
         private UnityEditor.Editor _editor;
+
+        public void ShowStats(NeuralNetworkObj neuralNetworkObj)
+        {
+            Clear();
+
+            Object.DestroyImmediate(_editor);
+            if (neuralNetworkObj == null)
+                return;
+
+            _editor = UnityEditor.Editor.CreateEditor(neuralNetworkObj);
+
+            if (_editor == null)
+                return;
+            if (_editor.target == null)
+            {
+                Clear();
+                return;
+            }
+
+            var container = new IMGUIContainer(() => { _editor.OnInspectorGUI(); });
+            Add(container);
+        }
 
         public void UpdateSelection(NeuronView neuronView)
         {

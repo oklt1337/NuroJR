@@ -5,7 +5,8 @@
         <ui:DropdownField label="Dropdown" index="-1" choices="System.Collections.Generic.List`1[System.String]" style="flex-direction: row; align-items: stretch;">
             <uie:ToolbarButton text="Refresh" display-tooltip-when-elided="true" />
         </ui:DropdownField>
-        <uie:ToolbarSpacer style="width: auto; flex-grow: initial;" />
+        <uie:ToolbarSpacer style="width: 44px; flex-grow: 1;" />
+        <uie:ToolbarButton text="Stats" display-tooltip-when-elided="true" name="Stats" />
     </uie:Toolbar>
     <Editor.SplitView fixed-pane-initial-dimension="250">
         <ui:VisualElement name="rightpanel">
