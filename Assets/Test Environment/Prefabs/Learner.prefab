@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 3099393493073357104}
   - component: {fileID: 1403037257356963861}
+  - component: {fileID: 3473328707413260629}
   - component: {fileID: 3099393493073357106}
-  - component: {fileID: 3099393493073357101}
   - component: {fileID: 3099393493073357107}
   - component: {fileID: 8810030693481358897}
   - component: {fileID: 3151226052060527012}
@@ -57,9 +57,24 @@ MonoBehaviour:
   rayOrigin: {fileID: 6386339650454318024}
   top: {fileID: 7176634994159164700}
   bottom: {fileID: 8085295776248717990}
-  learner: {fileID: 3099393493073357101}
+  learner: {fileID: 3473328707413260629}
   fitnessInterval: 1
   fitnessToAdd: 1
+  fitnessMultiplier: 2
+--- !u!114 &3473328707413260629
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3099393493073357100}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d7cac68a68945ac92e78e309c8f3fe7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  learner: {fileID: 3099393493073357106}
+  playerController: {fileID: 1403037257356963861}
 --- !u!114 &3099393493073357106
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -73,25 +88,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fitness: 0
+  timeAlive: 0
   alive: 1
-  renderer: {fileID: 3099393493073357107}
-  Network:
-    fitness: 0
-    testLayers: []
---- !u!114 &3099393493073357101
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3099393493073357100}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dec1c2bec2124fbe80ade70ce82bdb39, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  lifeTime: 30
-  playerController: {fileID: 1403037257356963861}
 --- !u!212 &3099393493073357107
 SpriteRenderer:
   m_ObjectHideFlags: 0

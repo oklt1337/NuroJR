@@ -53,6 +53,28 @@ namespace Controller
 
         #region Private Methods
 
+        private void Save()
+        {
+            var fitnessSum = 0f;
+            var timeSum = 0f;
+                
+            foreach (var learner in learners)
+            {
+                fitnessSum += learner.Fitness;
+                timeSum += learner.TimeAlive;
+            }
+
+            fitnessSum /= learners.Count;
+            timeSum /= learners.Count;
+            bestNet.AverageFitnessInLastGeneration = fitnessSum;
+            bestNet.AverageLifeTimeInLastGeneration = timeSum;
+            
+            if (!reference.Save(bestNet))
+            {
+                Debug.Log("Failed To Save");
+            }
+        }
+
         /// <summary>
         /// Initialize the Networks and Creates the Leaner.
         /// </summary>
@@ -120,10 +142,7 @@ namespace Controller
             if (bestNet.Fitness < lastNetwork.Fitness)
             {
                 bestNet.Copy(lastNetwork);
-                if (!reference.Save(bestNet))
-                {
-                    Debug.Log("Failed To Save");
-                }
+                Save();
             }
 
             // Set Networks to best one and Mutate it.
@@ -148,9 +167,11 @@ namespace Controller
                 var learner = Instantiate(learnerPrefab, transform).GetComponent<Learner>();
                 learner.Network = networks[i];
                 learner.Network.Fitness = 0;
+                learner.Network.TimeAlive = 0;
                 learners.Add(learner);
                 learner.name = "Learner " + i + " Generation " + generation;
                 learner.Network.Name = learner.name;
+                learner.Network.Generation = generation;
                 learner.transform.parent = gameObject.transform;
             }
         }

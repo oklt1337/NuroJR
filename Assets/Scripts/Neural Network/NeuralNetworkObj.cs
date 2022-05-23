@@ -12,11 +12,16 @@ namespace Neural_Network
     public class NeuralNetworkObj : ScriptableObject
     {
         [HideInInspector] public List<NetworkLayerObj> layersObj = new();
-        [HideInInspector] public List<ConnectionObj> connectionsObj = new(); 
-        public float totalTime;
+        [HideInInspector] public List<ConnectionObj> connectionsObj = new();
+        
+        [Header("Best Network")]
         public int generation;
-        public float lifeTime;
         public float fitness;
+        public float lifeTime;
+        
+        [Header("Avg in Last Generation")]
+        public float avgFitness;
+        public float avgLifeTime;
 
         public Action<NetworkLayerObj> OnLayerCreated;
         public Action<NeuronObj> OnConnectionCreated;
@@ -295,6 +300,11 @@ namespace Neural_Network
             }
 
             fitness = network.Fitness;
+            lifeTime = network.TimeAlive;
+            generation = network.Generation;
+            avgFitness = network.AverageFitnessInLastGeneration;
+            avgLifeTime = network.AverageLifeTimeInLastGeneration;
+            
             return true;
         }
 

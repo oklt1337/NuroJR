@@ -1,58 +1,18 @@
 ﻿using System;
-using System.Linq;
-using Test_Environment.Scripts.Pipes;
-using Test_Environment.Scripts.Player;
 using UnityEngine;
 
 namespace Controller
 {
     [RequireComponent(typeof(Learner))]
-    public class LearnerSkeleton : MonoBehaviour
+    public abstract class LearnerSkeleton : MonoBehaviour
     {
-        private Learner learner;
-
-        [SerializeField, Tooltip("Max Lifetime")]
-        private float lifeTime = 10f;
-
-        [SerializeField] private PlayerController playerController;
+        [SerializeField] private Learner learner;
 
         #region Unity Methods
 
         private void Start()
         {
             learner = GetComponent<Learner>();
-            lifeTime += Time.time;
-        }
-
-        private float[] GenerateInputs()
-        {
-            var hit = Physics2D.Raycast(playerController.RayOrigin, Vector2.right);
-            var firstPositionTop = new Vector2(playerController.Top.x, PipeManager.Instance.pipes.First().Top.y);
-            var firstPositionBottom =
-                new Vector2(playerController.Bottom.x, PipeManager.Instance.pipes.First().Bottom.y);
-
-            var distanceVerticalTop = Vector2.Distance(firstPositionTop, playerController.Top);
-            var distanceVerticalBottom = Vector2.Distance(firstPositionBottom, playerController.Bottom);
-            
-            float distanceHorizontal = 0;
-            if (hit.collider != null)
-            {
-                if (hit.collider.CompareTag("PipeDistance"))
-                {
-                    distanceHorizontal = hit.distance;
-                }
-                    
-            }
-
-            // Create Inputs
-            var inputs = new float[4];
-            // Set Inputs
-            inputs[0] = playerController.Rigidbody2D.velocity.y;
-            inputs[1] = distanceHorizontal;
-            inputs[2] = distanceVerticalTop;
-            inputs[3] = distanceVerticalBottom;
-
-            return inputs;
         }
 
         private void FixedUpdate()
@@ -60,12 +20,16 @@ namespace Controller
             // Check if Learner is alive
             if (!learner.Alive)
                 return;
-
+            
+            SetTime();
             // Generate Outputs
             var outputs = learner.Think(GenerateInputs());
-            if (outputs[0] < outputs[1])
-                playerController.Jump();
+            Action(outputs);
         }
+
+        #endregion
+
+        #region Public Methods
 
         /// <summary>
         /// Increase Fitness of Network
@@ -80,6 +44,33 @@ namespace Controller
                 return;
             // Add float to fitness if does sth correct make sure value is positive
             learner.Fitness += Math.Abs(fitness);
+        }
+
+        #endregion
+
+        #region Protected Methods
+
+        /// <summary>
+        /// Do Stuff with Outputs
+        /// </summary>
+        protected abstract void Action(float[] outputs);
+
+        /// <summary>
+        /// Generate your Inputs.
+        /// </summary>
+        /// <returns>Inputs float[]</returns>
+        protected abstract float[] GenerateInputs();
+
+        #endregion
+
+        #region Private Methods
+
+        /// <summary>
+        /// Setting the time the learner is alive
+        /// </summary>
+        private void SetTime()
+        {
+            learner.TimeAlive += Time.fixedDeltaTime;
         }
 
         #endregion

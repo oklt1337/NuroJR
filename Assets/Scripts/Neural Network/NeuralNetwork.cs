@@ -11,18 +11,51 @@ namespace Neural_Network
     public class NeuralNetwork : IComparable<NeuralNetwork>
     {
         [SerializeField] private float fitness;
+        [SerializeField] private float averageFitnessInLastGeneration;
+        [SerializeField] private int generation;
+        [SerializeField] private float timeAlive;
+        [SerializeField] private float averageLifeTimeInLastGeneration;
         [SerializeField] private List<NetworkLayer> layers = new();
 
+
+        #region Properties
+
         public string Name { get; set; }
+        
+        public float AverageFitnessInLastGeneration
+        {
+            get => averageFitnessInLastGeneration;
+            set => averageFitnessInLastGeneration = value;
+        }
 
         public float Fitness
         {
             get => fitness;
             set => fitness = value;
         }
-
+        
+        public int Generation
+        {
+            get => generation;
+            set => generation = value;
+        }
+        
+        public float TimeAlive
+        {
+            get => timeAlive;
+            set => timeAlive = value;
+        }
+        
+        public float AverageLifeTimeInLastGeneration
+        {
+            get => averageLifeTimeInLastGeneration;
+            set => averageLifeTimeInLastGeneration = value;
+        }
+        
         public List<NetworkLayer> Layers => layers;
         public List<float[,]> Weights { get; } = new();
+
+        #endregion
 
         public void Initialize(NeuralNetworkObj networkObj)
         {
@@ -244,6 +277,8 @@ namespace Neural_Network
         {
             Name = neuralNetwork.Name;
             fitness = neuralNetwork.fitness;
+            generation = neuralNetwork.generation;
+            timeAlive = neuralNetwork.timeAlive;
 
             for (var i = 0; i < neuralNetwork.Weights.Count; i++)
             {
