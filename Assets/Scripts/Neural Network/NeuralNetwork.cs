@@ -7,9 +7,17 @@ using UnityEngine;
 
 namespace Neural_Network
 {
+    public enum Algorithm
+    {
+        Sigmoid,
+        TanH,
+        ReLu
+    }
+    
     [Serializable]
     public class NeuralNetwork : IComparable<NeuralNetwork>
     {
+        [SerializeField] private Algorithm algorithm = Algorithm.Sigmoid;
         [SerializeField] private float fitness;
         [SerializeField] private float averageFitnessInLastGeneration;
         [SerializeField] private int generation;
@@ -17,11 +25,15 @@ namespace Neural_Network
         [SerializeField] private float averageLifeTimeInLastGeneration;
         [SerializeField] private List<NetworkLayer> layers = new();
 
-
         #region Properties
 
+        public Algorithm Algorithm
+        {
+            get => algorithm;
+            set => algorithm = value;
+        }
         public string Name { get; set; }
-        
+
         public float AverageFitnessInLastGeneration
         {
             get => averageFitnessInLastGeneration;
@@ -33,25 +45,25 @@ namespace Neural_Network
             get => fitness;
             set => fitness = value;
         }
-        
+
         public int Generation
         {
             get => generation;
             set => generation = value;
         }
-        
+
         public float TimeAlive
         {
             get => timeAlive;
             set => timeAlive = value;
         }
-        
+
         public float AverageLifeTimeInLastGeneration
         {
             get => averageLifeTimeInLastGeneration;
             set => averageLifeTimeInLastGeneration = value;
         }
-        
+
         public List<NetworkLayer> Layers => layers;
         public List<float[,]> Weights { get; } = new();
 
@@ -110,6 +122,7 @@ namespace Neural_Network
         {
             Initialize(networkObj);
             fitness = networkObj.fitness;
+            algorithm = networkObj.algorithm;
 
             for (var i = 0; i < networkObj.layersObj.Count; i++)
             {
@@ -160,7 +173,7 @@ namespace Neural_Network
         public float[] FeedForward()
         {
             ResetValues();
-            
+
             for (var i = 0; i < layers.Count; i++)
             {
                 if (i + 1 < layers.Count)
@@ -187,7 +200,7 @@ namespace Neural_Network
         private float[] GenerateInputs(int i)
         {
             var input = new float[layers[i + 1].neurons.Length];
-            
+
             for (var j = 0; j < layers[i].neurons.Length; j++)
             {
                 for (var k = 0; k < layers[i + 1].neurons.Length; k++)
@@ -217,7 +230,13 @@ namespace Neural_Network
 
         private float ActivationFunction(float value)
         {
-            return TanH(value);
+            return algorithm switch
+            {
+                Algorithm.Sigmoid => Sigmoid(value),
+                Algorithm.TanH => TanH(value),
+                Algorithm.ReLu => ReLu(value),
+                _ => throw new ArgumentOutOfRangeException()
+            };
         }
 
         private float Sigmoid(float value)
@@ -304,13 +323,21 @@ namespace Neural_Network
                     }
                 }
             }
-        }
-    }
 
-    [Serializable]
-    public struct NetworkLayer
-    {
-        public float[] neurons;
-        public float[] bias;
+            for (var i = 0; i < neuralNetwork.Layers.Count; i++)
+            {
+                for (var j = 0; j < neuralNetwork.Layers[i].bias.Length; j++)
+                {
+                    layers[i].bias[j] = neuralNetwork.Layers[i].bias[j];
+                }
+            }
+        }
+
+        [Serializable]
+        public struct NetworkLayer
+        {
+            public float[] neurons;
+            public float[] bias;
+        }
     }
 }

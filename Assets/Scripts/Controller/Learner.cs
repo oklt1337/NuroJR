@@ -6,13 +6,18 @@ namespace Controller
 {
     public class Learner : MonoBehaviour
     {
+        [SerializeField] private NeuralNetwork network;
         [SerializeField] private float fitness;
         [SerializeField] private float timeAlive;
         [SerializeField] private bool alive = true;
-
+        
         #region Properties
 
-        public NeuralNetwork Network { get; set; }
+        public NeuralNetwork Network
+        {
+            get => network;
+            set => network = value;
+        }
 
         public float Fitness
         {

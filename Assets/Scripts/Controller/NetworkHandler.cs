@@ -6,9 +6,12 @@ using UnityEngine;
 
 namespace Controller
 {
+    
+    
     public class NetworkHandler : MonoBehaviour
     {
         [SerializeField] private NeuralNetworkObj reference;
+        [SerializeField] private Algorithm algorithm;
 
         [SerializeField] private int populationSize = 20;
         [SerializeField] private GameObject learnerPrefab;
@@ -52,6 +55,21 @@ namespace Controller
         #endregion
 
         #region Private Methods
+        
+        /// <summary>
+        /// Initialize the Networks and Creates the Leaner.
+        /// </summary>
+        private void InitNetworks()
+        {
+            networks = new List<NeuralNetwork>();
+            for (var i = 0; i < populationSize; i++)
+            {
+                networks.Add(CreateNewNetwork());
+            }
+
+            bestNet = CreateNewNetwork();
+            CreateLearners();
+        }
 
         private void Save()
         {
@@ -70,25 +88,7 @@ namespace Controller
             bestNet.AverageLifeTimeInLastGeneration = timeSum;
             
             if (!reference.Save(bestNet))
-            {
                 Debug.Log("Failed To Save");
-            }
-        }
-
-        /// <summary>
-        /// Initialize the Networks and Creates the Leaner.
-        /// </summary>
-        private void InitNetworks()
-        {
-            networks = new List<NeuralNetwork>();
-            for (var i = 0; i < populationSize; i++)
-            {
-                networks.Add(CreateNewNetwork());
-            }
-
-            bestNet = new NeuralNetwork();
-            bestNet = CreateNewNetwork();
-            CreateLearners();
         }
 
         private NeuralNetwork LoadNetwork()
@@ -102,6 +102,7 @@ namespace Controller
         {
             var net = new NeuralNetwork();
             net.Initialize(reference);
+            net.Algorithm = algorithm;
             return net;
         }
 

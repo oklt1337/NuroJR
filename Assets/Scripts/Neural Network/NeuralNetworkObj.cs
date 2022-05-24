@@ -15,6 +15,7 @@ namespace Neural_Network
         public List<ConnectionObj> connectionsObj = new();
         
         [Header("Best Network")]
+        public Algorithm algorithm;
         public int generation;
         public float fitness;
         public float lifeTime;
@@ -299,6 +300,7 @@ namespace Neural_Network
                 }
             }
 
+            algorithm = network.Algorithm;
             fitness = network.Fitness;
             lifeTime = network.TimeAlive;
             generation = network.Generation;
