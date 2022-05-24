@@ -18,6 +18,7 @@ namespace Editor
         private DropdownField dropdownField;
         private List<NeuralNetworkObj> neuralNetworks = new();
 
+        #region Editor Methods
 
         [MenuItem("NuroJR/Editor ...")]
         public static void OpenWindow()
@@ -30,55 +31,7 @@ namespace Editor
 
             _wnd.Show();
         }
-
-        private void OnInspectorUpdate()
-        {
-            if (dropdownField.value == null)
-                return;
-            
-            CheckForNullNetworks();
-            if (neuralNetworks.Count == 0)
-            {
-                _inspectorView.Clear();
-                _neuralNetworkView.UnPopulateView();
-                RefreshDropdownValues();
-                return;
-            }
-            
-            var index = neuralNetworks.FindIndex(x => x.name == dropdownField.value);
-            if (index == -1)
-                return;
-
-            if (_neuralNetworkView.NetworkObj == null)
-            {
-                _neuralNetworkView.UnPopulateView();
-                _inspectorView.Clear();
-                _neuralNetworkView.PopulateView(neuralNetworks[index]);
-            }
-
-            if (_neuralNetworkView.NetworkObj.name == dropdownField.value)
-                return;
-
-            _neuralNetworkView.UnPopulateView();
-            _inspectorView.Clear();
-            _neuralNetworkView.PopulateView(neuralNetworks[index]);
-        }
-
-        private void CheckForNullNetworks()
-        {
-            if (!neuralNetworks.Any()) 
-                return;
-            
-            var nullNetworks = neuralNetworks.Where(neuralNetwork => neuralNetwork == null).ToList();
-            if (!nullNetworks.Any())
-                return;
-
-            for (var i = nullNetworks.Count - 1; i >= 0; i--)
-            {
-                neuralNetworks.Remove(nullNetworks[i]);
-            }
-        }
-
+        
         public void CreateGUI()
         {
             // Each editor window contains a root VisualElement object
@@ -95,10 +48,13 @@ namespace Editor
             
             // DropDownField
             dropdownField = root.Q<DropdownField>();
-            var refreshButton = dropdownField.Q<ToolbarButton>();
-            refreshButton.clicked += RefreshDropdownValues;
             dropdownField.choices.Clear();
             neuralNetworks.Clear();
+            dropdownField.RegisterCallback<ChangeEvent<string>>(OnChangeDropDropdownValue);
+            
+            // Refresh Button
+            var refreshButton = dropdownField.Q<ToolbarButton>();
+            refreshButton.clicked += RefreshDropdownValues;
 
             _neuralNetworkView = root.Q<NeuralNetworkView>();
             _inspectorView = root.Q<InspectorView>();
@@ -113,7 +69,31 @@ namespace Editor
 
             // New Button
             var newButton = root.Q<ToolbarButton>("new");
-            newButton.clicked += CreateNeuralNetworks.CreateNewNeuralNetwork;
+            newButton.clicked += () =>
+            {
+                CreateNeuralNetworks.CreateNewNeuralNetwork();
+                RefreshDropdownValues();
+            };
+        }
+
+        #endregion
+
+        #region Private Methods
+
+        private void OnChangeDropDropdownValue(ChangeEvent<string> changeEvent)
+        {
+            var index = neuralNetworks.FindIndex(x => x.name == changeEvent.newValue);
+            if (index == -1)
+                return;
+
+            if (neuralNetworks[index] == null)
+                RefreshDropdownValues();
+            else
+            {
+                _neuralNetworkView.UnPopulateView();
+                _inspectorView.Clear();
+                _neuralNetworkView.PopulateView(neuralNetworks[index]);
+            }
         }
 
         private void RefreshDropdownValues()
@@ -151,6 +131,8 @@ namespace Editor
             _neuralNetworkView.PopulateView(neuralNetworks[index]);
         }
 
+        #region OnSeletionChnaged
+
         private void OnNodeSelectionChanged(NeuronView neuronView)
         {
             _inspectorView.UpdateSelection(neuronView);
@@ -165,5 +147,9 @@ namespace Editor
         {
             _inspectorView.UpdateSelection(edgeView);
         }
+
+        #endregion
+        
+        #endregion
     }
 }

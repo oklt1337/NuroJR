@@ -51,8 +51,6 @@ namespace Neural_Network
 
             OnLayerCreated?.Invoke(layer);
             layer.CreateNeuron();
-
-            Debug.Log($"Layer has been Created: {layer.name}");
         }
 
         public void RemoveLayer(NetworkLayerObj networkLayerObj)
@@ -104,8 +102,6 @@ namespace Neural_Network
             {
                 networkLayerObj.RemoveNeuron(deprecatedNeurons[i]);
             }
-
-            Debug.Log("Deprecated Neurons and Connections got deleted.");
         }
 
         #endregion

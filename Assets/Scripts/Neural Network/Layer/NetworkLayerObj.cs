@@ -19,8 +19,6 @@ namespace Neural_Network.Layer
             OnDelete?.Invoke(this);
             AssetDatabase.RemoveObjectFromAsset(this);
             AssetDatabase.SaveAssets();
-            
-            Debug.Log($"{name} got deleted");
         }
 
         #region Neuron

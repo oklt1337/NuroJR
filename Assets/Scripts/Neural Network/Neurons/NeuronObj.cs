@@ -19,8 +19,6 @@ namespace Neural_Network.Neurons
             OnDelete?.Invoke(this);
             AssetDatabase.RemoveObjectFromAsset(this);
             AssetDatabase.SaveAssets();
-            
-            Debug.Log($"{name} got deleted");
         }
 
         public void GenerateNewGuid()

@@ -26,7 +26,6 @@ namespace Neural_Network.Layer
             AssetDatabase.AddObjectToAsset(neuron, this);
             AssetDatabase.SaveAssets();
 
-            Debug.Log("Created InputNeuron");
             OnNeuronCreated?.Invoke(neuron);
         }
     }
