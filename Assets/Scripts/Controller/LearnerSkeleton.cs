@@ -37,12 +37,11 @@ namespace Controller
         /// <param name="fitness">float increase value</param>
         public void AddFitness(float fitness)
         {
-            // Null Check
             if (learner == null)
                 return;
             if (!learner.Alive)
                 return;
-            // Add float to fitness if does sth correct make sure value is positive
+            // Add float to fitness if does sth correct
             learner.Fitness += Math.Abs(fitness);
         }
 
@@ -51,7 +50,7 @@ namespace Controller
         #region Protected Methods
 
         /// <summary>
-        /// Do Stuff with Outputs
+        /// Process Outputs
         /// </summary>
         protected abstract void Action(float[] outputs);
 

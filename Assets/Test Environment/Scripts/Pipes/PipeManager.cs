@@ -33,7 +33,7 @@ namespace Test_Environment.Scripts.Pipes
 
             Instance = this;
 
-            NetworkHandler.OnNewGeneration += Restart;
+            NetworkHandler.OnNewGenerationCreated += Restart;
             InstantiatePipe();
         }
 

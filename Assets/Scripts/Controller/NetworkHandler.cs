@@ -24,7 +24,7 @@ namespace Controller
         private List<NeuralNetwork> networks;
         private readonly List<Learner> learners = new();
 
-        public static Action OnNewGeneration;
+        public static Action OnNewGenerationCreated;
 
         #region Unity Methods
 
@@ -36,7 +36,6 @@ namespace Controller
         private void FixedUpdate()
         {
             var anyAlive = false;
-            // Check if not null and count > 0
             if (learners.Count == 0 || learners == null)
                 return;
 
@@ -64,13 +63,16 @@ namespace Controller
             networks = new List<NeuralNetwork>();
             for (var i = 0; i < populationSize; i++)
             {
-                networks.Add(CreateNewNetwork());
+                networks.Add(CreateNewNetwork(reference));
             }
 
-            bestNet = CreateNewNetwork();
+            bestNet = CreateNewNetwork(reference);
             CreateLearners();
         }
 
+        /// <summary>
+        /// Saving Network to reference
+        /// </summary>
         private void Save()
         {
             var fitnessSum = 0f;
@@ -91,17 +93,25 @@ namespace Controller
                 Debug.Log("Failed To Save");
         }
 
-        private NeuralNetwork LoadNetwork()
+        /// <summary>
+        /// Load Network from Reference
+        /// </summary>
+        /// <returns>NeuralNetwork</returns>
+        private NeuralNetwork LoadNetwork(NeuralNetworkObj networkObj)
         {
             var net = new NeuralNetwork();
-            net.Load(reference);
+            net.Load(networkObj);
             return net;
         }
 
-        private NeuralNetwork CreateNewNetwork()
+        /// <summary>
+        /// Create NewNetwork from Reference
+        /// </summary>
+        /// <returns>NeuralNetwork</returns>
+        private NeuralNetwork CreateNewNetwork(NeuralNetworkObj networkObj)
         {
             var net = new NeuralNetwork();
-            net.Initialize(reference);
+            net.Initialize(networkObj);
             net.Algorithm = algorithm;
             return net;
         }
@@ -125,7 +135,7 @@ namespace Controller
             }
 
             learners.Clear();
-            OnNewGeneration?.Invoke();
+            OnNewGenerationCreated?.Invoke();
             Invoke(nameof(CreateLearners), Time.fixedDeltaTime);
         }
 
