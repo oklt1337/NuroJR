@@ -26,7 +26,6 @@ namespace Editor
             
             var networkName = CheckName();
             var path = $"Assets/Resources/Neural_Networks/{networkName}.asset";
-            Debug.Log(networkName);
             
             var network = ScriptableObject.CreateInstance<NeuralNetworkObj>();
             AssetDatabase.CreateAsset(network, path);
