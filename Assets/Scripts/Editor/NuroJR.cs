@@ -31,7 +31,7 @@ namespace Editor
 
             _wnd.Show();
         }
-        
+
         public void CreateGUI()
         {
             // Each editor window contains a root VisualElement object
@@ -45,34 +45,39 @@ namespace Editor
             // The style will be applied to the VisualElement and all of its children.
             var styleSheet = AssetDatabase.LoadAssetAtPath<StyleSheet>("Assets/Scripts/Editor/NuroJR.uss");
             root.styleSheets.Add(styleSheet);
-            
-            // DropDownField
+
+            // Get Dropdown Field and Subscribe to event
             dropdownField = root.Q<DropdownField>();
+            dropdownField.RegisterCallback<ChangeEvent<string>>(OnChangeDropDropdownValue);
+
+            // Clear Choices and Neural Network List
             dropdownField.choices.Clear();
             neuralNetworks.Clear();
-            dropdownField.RegisterCallback<ChangeEvent<string>>(OnChangeDropDropdownValue);
-            
+
             // Refresh Button
             var refreshButton = dropdownField.Q<ToolbarButton>();
-            refreshButton.clicked += RefreshDropdownValues;
+            refreshButton.clicked += RefreshDropdownChoices;
 
+            // get neural Network View
             _neuralNetworkView = root.Q<NeuralNetworkView>();
-            _inspectorView = root.Q<InspectorView>();
-            
-            // Create Stats Button and register event
-            var statsButton = root.Q<ToolbarButton>("Stats");
-            statsButton.clicked += () => _inspectorView.ShowStats(_neuralNetworkView.NetworkObj);
-
+            // subscribe to Selection events
             _neuralNetworkView.OnNodeSelected = OnNodeSelectionChanged;
             _neuralNetworkView.OnLayerSelected = OnLayerSelectionChanged;
             _neuralNetworkView.OnEdgeSelected = OnEdgeSelectionChanged;
 
-            // New Button
+            // Get Inspector View
+            _inspectorView = root.Q<InspectorView>();
+
+            // Create Stats Button and register event
+            var statsButton = root.Q<ToolbarButton>("Stats");
+            statsButton.clicked += () => _inspectorView.ShowStats(_neuralNetworkView.NetworkObj);
+
+            // Create New button and subscribe to clicked event
             var newButton = root.Q<ToolbarButton>("new");
             newButton.clicked += () =>
             {
                 CreateNeuralNetworks.CreateNewNeuralNetwork();
-                RefreshDropdownValues();
+                RefreshDropdownChoices();
             };
         }
 
@@ -80,27 +85,24 @@ namespace Editor
 
         #region Private Methods
 
+        /// <summary>
+        /// Handles new value of DropDown
+        /// </summary>
+        /// <param name="changeEvent">ChangeEvent string</param>
         private void OnChangeDropDropdownValue(ChangeEvent<string> changeEvent)
         {
-            var index = neuralNetworks.FindIndex(x => x.name == changeEvent.newValue);
-            if (index == -1)
-                return;
-
-            if (neuralNetworks[index] == null)
-                RefreshDropdownValues();
-            else
-            {
-                _neuralNetworkView.UnPopulateView();
-                _inspectorView.Clear();
-                _neuralNetworkView.PopulateView(neuralNetworks[index]);
-            }
+            SetView(changeEvent.newValue);
         }
 
-        private void RefreshDropdownValues()
+        /// <summary>
+        /// Refreshes Dropdown Choices
+        /// </summary>
+        private void RefreshDropdownChoices()
         {
             dropdownField.choices.Clear();
-            var networks = Resources.FindObjectsOfTypeAll<NeuralNetworkObj>().ToList();
             neuralNetworks.Clear();
+            
+            var networks = Resources.FindObjectsOfTypeAll<NeuralNetworkObj>().ToList();
             if (networks.Count != 0)
             {
                 networks.ForEach(x => dropdownField.choices.Add(x.name));
@@ -118,6 +120,10 @@ namespace Editor
             }
         }
 
+        /// <summary>
+        /// Set View by String
+        /// </summary>
+        /// <param name="value"></param>
         private void SetView(string value)
         {
             if (neuralNetworks.Count == 0 || neuralNetworks == null)
@@ -126,30 +132,47 @@ namespace Editor
             if (index == -1)
                 return;
 
-            _neuralNetworkView.UnPopulateView();
-            _inspectorView.Clear();
-            _neuralNetworkView.PopulateView(neuralNetworks[index]);
+            if (neuralNetworks[index] == null)
+                RefreshDropdownChoices();
+            else
+            {
+                _neuralNetworkView.UnPopulateView();
+                _inspectorView.Clear();
+                _neuralNetworkView.PopulateView(neuralNetworks[index]);
+            }
         }
 
         #region OnSeletionChnaged
 
+        /// <summary>
+        /// Updates InspectorView
+        /// </summary>
+        /// <param name="neuronView">NeuronView</param>
         private void OnNodeSelectionChanged(NeuronView neuronView)
         {
             _inspectorView.UpdateSelection(neuronView);
         }
 
+        /// <summary>
+        /// Updates InspectorView
+        /// </summary>
+        /// <param name="layerView">LayerView</param>
         private void OnLayerSelectionChanged(LayerView layerView)
         {
             _inspectorView.UpdateSelection(layerView);
         }
 
+        /// <summary>
+        /// Updates InspectorView
+        /// </summary>
+        /// <param name="edgeView">EdgeView</param>
         private void OnEdgeSelectionChanged(EdgeView edgeView)
         {
             _inspectorView.UpdateSelection(edgeView);
         }
 
         #endregion
-        
+
         #endregion
     }
 }
