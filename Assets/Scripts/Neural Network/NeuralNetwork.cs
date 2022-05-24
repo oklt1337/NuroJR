@@ -159,7 +159,22 @@ namespace Neural_Network
         /// <returns>float[] Outputs</returns>
         public float[] FeedForward()
         {
-            // reset values
+            ResetValues();
+            
+            for (var i = 0; i < layers.Count; i++)
+            {
+                if (i + 1 < layers.Count)
+                {
+                    SetInputs(i, GenerateInputs(i));
+                }
+            }
+
+            var output = layers.Last().neurons;
+            return output;
+        }
+
+        private void ResetValues()
+        {
             for (var i = 1; i < layers.Count; i++)
             {
                 for (var j = 0; j < layers[i].neurons.Length; j++)
@@ -167,38 +182,37 @@ namespace Neural_Network
                     layers[i].neurons[j] = 0;
                 }
             }
+        }
 
-            for (var i = 0; i < layers.Count; i++)
+        private float[] GenerateInputs(int i)
+        {
+            var input = new float[layers[i + 1].neurons.Length];
+            
+            for (var j = 0; j < layers[i].neurons.Length; j++)
             {
-                if (i + 1 < layers.Count)
+                for (var k = 0; k < layers[i + 1].neurons.Length; k++)
                 {
-                    var input = new float[layers[i].neurons.Length];
-                    for (var j = 0; j < layers[i].neurons.Length; j++)
+                    if (i == 0)
                     {
-                        for (var k = 0; k < layers[i + 1].neurons.Length; k++)
-                        {
-                            if (i == 0)
-                            {
-                                input[j] += Weights[i][j, k] * layers[i].neurons[j];
-                            }
-                            else
-                            {
-                                input[j] += ActivationFunction(Weights[i][j, k] * layers[i].neurons[j] +
-                                                               layers[i].bias[j]);
-                            }
-                        }
+                        input[k] += Weights[i][j, k] * layers[i].neurons[j];
                     }
-
-                    for (var j = 0; j < layers[i + 1].neurons.Length; j++)
+                    else
                     {
-                        layers[i + 1].neurons[j] = input[j];
+                        input[k] += ActivationFunction(Weights[i][j, k] * layers[i].neurons[j] +
+                                                       layers[i].bias[j]);
                     }
                 }
             }
 
-            var output = layers.Last().neurons;
+            return input;
+        }
 
-            return output;
+        private void SetInputs(int i, IReadOnlyList<float> input)
+        {
+            for (var j = 0; j < layers[i + 1].neurons.Length; j++)
+            {
+                layers[i + 1].neurons[j] = input[j];
+            }
         }
 
         private float ActivationFunction(float value)

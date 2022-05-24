@@ -11,8 +11,8 @@ namespace Neural_Network
 {
     public class NeuralNetworkObj : ScriptableObject
     {
-        [HideInInspector] public List<NetworkLayerObj> layersObj = new();
-        [HideInInspector] public List<ConnectionObj> connectionsObj = new();
+        public List<NetworkLayerObj> layersObj = new();
+        public List<ConnectionObj> connectionsObj = new();
         
         [Header("Best Network")]
         public int generation;
