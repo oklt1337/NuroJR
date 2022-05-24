@@ -103,6 +103,7 @@ namespace Editor
             _neuralNetworkView = root.Q<NeuralNetworkView>();
             _inspectorView = root.Q<InspectorView>();
             
+            // Create Stats Button and register event
             var statsButton = root.Q<ToolbarButton>("Stats");
             statsButton.clicked += () => _inspectorView.ShowStats(_neuralNetworkView.NetworkObj);
 

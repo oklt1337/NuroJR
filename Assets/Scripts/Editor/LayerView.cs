@@ -13,7 +13,6 @@ namespace Editor
 
         public Action<LayerView> OnLayerSelected;
         public Action<NeuronView> OnNodeSelected;
-
         public Action<NeuronView> OnNeuronViewCreated;
 
         #region Constructor
@@ -103,6 +102,10 @@ namespace Editor
 
         #region Creation
 
+        /// <summary>
+        /// Create a NeuronView
+        /// </summary>
+        /// <param name="neuronObj">NeuronObj</param>
         public void CreateNeuronView(NeuronObj neuronObj)
         {
             var index = NetworkLayerObj.GetNeurons().FindIndex(n => n == neuronObj);
@@ -133,6 +136,9 @@ namespace Editor
 
         #endregion
 
+        /// <summary>
+        /// Triggers OnLayerSelected event
+        /// </summary>
         public override void OnSelected()
         {
             base.OnSelected();

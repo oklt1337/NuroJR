@@ -15,9 +15,7 @@ namespace Editor
 {
     public class NeuralNetworkView : GraphView
     {
-        public new class UxmlFactory : UxmlFactory<NeuralNetworkView, UxmlTraits>
-        {
-        }
+        public new class UxmlFactory : UxmlFactory<NeuralNetworkView, UxmlTraits> {}
 
         public NeuralNetworkObj NetworkObj;
 
@@ -26,7 +24,6 @@ namespace Editor
         public Action<NeuronView> OnNodeSelected;
         public Action<LayerView> OnLayerSelected;
         public Action<EdgeView> OnEdgeSelected;
-
         private Action<NeuronView> onNeuronViewCreated;
 
         #region Constructor
@@ -50,6 +47,10 @@ namespace Editor
 
         #region Graph
 
+        /// <summary>
+        /// Display View of Neural Network Object
+        /// </summary>
+        /// <param name="neuralNetworkObj">NeuralNetworkObj</param>
         public void PopulateView(NeuralNetworkObj neuralNetworkObj)
         {
             NetworkObj = neuralNetworkObj;
@@ -67,6 +68,9 @@ namespace Editor
             InitializeEvents(neuralNetworkObj);
         }
 
+        /// <summary>
+        /// Clears View
+        /// </summary>
         public void UnPopulateView()
         {
             RemoveEdgeViews();
@@ -74,6 +78,10 @@ namespace Editor
             RemoveLayerViews();
         }
         
+        /// <summary>
+        /// Fill view with data
+        /// </summary>
+        /// <param name="neuralNetworkObj">NeuralNetworkObj</param>
         private void InitializeView(NeuralNetworkObj neuralNetworkObj)
         {
             neuralNetworkObj.GetLayer().ForEach(CreateLayerView);
@@ -81,6 +89,10 @@ namespace Editor
             neuralNetworkObj.GetConnections().ForEach(CreateEdgeView);
         }
 
+        /// <summary>
+        /// Reconnect events
+        /// </summary>
+        /// <param name="neuralNetworkObj">NeuralNetworkObj</param>
         private static void InitializeEvents(NeuralNetworkObj neuralNetworkObj)
         {
             // Reconnect layer Events
@@ -90,6 +102,9 @@ namespace Editor
             }
         }
 
+        /// <summary>
+        /// Remove all EdgeViews 
+        /// </summary>
         private void RemoveEdgeViews()
         {
             var edgeViews = new List<EdgeView>();
@@ -110,6 +125,9 @@ namespace Editor
             }
         }
 
+        /// <summary>
+        /// Remove all NeuronViews
+        /// </summary>
         private void RemoveNeuronViews()
         {
             var neuronViews = new List<NeuronView>();
@@ -130,6 +148,9 @@ namespace Editor
             }
         }
 
+        /// <summary>
+        /// Remove all LayerViews
+        /// </summary>
         private void RemoveLayerViews()
         {
             var layerViews = new List<LayerView>();
@@ -150,6 +171,10 @@ namespace Editor
             }
         }
 
+        /// <summary>
+        /// Add GraphElement to List
+        /// </summary>
+        /// <param name="graphElement">GraphElement</param>
         private void AddElements(GraphElement graphElement)
         {
             if (graphElement == null)
@@ -159,6 +184,11 @@ namespace Editor
             _elements.Add(graphElement);
         }
 
+        /// <summary>
+        /// Handles the Change of the GraphView
+        /// </summary>
+        /// <param name="graphviewchange">GraphViewChange</param>
+        /// <returns>GraphViewChange</returns>
         private GraphViewChange OnGraphViewChanged(GraphViewChange graphviewchange)
         {
             graphviewchange.elementsToRemove?.ForEach(element =>
@@ -221,6 +251,10 @@ namespace Editor
             return graphviewchange;
         }
 
+        /// <summary>
+        /// Create Context Menu for Creating Hidden Layer
+        /// </summary>
+        /// <param name="evt">ContextualMenuPopulateEvent</param>
         public override void BuildContextualMenu(ContextualMenuPopulateEvent evt)
         {
             {
@@ -229,6 +263,12 @@ namespace Editor
             }
         }
 
+        /// <summary>
+        /// Get List of Compatible Ports
+        /// </summary>
+        /// <param name="startPort">Port</param>
+        /// <param name="nodeAdapter">NodeAdapter</param>
+        /// <returns>List Port</returns>
         public override List<Port> GetCompatiblePorts(Port startPort, NodeAdapter nodeAdapter)
         {
             return ports.ToList().Where(endPort =>
@@ -240,6 +280,9 @@ namespace Editor
 
         #region Layer
 
+        /// <summary>
+        /// Create Hidden Layer
+        /// </summary>
         private void CreateHiddenLayer()
         {
             if (NetworkObj == null)
@@ -247,6 +290,10 @@ namespace Editor
             NetworkObj.CreateLayer(typeof(HiddenLayerObj));
         }
 
+        /// <summary>
+        /// Create Layer View
+        /// </summary>
+        /// <param name="networkLayerObj">NetworkLayerObj</param>
         private void CreateLayerView(NetworkLayerObj networkLayerObj)
         {
             var layerView = new LayerView(networkLayerObj)
@@ -273,11 +320,19 @@ namespace Editor
             SortLayer();
         }
 
+        /// <summary>
+        /// Find Layer View by GUID
+        /// </summary>
+        /// <param name="layerObj">NetworkLayerObj</param>
+        /// <returns>LayerView</returns>
         private LayerView FindLayerView(NetworkLayerObj layerObj)
         {
             return GetNodeByGuid(layerObj.guid) as LayerView;
         }
 
+        /// <summary>
+        /// Sort Layer
+        /// </summary>
         private void SortLayer()
         {
             if (NetworkObj.GetLayer().Count < 2)
@@ -316,6 +371,10 @@ namespace Editor
 
         #region Node
 
+        /// <summary>
+        /// Restores Neuron View
+        /// </summary>
+        /// <param name="layerObj">NetworkLayerObj</param>
         private void RestoreNeuronView(NetworkLayerObj layerObj)
         {
             var layerView = FindLayerView(layerObj);
@@ -325,11 +384,19 @@ namespace Editor
             }
         }
 
-        private NeuronView FindNodeView(NeuronObj neuronObj)
+        /// <summary>
+        /// Find Neuron View by GUID
+        /// </summary>
+        /// <param name="neuronObj">NeuronObj</param>
+        /// <returns>NeuronView</returns>
+        private NeuronView FindNeuronView(NeuronObj neuronObj)
         {
             return GetNodeByGuid(neuronObj.guid) as NeuronView;
         }
 
+        /// <summary>
+        /// Sort Neurons
+        /// </summary>
         private void SortNeurons()
         {
             var neurons = new List<NeuronObj>();
@@ -348,7 +415,7 @@ namespace Editor
                 }
             }
 
-            foreach (var nodeView in neurons.Select(FindNodeView))
+            foreach (var nodeView in neurons.Select(FindNeuronView))
             {
                 nodeView.RemapView();
             }
@@ -358,6 +425,10 @@ namespace Editor
 
         #region Edge
 
+        /// <summary>
+        /// Create Edge
+        /// </summary>
+        /// <param name="neuronView">NeuronView</param>
         private void CreateEdge(NeuronView neuronView)
         {
             var neuron = neuronView.NeuronObj;
@@ -380,6 +451,11 @@ namespace Editor
             }
         }
 
+        /// <summary>
+        /// Check if Edge already Exists
+        /// </summary>
+        /// <param name="connection">Object</param>
+        /// <returns>true == exists</returns>
         private bool CheckIfEdgeExists(Object connection)
         {
             var edgeViews = new List<EdgeView>();
@@ -392,6 +468,9 @@ namespace Editor
             return edgeViews.Any(edgeView => edgeView.ConnectionObj == connection);
         }
 
+        /// <summary>
+        /// Remove old Edges
+        /// </summary>
         private void RemoveOldEdges()
         {
             var edgeViews = (from element in _elements
@@ -408,10 +487,14 @@ namespace Editor
             }
         }
 
+        /// <summary>
+        /// Create EdgeView
+        /// </summary>
+        /// <param name="connectionObj">ConnectionObj</param>
         private void CreateEdgeView(ConnectionObj connectionObj)
         {
-            var parentView = FindNodeView(connectionObj.GetParent());
-            var childView = FindNodeView(connectionObj.GetChild());
+            var parentView = FindNeuronView(connectionObj.GetParent());
+            var childView = FindNeuronView(connectionObj.GetChild());
 
             if (parentView == null || childView == null)
                 return;

@@ -6,12 +6,14 @@ namespace Editor
 {
     public class InspectorView : VisualElement
     {
-        public new class UxmlFactory : UxmlFactory<InspectorView, UxmlTraits>
-        {
-        }
+        public new class UxmlFactory : UxmlFactory<InspectorView, UxmlTraits> {}
 
         private UnityEditor.Editor _editor;
 
+        /// <summary>
+        /// Fill Editor with Neural Network Object Stats
+        /// </summary>
+        /// <param name="neuralNetworkObj">NeuralNetworkObj</param>
         public void ShowStats(NeuralNetworkObj neuralNetworkObj)
         {
             Clear();
@@ -34,6 +36,10 @@ namespace Editor
             Add(container);
         }
 
+        /// <summary>
+        /// Fill Editor with Neuron Object
+        /// </summary>
+        /// <param name="neuronView">NeuronView</param>
         public void UpdateSelection(NeuronView neuronView)
         {
             Clear();
@@ -56,6 +62,10 @@ namespace Editor
             Add(container);
         }
 
+        /// <summary>
+        /// Fill Editor with Network Layer Object
+        /// </summary>
+        /// <param name="layerView">LayerView</param>
         public void UpdateSelection(LayerView layerView)
         {
             Clear();
@@ -78,6 +88,10 @@ namespace Editor
             Add(container);
         }
 
+        /// <summary>
+        /// Fill Editor with Connection Object
+        /// </summary>
+        /// <param name="edgeView">EdgeView</param>
         public void UpdateSelection(EdgeView edgeView)
         {
             Clear();

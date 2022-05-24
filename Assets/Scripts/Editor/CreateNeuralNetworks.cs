@@ -8,6 +8,9 @@ namespace Editor
 {
     public static class CreateNeuralNetworks
     {
+        /// <summary>
+        /// Create a Neural Network Object
+        /// </summary>
         public static void CreateNewNeuralNetwork()
         {
             if (AssetDatabase.IsValidFolder("Assets/Resources"))
@@ -33,6 +36,10 @@ namespace Editor
             network.CreateLayer(typeof(OutputLayerObj));
         }
 
+        /// <summary>
+        /// Checks if the Name in the Path is Taken
+        /// </summary>
+        /// <returns>string Name of Neural Network</returns>
         private static string CheckName()
         {
             var networks = Resources.FindObjectsOfTypeAll<NeuralNetworkObj>();

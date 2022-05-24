@@ -1,5 +1,4 @@
 ﻿using System;
-using Neural_Network;
 using Neural_Network.Connection;
 using UnityEditor.Experimental.GraphView;
 
@@ -15,12 +14,19 @@ namespace Editor
             capabilities = Capabilities.Selectable;
         }
 
+        /// <summary>
+        /// Triggers OnEdgeSelected event
+        /// </summary>
         public override void OnSelected()
         {
             base.OnSelected();
             OnEdgeSelected?.Invoke(this);
         }
 
+        /// <summary>
+        /// Sets the Connection Object
+        /// </summary>
+        /// <param name="connectionObj">ConnectionObj</param>
         public void SetConnection(ConnectionObj connectionObj)
         {
             ConnectionObj = connectionObj;

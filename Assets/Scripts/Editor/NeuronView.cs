@@ -34,6 +34,10 @@ namespace Editor
 
         #region Position
 
+        /// <summary>
+        /// Set Position of Neuron Object
+        /// </summary>
+        /// <param name="newPos">Rect</param>
         public override void SetPosition(Rect newPos)
         {
             base.SetPosition(newPos);
@@ -42,6 +46,9 @@ namespace Editor
             NeuronObj.neuronPosition.y = newPos.yMin;
         }
         
+        /// <summary>
+        /// Set Position of NeuronView
+        /// </summary>
         public void RemapView()
         {
             style.left = NeuronObj.neuronPosition.x;
@@ -52,6 +59,9 @@ namespace Editor
 
         #region Ports
 
+        /// <summary>
+        /// Instantiate Input ports
+        /// </summary>
         private void CreateInputPorts()
         {
             if (NeuronObj.GetType() == typeof(HiddenNeuronObj) || NeuronObj.GetType() == typeof(OutputNeuronObj))
@@ -64,6 +74,9 @@ namespace Editor
             inputContainer.Add(Input);
         }
 
+        /// <summary>
+        /// Instantiate Output ports
+        /// </summary>
         private void CreateOutputPorts()
         {
             if (NeuronObj.GetType() == typeof(HiddenNeuronObj) || NeuronObj.GetType() == typeof(InputNeuronObj))
@@ -78,6 +91,9 @@ namespace Editor
 
         #endregion
         
+        /// <summary>
+        /// Triggers OnNodeSelected event
+        /// </summary>
         public override void OnSelected()
         {
             base.OnSelected();
