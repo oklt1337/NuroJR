@@ -69,6 +69,12 @@ namespace Neural_Network
 
         #endregion
 
+        #region Public Methods
+
+        /// <summary>
+        /// Initialize Neural Network form Reference Object
+        /// </summary>
+        /// <param name="networkObj">NeuralNetworkObj</param>
         public void Initialize(NeuralNetworkObj networkObj)
         {
             // initialize 
@@ -117,7 +123,115 @@ namespace Neural_Network
                 }
             }
         }
+        
+        /// <summary>
+        /// Set input of Neural Network
+        /// </summary>
+        /// <param name="inputs">IEnumerable float</param>
+        public void SetInputs(IEnumerable<float> inputs)
+        {
+            foreach (var input in inputs)
+            {
+                for (var i = 0; i < layers[0].neurons.Length; i++)
+                {
+                    layers[0].neurons[i] = input;
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Generate Outputs
+        /// </summary>
+        /// <returns>float[] Outputs</returns>
+        public float[] FeedForward()
+        {
+            ResetValues();
 
+            for (var i = 0; i < layers.Count; i++)
+            {
+                if (i + 1 < layers.Count)
+                {
+                    SetInputs(i, GenerateInputs(i));
+                }
+            }
+
+            var output = layers.Last().neurons;
+            return output;
+        }
+        
+        /// <summary>
+        /// Mutate the Network
+        /// </summary>
+        /// <param name="mutationChance">float</param>
+        /// <param name="mutationStrength">float</param>
+        public void Mutate(float mutationChance, float mutationStrength)
+        {
+            // Mutate Bias
+            for (var i = 0; i < layers.Count; i++)
+            {
+                if (i == 0 || i == layers.Count - 1)
+                    continue;
+
+                for (var j = 0; j < layers[i].bias.Length; j++)
+                {
+                    if (UnityEngine.Random.Range(0f, 1f) < mutationChance)
+                    {
+                        layers[i].bias[j] += UnityEngine.Random.Range(-mutationStrength, mutationStrength);
+                    }
+                }
+            }
+
+            // Mutate Weight
+            foreach (var weight in Weights)
+            {
+                for (var j = 0; j < weight.GetLength(0); j++)
+                {
+                    for (var k = 0; k < weight.GetLength(1); k++)
+                    {
+                        if (UnityEngine.Random.Range(0f, 1f) < mutationChance)
+                        {
+                            weight[j, k] += UnityEngine.Random.Range(-mutationStrength, mutationStrength);
+                        }
+                    }
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Copy Neural Network Values to this one.
+        /// </summary>
+        /// <param name="neuralNetwork">NeuralNetwork</param>
+        public void Copy(NeuralNetwork neuralNetwork)
+        {
+            Name = neuralNetwork.Name;
+            fitness = neuralNetwork.fitness;
+            generation = neuralNetwork.generation;
+            timeAlive = neuralNetwork.timeAlive;
+
+            for (var i = 0; i < neuralNetwork.Weights.Count; i++)
+            {
+                for (var j = 0; j < neuralNetwork.Weights[i].GetLength(0); j++)
+                {
+                    for (var k = 0; k < neuralNetwork.Weights[i].GetLength(1); k++)
+                    {
+                        Weights[i][j, k] = neuralNetwork.Weights[i][j, k];
+                    }
+                }
+            }
+
+            for (var i = 0; i < neuralNetwork.Layers.Count; i++)
+            {
+                for (var j = 0; j < neuralNetwork.Layers[i].bias.Length; j++)
+                {
+                    layers[i].bias[j] = neuralNetwork.Layers[i].bias[j];
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Load Values from Reference
+        /// </summary>
+        /// <param name="networkObj">NeuralNetworkObj</param>
         public void Load(NeuralNetworkObj networkObj)
         {
             Initialize(networkObj);
@@ -154,38 +268,31 @@ namespace Neural_Network
                 }
             }
         }
-
-        public void SetInputs(IEnumerable<float> inputs)
+        
+        /// <summary>
+        /// Compare Neural Network
+        /// </summary>
+        /// <param name="other">NeuralNetwork</param>
+        /// <returns>int</returns>
+        public int CompareTo(NeuralNetwork other)
         {
-            foreach (var input in inputs)
-            {
-                for (var i = 0; i < layers[0].neurons.Length; i++)
-                {
-                    layers[0].neurons[i] = input;
-                }
-            }
+            if (other == null)
+                return 1;
+
+            if (fitness > other.fitness)
+                return 1;
+            if (fitness < other.fitness)
+                return -1;
+            return 0;
         }
+
+        #endregion
+
+        #region Private Methods
 
         /// <summary>
-        /// Generate Outputs
+        /// Reset Values of Neural Network to 0
         /// </summary>
-        /// <returns>float[] Outputs</returns>
-        public float[] FeedForward()
-        {
-            ResetValues();
-
-            for (var i = 0; i < layers.Count; i++)
-            {
-                if (i + 1 < layers.Count)
-                {
-                    SetInputs(i, GenerateInputs(i));
-                }
-            }
-
-            var output = layers.Last().neurons;
-            return output;
-        }
-
         private void ResetValues()
         {
             for (var i = 1; i < layers.Count; i++)
@@ -196,7 +303,12 @@ namespace Neural_Network
                 }
             }
         }
-
+        
+        /// <summary>
+        /// Generate Inputs for Next Layer
+        /// </summary>
+        /// <param name="i">int</param>
+        /// <returns>float[]</returns>
         private float[] GenerateInputs(int i)
         {
             var input = new float[layers[i + 1].neurons.Length];
@@ -220,6 +332,11 @@ namespace Neural_Network
             return input;
         }
 
+        /// <summary>
+        /// Set Input to Layer
+        /// </summary>
+        /// <param name="i">int</param>
+        /// <param name="input">IReadOnlyList float</param>
         private void SetInputs(int i, IReadOnlyList<float> input)
         {
             for (var j = 0; j < layers[i + 1].neurons.Length; j++)
@@ -228,6 +345,12 @@ namespace Neural_Network
             }
         }
 
+        /// <summary>
+        /// Use ActivationFunction on values
+        /// </summary>
+        /// <param name="value">float</param>
+        /// <returns>float</returns>
+        /// <exception cref="ArgumentOutOfRangeException">algorithm == null</exception>
         private float ActivationFunction(float value)
         {
             return algorithm switch
@@ -239,21 +362,46 @@ namespace Neural_Network
             };
         }
 
+        #region ActivationFunctions
+
+        /// <summary>
+        /// Sigmoid function
+        /// </summary>
+        /// <param name="value">float</param>
+        /// <returns>float</returns>
         private float Sigmoid(float value)
         {
             return (float)(1.0 / (1.0 + Math.Pow(Math.E, -value)));
         }
 
+        /// <summary>
+        /// TanH function
+        /// </summary>
+        /// <param name="value">float</param>
+        /// <returns>float</returns>
         private float TanH(float value)
         {
             return (float)Math.Tanh(value);
         }
 
+        /// <summary>
+        /// ReLu function
+        /// </summary>
+        /// <param name="value">float</param>
+        /// <returns>float</returns>
         private float ReLu(float value)
         {
             return Math.Max(0, value);
         }
 
+        #endregion
+        
+        /// <summary>
+        /// Get Float between two floats
+        /// </summary>
+        /// <param name="min">float</param>
+        /// <param name="max">float</param>
+        /// <returns>float</returns>
         private static float NextFloat(float min, float max)
         {
             var random = new System.Random();
@@ -261,77 +409,7 @@ namespace Neural_Network
             return (float)val;
         }
 
-        public void Mutate(float mutationChance, float mutationStrength)
-        {
-            // Mutate Bias
-            for (var i = 0; i < layers.Count; i++)
-            {
-                if (i == 0 || i == layers.Count - 1)
-                    continue;
-
-                for (var j = 0; j < layers[i].bias.Length; j++)
-                {
-                    if (UnityEngine.Random.Range(0f, 1f) < mutationChance)
-                    {
-                        layers[i].bias[j] += UnityEngine.Random.Range(-mutationStrength, mutationStrength);
-                    }
-                }
-            }
-
-            // Mutate Weight
-            foreach (var weight in Weights)
-            {
-                for (var j = 0; j < weight.GetLength(0); j++)
-                {
-                    for (var k = 0; k < weight.GetLength(1); k++)
-                    {
-                        if (UnityEngine.Random.Range(0f, 1f) < mutationChance)
-                        {
-                            weight[j, k] += UnityEngine.Random.Range(-mutationStrength, mutationStrength);
-                        }
-                    }
-                }
-            }
-        }
-
-        public int CompareTo(NeuralNetwork other)
-        {
-            if (other == null)
-                return 1;
-
-            if (fitness > other.fitness)
-                return 1;
-            if (fitness < other.fitness)
-                return -1;
-            return 0;
-        }
-
-        public void Copy(NeuralNetwork neuralNetwork)
-        {
-            Name = neuralNetwork.Name;
-            fitness = neuralNetwork.fitness;
-            generation = neuralNetwork.generation;
-            timeAlive = neuralNetwork.timeAlive;
-
-            for (var i = 0; i < neuralNetwork.Weights.Count; i++)
-            {
-                for (var j = 0; j < neuralNetwork.Weights[i].GetLength(0); j++)
-                {
-                    for (var k = 0; k < neuralNetwork.Weights[i].GetLength(1); k++)
-                    {
-                        Weights[i][j, k] = neuralNetwork.Weights[i][j, k];
-                    }
-                }
-            }
-
-            for (var i = 0; i < neuralNetwork.Layers.Count; i++)
-            {
-                for (var j = 0; j < neuralNetwork.Layers[i].bias.Length; j++)
-                {
-                    layers[i].bias[j] = neuralNetwork.Layers[i].bias[j];
-                }
-            }
-        }
+        #endregion
 
         [Serializable]
         public struct NetworkLayer

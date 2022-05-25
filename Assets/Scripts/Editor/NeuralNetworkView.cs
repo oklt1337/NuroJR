@@ -84,8 +84,8 @@ namespace Editor
         /// <param name="neuralNetworkObj">NeuralNetworkObj</param>
         private void InitializeView(NeuralNetworkObj neuralNetworkObj)
         {
-            neuralNetworkObj.GetLayer().ForEach(CreateLayerView);
-            neuralNetworkObj.GetLayer().ForEach(RestoreNeuronView);
+            neuralNetworkObj.GetLayers().ForEach(CreateLayerView);
+            neuralNetworkObj.GetLayers().ForEach(RestoreNeuronView);
             neuralNetworkObj.GetConnections().ForEach(CreateEdgeView);
         }
 
@@ -335,15 +335,15 @@ namespace Editor
         /// </summary>
         private void SortLayer()
         {
-            if (NetworkObj.GetLayer().Count < 2)
+            if (NetworkObj.GetLayers().Count < 2)
                 return;
 
             var layers = new List<NetworkLayerObj>();
-            foreach (var layer in NetworkObj.GetLayer().Where(layer => layer != null))
+            foreach (var layer in NetworkObj.GetLayers().Where(layer => layer != null))
             {
                 layers.Add(layer);
 
-                var index = NetworkObj.GetLayer().FindIndex(l => l == layer);
+                var index = NetworkObj.GetLayers().FindIndex(l => l == layer);
                 if (index != -1)
                 {
                     switch (layer)
@@ -401,7 +401,7 @@ namespace Editor
         {
             var neurons = new List<NeuronObj>();
 
-            foreach (var layer in NetworkObj.GetLayer())
+            foreach (var layer in NetworkObj.GetLayers())
             {
                 foreach (var neuron in layer.GetNeurons())
                 {

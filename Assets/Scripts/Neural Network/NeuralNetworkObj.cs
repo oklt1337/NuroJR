@@ -29,6 +29,11 @@ namespace Neural_Network
 
         #region Layer
 
+        /// <summary>
+        /// Create A Layer and add it to Asset
+        /// Invoke OnLayerCreated Event
+        /// </summary>
+        /// <param name="type">Type</param>
         public void CreateLayer(Type type)
         {
             // Make sure not to many Layers can be added.
@@ -53,6 +58,10 @@ namespace Neural_Network
             layer.CreateNeuron();
         }
 
+        /// <summary>
+        /// Remove Layer and DeprecatedObjects from Asset and List
+        /// </summary>
+        /// <param name="networkLayerObj">NetworkLayerObj</param>
         public void RemoveLayer(NetworkLayerObj networkLayerObj)
         {
             RemoveDeprecatedObjects(networkLayerObj);
@@ -60,11 +69,19 @@ namespace Neural_Network
             layersObj.Remove(networkLayerObj);
         }
 
-        public List<NetworkLayerObj> GetLayer()
+        /// <summary>
+        /// Get Layers
+        /// </summary>
+        /// <returns>List NetworkLayerObj</returns>
+        public List<NetworkLayerObj> GetLayers()
         {
             return layersObj;
         }
 
+        /// <summary>
+        /// Connect Layer and Neuron Events
+        /// </summary>
+        /// <param name="layerObj">NetworkLayerObj</param>
         public void ConnectEvents(NetworkLayerObj layerObj)
         {
             layerObj.OnNeuronCreated += CheckConnections;
@@ -77,6 +94,9 @@ namespace Neural_Network
             }
         }
 
+        /// <summary>
+        /// Generate New GUIDs for NeuronObjs and LayerObjs
+        /// </summary>
         public void GenerateNewGuids()
         {
             foreach (var layerObj in layersObj)
@@ -90,6 +110,10 @@ namespace Neural_Network
             }
         }
 
+        /// <summary>
+        /// Removes Deprecated Objects
+        /// </summary>
+        /// <param name="networkLayerObj">NetworkLayerObj</param>
         private void RemoveDeprecatedObjects(NetworkLayerObj networkLayerObj)
         {
             var deprecatedNeurons = networkLayerObj.GetNeurons();
@@ -108,11 +132,20 @@ namespace Neural_Network
 
         #region Connections
 
+        /// <summary>
+        /// Get Connections
+        /// </summary>
+        /// <returns>List ConnectionObj</returns>
         public List<ConnectionObj> GetConnections()
         {
             return connectionsObj;
         }
 
+        /// <summary>
+        /// Create ConnectionObj and add it to List and Asset
+        /// </summary>
+        /// <param name="parent">NeuronObj</param>
+        /// <param name="child">NeuronObj</param>
         private void CreateConnection(NeuronObj parent, NeuronObj child)
         {
             var connection = CreateInstance<ConnectionObj>();
@@ -131,6 +164,10 @@ namespace Neural_Network
             AssetDatabase.SaveAssets();
         }
 
+        /// <summary>
+        /// Remove Connection form Asset and List
+        /// </summary>
+        /// <param name="connectionObj">ConnectionObj</param>
         private void RemoveConnection(ConnectionObj connectionObj)
         {
             connectionsObj.Remove(connectionObj);
@@ -138,6 +175,10 @@ namespace Neural_Network
             connectionObj.DeleteConnection();
         }
 
+        /// <summary>
+        /// Reconnect Neurons in Layer with next and previous Layer
+        /// </summary>
+        /// <param name="networkLayerObj">NetworkLayerObj</param>
         private void ReconnectLayer(NetworkLayerObj networkLayerObj)
         {
             var index = layersObj.FindIndex(x => x == networkLayerObj);
@@ -153,10 +194,13 @@ namespace Neural_Network
             {
                 CheckConnections(neuronObj);
             }
-
-            Debug.Log($"{layersObj[index - 1].name} and {layersObj[index].name} got reconnected.");
         }
 
+        /// <summary>
+        /// Checks if Connections are missing and creates them.
+        /// Invoke OnConnectionCreated Event
+        /// </summary>
+        /// <param name="neuronObj"></param>
         private void CheckConnections(NeuronObj neuronObj)
         {
             // get layer of neuron
@@ -219,6 +263,11 @@ namespace Neural_Network
             OnConnectionCreated?.Invoke(neuronObj);
         }
 
+        /// <summary>
+        /// Creates a Multiple Connections between two layer
+        /// </summary>
+        /// <param name="parent">NetworkLayerObj</param>
+        /// <param name="child">NetworkLayerObj</param>
         private void CreateConnections(NetworkLayerObj parent, NetworkLayerObj child)
         {
             var parentNeurons = parent.GetNeurons();
@@ -238,6 +287,10 @@ namespace Neural_Network
             }
         }
 
+        /// <summary>
+        /// Removes Deprecated Objects
+        /// </summary>
+        /// <param name="neuronObj">NeuronObj</param>
         private void RemoveDeprecatedObjects(NeuronObj neuronObj)
         {
             var deprecatedConnections = connectionsObj.Where(connection =>
@@ -247,14 +300,17 @@ namespace Neural_Network
             {
                 RemoveConnection(deprecatedConnections[i]);
             }
-
-            Debug.Log("Deprecated Connections got deleted.");
         }
 
         #endregion
 
         #region General
 
+        /// <summary>
+        /// Saves Values of Neural Network in Scriptable Object
+        /// </summary>
+        /// <param name="network">NeuralNetwork</param>
+        /// <returns>bool false == couldn't save</returns>
         public bool Save(NeuralNetwork network)
         {
             if (network.Layers.Count != layersObj.Count)

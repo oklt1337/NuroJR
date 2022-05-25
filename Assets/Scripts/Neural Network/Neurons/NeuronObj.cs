@@ -14,6 +14,10 @@ namespace Neural_Network.Neurons
 
         public Action<NeuronObj> OnDelete;
 
+        /// <summary>
+        /// Delete Neuron from Asset
+        /// Invoke OnDelete Event
+        /// </summary>
         public void DeleteNeuron()
         {
             OnDelete?.Invoke(this);
@@ -21,6 +25,9 @@ namespace Neural_Network.Neurons
             AssetDatabase.SaveAssets();
         }
 
+        /// <summary>
+        /// Generate a GUID
+        /// </summary>
         public void GenerateNewGuid()
         {
             guid = GUID.Generate().ToString();

@@ -2,7 +2,6 @@
 using Neural_Network.Neurons;
 using UnityEditor;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 namespace Neural_Network.Connection
 {
@@ -25,46 +24,40 @@ namespace Neural_Network.Connection
             AssetDatabase.SaveAssets();
         }
         
+        /// <summary>
+        /// Add Child
+        /// </summary>
+        /// <param name="neuronObj">NeuronObj</param>
         public void AddChild(NeuronObj neuronObj)
         {
             child = neuronObj;
         }
 
+        /// <summary>
+        /// Add Parent
+        /// </summary>
+        /// <param name="neuronObj">NeuronObj</param>
         public void AddParent(NeuronObj neuronObj)
         {
             parent = neuronObj;
         }
 
+        /// <summary>
+        /// Get Child
+        /// </summary>
+        /// <returns>NeuronObj</returns>
         public NeuronObj GetChild()
         {
             return child;
         }
         
+        /// <summary>
+        /// Get Parent
+        /// </summary>
+        /// <returns>NeuronObj</returns>
         public NeuronObj GetParent()
         {
             return parent;
         }
-
-        public Connection Clone(bool random)
-        {
-            if (random)
-                weight = Random.Range(-1, 1);
-
-            var connection = new Connection
-            {
-                Weight = weight,
-                ChildObj = GetChild(),
-                ParentObj = GetParent()
-            };
-
-            return connection;
-        }
-    }
-
-    public class Connection
-    {
-        public float Weight;
-        public NeuronObj ParentObj { get; set; }
-        public NeuronObj ChildObj { get; set; }
     }
 }

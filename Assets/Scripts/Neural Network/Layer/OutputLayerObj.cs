@@ -8,6 +8,10 @@ namespace Neural_Network.Layer
     {
         [HideInInspector] public Vector2 position = new(150, 0);
 
+        /// <summary>
+        /// Create a OutputNeuron and add it to Asset
+        /// Invoke OnNeuronCreated Event
+        /// </summary>
         public override void CreateNeuron()
         {
             // Make sure not to many Neurons can be added.
