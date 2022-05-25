@@ -13,12 +13,17 @@ namespace Test_Environment.Scripts.Pipes
         private bool _init;
         private float _timer;
         
+        public Action<PipesMovementBehaviour> OnDelete;
+
+        #region Properties
+
         public Vector2 Top => top.position;
         public Vector2 Bottom => bottom.position;
-
         private float Speed { get; set; }
 
-        public Action<PipesMovementBehaviour> OnDelete;
+        #endregion
+
+        #region Unity Methods
 
         private void Update()
         {
@@ -40,16 +45,30 @@ namespace Test_Environment.Scripts.Pipes
             learner.Alive = false;
         }
 
+        #endregion
+
+        #region Public Methods
+
+        /// <summary>
+        /// Initialize Pipe
+        /// </summary>
+        /// <param name="givenSpeed"></param>
         public void Initialize(float givenSpeed)
         {
             Speed = givenSpeed;
             _init = true;
         }
 
+        /// <summary>
+        /// Destroy Pipe
+        /// Invoke OnDelete Event
+        /// </summary>
         public void Delete()
         {
             OnDelete?.Invoke(this);
             Destroy(gameObject);
         }
+
+        #endregion
     }
 }

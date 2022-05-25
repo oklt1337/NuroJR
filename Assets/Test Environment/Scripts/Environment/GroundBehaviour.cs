@@ -10,8 +10,10 @@ namespace Test_Environment.Scripts.Environment
         [SerializeField] private float speed;
 
         private Vector3 _startPos;
-        private float _restPos;
+        private float _resetPos;
         private float _currenSpeed;
+
+        #region Unity Methods
 
         private void Awake()
         {
@@ -28,7 +30,7 @@ namespace Test_Environment.Scripts.Environment
             CheckRest();
             Move();
         }
-
+        
         private void OnTriggerEnter2D(Collider2D other)
         {
             if (!other.CompareTag("Learner")) 
@@ -37,23 +39,39 @@ namespace Test_Environment.Scripts.Environment
             learner.Alive = false;
         }
 
+        #endregion
+
+        #region Private Methods
+
+        /// <summary>
+        /// Moves Ground to left
+        /// </summary>
         private void Move()
         {
             transform.position += Vector3.left * (_currenSpeed * Time.deltaTime);
         }
 
+        /// <summary>
+        /// Resets Position
+        /// </summary>
         private void CheckRest()
         {
-            if (!(transform.position.x < _restPos))
+            if (!(transform.position.x < _resetPos)) 
                 return;
+            
             var myTransform = transform;
             myTransform.position = new Vector3(_startPos.x, _startPos.y, myTransform.position.z);
         }
 
+        /// <summary>
+        /// Reset Speed and Position
+        /// </summary>
         private void ResetValues()
         {
             transform.position = _startPos;
             _currenSpeed = speed;
         }
+
+        #endregion
     }
 }

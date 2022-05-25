@@ -9,12 +9,20 @@ namespace Test_Environment.Scripts.Player
     {
         [SerializeField] private PlayerController playerController;
 
+        /// <summary>
+        /// Process Outputs
+        /// </summary>
+        /// <param name="outputs">float[]</param>
         protected override void Action(float[] outputs)
         {
             if (outputs[0] < outputs[1])
                 playerController.Jump();
         }
 
+        /// <summary>
+        /// generate The Inputs for the Neural Network
+        /// </summary>
+        /// <returns>float[]</returns>
         protected override float[] GenerateInputs()
         {
             var hit = Physics2D.Raycast(playerController.RayOrigin, Vector2.right);
@@ -22,15 +30,15 @@ namespace Test_Environment.Scripts.Player
             var firstPositionBottom =
                 new Vector2(playerController.Bottom.x, PipeManager.Instance.pipes.First().Bottom.y);
 
-            var distanceVerticalTop = Vector2.Distance(firstPositionTop, playerController.Top);
-            var distanceVerticalBottom = Vector2.Distance(firstPositionBottom, playerController.Bottom);
+            var distanceVerticalTop = Vector2.Distance(firstPositionTop, playerController.Top); // Distance Learner and Pipes TopOpening 
+            var distanceVerticalBottom = Vector2.Distance(firstPositionBottom, playerController.Bottom); // Distance Learner and Pipes BottomOpening 
             
             float distanceHorizontal = 0;
             if (hit.collider != null)
             {
                 if (hit.collider.CompareTag("PipeDistance"))
                 {
-                    distanceHorizontal = hit.distance;
+                    distanceHorizontal = hit.distance; // Distance Learner and left of Pipe
                 }
                     
             }

@@ -17,21 +17,19 @@ namespace Test_Environment.Scripts.Player
         [SerializeField] private float fitnessToAdd = 1f;
         [SerializeField] private float fitnessMultiplier = 2f;
 
+        private float timer;
+
+        #region Proiperties
+
         public Vector2 RayOrigin => rayOrigin.position;
         public Vector2 Top => top.position;
         public Vector2 Bottom => bottom.position;
         public Rigidbody2D Rigidbody2D => rb2D;
 
-        private float timer;
+        #endregion
 
-        /// <summary>
-        /// Makes Player Jump.
-        /// </summary>
-        public void Jump()
-        {
-            rb2D.velocity = Vector2.up * velocity;
-        }
-        
+        #region Unity Methods
+
         private void FixedUpdate()
         {
             if (timer >= fitnessInterval)
@@ -58,6 +56,16 @@ namespace Test_Environment.Scripts.Player
             {
                 timer += Time.fixedDeltaTime;
             }
+        }
+
+        #endregion
+
+        /// <summary>
+        /// Makes Player Jump.
+        /// </summary>
+        public void Jump()
+        {
+            rb2D.velocity = Vector2.up * velocity;
         }
     }
 }

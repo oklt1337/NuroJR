@@ -11,6 +11,8 @@ namespace Test_Environment.Scripts.Pipes
     {
         public static PipeManager Instance;
 
+        [SerializeField, Tooltip("If false all pipes will have different spawn Heights")]
+        private bool pipesAtSameHeight;
         [SerializeField] private float spawnTime;
         [SerializeField] private float minHeight;
         [SerializeField] private float maxHeight;
@@ -22,7 +24,8 @@ namespace Test_Environment.Scripts.Pipes
 
         private float _timer;
         private bool _spawn;
-        private int pipesindex;
+
+        #region Unity Methods
 
         private void Awake()
         {
@@ -35,12 +38,6 @@ namespace Test_Environment.Scripts.Pipes
 
             NetworkHandler.OnNewGenerationCreated += Restart;
             InstantiatePipe();
-        }
-
-        private void ResetValues()
-        {
-            pipesindex = 0;
-            _timer = spawnTime;
         }
 
         private void Update()
@@ -56,18 +53,33 @@ namespace Test_Environment.Scripts.Pipes
             }
         }
 
+        #endregion
+
+        #region Private Methods
+
+        /// <summary>
+        /// Instantiate Pipe at Same Level
+        /// </summary>
         private void InstantiatePipe()
         {
-            var pos = spawnPos.position + Vector3.down; //+ new Vector3(0, Random.Range(minHeight, maxHeight), 0);
+            Vector3 pos;
+            var position = spawnPos.position;
+            if (pipesAtSameHeight)
+                pos = position + Vector3.down;
+            else
+                pos = position + Vector3.down + new Vector3(0, Random.Range(minHeight, maxHeight), 0);
+
             var pipesMovementBehaviour = Instantiate(prefab, pos, Quaternion.identity, parent)
                 .GetComponent<PipesMovementBehaviour>();
-
             pipesMovementBehaviour.Initialize(speed);
             pipesMovementBehaviour.OnDelete += behaviour => pipes.Remove(behaviour);
             pipes.Add(pipesMovementBehaviour);
-            pipesindex++;
         }
 
+        /// <summary>
+        /// Restart
+        /// Destroy all pipes and ResetValues
+        /// </summary>
         private void Restart()
         {
             for (var i = pipes.Count - 1; i >= 0; i--)
@@ -81,5 +93,15 @@ namespace Test_Environment.Scripts.Pipes
             pipes.Clear();
             ResetValues();
         }
+
+        /// <summary>
+        /// Reset Time
+        /// </summary>
+        private void ResetValues()
+        {
+            _timer = spawnTime;
+        }
+
+        #endregion
     }
 }
