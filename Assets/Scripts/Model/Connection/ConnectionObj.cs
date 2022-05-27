@@ -1,9 +1,9 @@
 ﻿using System;
-using Neural_Network.Neurons;
+using Model.Neurons;
 using UnityEditor;
 using UnityEngine;
 
-namespace Neural_Network.Connection
+namespace Model.Connection
 {
     public class ConnectionObj : ScriptableObject
     {

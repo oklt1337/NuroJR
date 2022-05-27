@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
-using Neural_Network.Neurons;
+using Model.Neurons;
 using UnityEditor;
 using UnityEngine;
 
-namespace Neural_Network.Layer
+namespace Model.Layer
 {
     public abstract class NetworkLayerObj : ScriptableObject
     {

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace Neural_Network.Neurons
+namespace Model.Neurons
 {
     public class HiddenNeuronObj : NeuronObj
     {

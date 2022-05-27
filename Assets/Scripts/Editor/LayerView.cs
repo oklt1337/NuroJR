@@ -1,6 +1,6 @@
 ﻿using System;
-using Neural_Network.Layer;
-using Neural_Network.Neurons;
+using Model.Layer;
+using Model.Neurons;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;

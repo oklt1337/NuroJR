@@ -1,13 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Neural_Network.Connection;
-using Neural_Network.Layer;
-using Neural_Network.Neurons;
+using Controller;
+using Model.Connection;
+using Model.Layer;
+using Model.Neurons;
 using UnityEditor;
 using UnityEngine;
 
-namespace Neural_Network
+namespace Model
 {
     public class NeuralNetworkObj : ScriptableObject
     {

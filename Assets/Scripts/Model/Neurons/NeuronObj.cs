@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
-using Neural_Network.Connection;
+using Model.Connection;
 using UnityEditor;
 using UnityEngine;
 
-namespace Neural_Network.Neurons
+namespace Model.Neurons
 {
     public abstract class NeuronObj : ScriptableObject
     {

@@ -1,5 +1,5 @@
 ﻿using System;
-using Neural_Network.Connection;
+using Model.Connection;
 using UnityEditor.Experimental.GraphView;
 
 namespace Editor

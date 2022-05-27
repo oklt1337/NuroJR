@@ -1,5 +1,5 @@
 using System;
-using Neural_Network.Neurons;
+using Model.Neurons;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 

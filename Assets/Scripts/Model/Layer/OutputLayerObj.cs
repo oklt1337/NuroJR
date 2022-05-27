@@ -1,8 +1,8 @@
-﻿using Neural_Network.Neurons;
+﻿using Model.Neurons;
 using UnityEditor;
 using UnityEngine;
 
-namespace Neural_Network.Layer
+namespace Model.Layer
 {
     public class OutputLayerObj : NetworkLayerObj
     {

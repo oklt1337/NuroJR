@@ -1,6 +1,6 @@
 ﻿using System.Linq;
-using Neural_Network;
-using Neural_Network.Layer;
+using Model;
+using Model.Layer;
 using UnityEditor;
 using UnityEngine;
 

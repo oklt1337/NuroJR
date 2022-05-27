@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Neural_Network.Layer;
-using Neural_Network.Neurons;
+using Model;
+using Model.Layer;
+using Model.Neurons;
 using UnityEngine;
 
-namespace Neural_Network
+namespace Controller
 {
     public enum Algorithm
     {

@@ -1,15 +1,15 @@
-﻿using Neural_Network.Neurons;
+﻿using Model.Neurons;
 using UnityEditor;
 using UnityEngine;
 
-namespace Neural_Network.Layer
+namespace Model.Layer
 {
-    public class InputLayerObj : NetworkLayerObj
+    public class HiddenLayerObj : NetworkLayerObj
     {
-        [HideInInspector] public Vector2 position = new(0, 0);
-        
+        [HideInInspector] public Vector2 position;
+
         /// <summary>
-        /// Create a InputNeuron and add it to Asset
+        /// Create a HiddenNeuron and add it to Asset.
         /// Invoke OnNeuronCreated Event
         /// </summary>
         public override void CreateNeuron()
@@ -18,18 +18,18 @@ namespace Neural_Network.Layer
             if (neurons.Count >= 7)
                 return;
             
-            var neuron = CreateInstance(typeof(InputNeuronObj)) as NeuronObj;
+            var neuron = CreateInstance(typeof(HiddenNeuronObj)) as NeuronObj;
             if (neuron == null)
                 return;
-
-            neuron.name = "InputNeuron";
-            neuron.GenerateNewGuid();
+            
+            neuron.name = "HiddenNeuron";
+            neuron.guid = GUID.Generate().ToString();
 
             neurons.Add(neuron);
             
             AssetDatabase.AddObjectToAsset(neuron, this);
             AssetDatabase.SaveAssets();
-
+            
             OnNeuronCreated?.Invoke(neuron);
         }
     }

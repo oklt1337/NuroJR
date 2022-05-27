@@ -1,4 +1,4 @@
-﻿namespace Neural_Network.Neurons
+﻿namespace Model.Neurons
 {
     public class OutputNeuronObj : NeuronObj
     {

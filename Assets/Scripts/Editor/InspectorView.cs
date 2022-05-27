@@ -1,4 +1,4 @@
-using Neural_Network;
+using Model;
 using UnityEngine.UIElements;
 using Object = UnityEngine.Object;
 
