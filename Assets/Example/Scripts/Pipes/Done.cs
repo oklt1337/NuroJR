@@ -1,7 +1,7 @@
 using Controller;
 using UnityEngine;
 
-namespace Test_Environment.Scripts.Pipes
+namespace Example.Scripts.Pipes
 {
     public class Done : MonoBehaviour
     {

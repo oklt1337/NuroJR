@@ -1,8 +1,7 @@
-using System;
 using Controller;
 using UnityEngine;
 
-namespace Test_Environment.Scripts.Environment
+namespace Example.Scripts.Environment
 {
     [RequireComponent(typeof(BoxCollider2D))]
     public class GroundBehaviour : MonoBehaviour

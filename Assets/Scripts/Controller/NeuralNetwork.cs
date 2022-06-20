@@ -14,7 +14,7 @@ namespace Controller
         TanH,
         ReLu
     }
-    
+
     [Serializable]
     public class NeuralNetwork : IComparable<NeuralNetwork>
     {
@@ -33,6 +33,7 @@ namespace Controller
             get => algorithm;
             set => algorithm = value;
         }
+
         public string Name { get; set; }
 
         public float AverageFitnessInLastGeneration
@@ -94,11 +95,9 @@ namespace Controller
 
                 if (i != 0 && i != networkObj.layersObj.Count - 1)
                 {
+                    for (var j = 0; j < layer.neurons.Length; j++)
                     {
-                        for (var j = 0; j < layer.neurons.Length; j++)
-                        {
-                            layer.bias[j] = 1;
-                        }
+                        layer.bias[j] = 1;
                     }
                 }
 
@@ -124,7 +123,7 @@ namespace Controller
                 }
             }
         }
-        
+
         /// <summary>
         /// Set input of Neural Network
         /// </summary>
@@ -139,7 +138,7 @@ namespace Controller
                 }
             }
         }
-        
+
         /// <summary>
         /// Generate Outputs
         /// </summary>
@@ -159,7 +158,7 @@ namespace Controller
             var output = layers.Last().neurons;
             return output;
         }
-        
+
         /// <summary>
         /// Mutate the Network
         /// </summary>
@@ -197,7 +196,7 @@ namespace Controller
                 }
             }
         }
-        
+
         /// <summary>
         /// Copy Neural Network Values to this one.
         /// </summary>
@@ -228,7 +227,7 @@ namespace Controller
                 }
             }
         }
-        
+
         /// <summary>
         /// Load Values from Reference
         /// </summary>
@@ -269,7 +268,7 @@ namespace Controller
                 }
             }
         }
-        
+
         /// <summary>
         /// Compare Neural Network
         /// </summary>
@@ -304,7 +303,7 @@ namespace Controller
                 }
             }
         }
-        
+
         /// <summary>
         /// Generate Inputs for Next Layer
         /// </summary>
@@ -396,7 +395,7 @@ namespace Controller
         }
 
         #endregion
-        
+
         /// <summary>
         /// Get Float between two floats
         /// </summary>

@@ -1,9 +1,9 @@
 using System.Linq;
 using Controller;
-using Test_Environment.Scripts.Pipes;
+using Example.Scripts.Pipes;
 using UnityEngine;
 
-namespace Test_Environment.Scripts.Player
+namespace Example.Scripts.Player
 {
     public class PlayerController : MonoBehaviour
     {

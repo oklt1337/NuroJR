@@ -13,7 +13,7 @@ namespace Controller
         [SerializeField] private NeuralNetworkObj reference;
         [SerializeField] private Algorithm algorithm;
 
-        [SerializeField] private int populationSize = 20;
+        [SerializeField, Range(1,250)] private int populationSize = 20;
         [SerializeField] private GameObject learnerPrefab;
         [SerializeField] private int generation;
 
@@ -24,7 +24,7 @@ namespace Controller
         private List<NeuralNetwork> networks;
         private readonly List<Learner> learners = new();
 
-        public static Action OnNewGenerationCreated;
+        public static event Action OnNewGenerationCreated;
 
         #region Unity Methods
 

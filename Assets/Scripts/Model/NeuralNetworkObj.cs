@@ -12,8 +12,8 @@ namespace Model
 {
     public class NeuralNetworkObj : ScriptableObject
     {
-        public List<NetworkLayerObj> layersObj = new();
-        public List<ConnectionObj> connectionsObj = new();
+        [HideInInspector] public List<NetworkLayerObj> layersObj = new();
+        [HideInInspector] public List<ConnectionObj> connectionsObj = new();
         
         [Header("Best Network")]
         public Algorithm algorithm;
@@ -25,7 +25,7 @@ namespace Model
         public float avgFitness;
         public float avgLifeTime;
 
-        public Action<NetworkLayerObj> OnLayerCreated;
+        public event Action<NetworkLayerObj> OnLayerCreated;
         public Action<NeuronObj> OnConnectionCreated;
 
         #region Layer

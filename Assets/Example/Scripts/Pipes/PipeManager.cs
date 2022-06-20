@@ -1,11 +1,9 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using Controller;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace Test_Environment.Scripts.Pipes
+namespace Example.Scripts.Pipes
 {
     public class PipeManager : MonoBehaviour
     {
