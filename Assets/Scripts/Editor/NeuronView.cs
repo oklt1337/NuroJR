@@ -21,7 +21,7 @@ namespace Editor
 
             title = "Neuron";
             viewDataKey = NeuronObj.guid;
-            capabilities = Capabilities.Selectable | Capabilities.Deletable | Capabilities.Ascendable;
+            capabilities = Capabilities.Selectable | Capabilities.Deletable;
             
             style.left = NeuronObj.neuronPosition.x;
             style.top = NeuronObj.neuronPosition.y;
@@ -65,7 +65,9 @@ namespace Editor
         private void CreateInputPorts()
         {
             if (NeuronObj.GetType() == typeof(HiddenNeuronObj) || NeuronObj.GetType() == typeof(OutputNeuronObj))
+            {
                 Input = InstantiatePort(Orientation.Horizontal, Direction.Input, Port.Capacity.Multi, typeof(bool));
+            }
 
             if (Input == null) 
                 return;
@@ -80,7 +82,9 @@ namespace Editor
         private void CreateOutputPorts()
         {
             if (NeuronObj.GetType() == typeof(HiddenNeuronObj) || NeuronObj.GetType() == typeof(InputNeuronObj))
+            {
                 Output = InstantiatePort(Orientation.Horizontal, Direction.Output, Port.Capacity.Multi, typeof(bool));
+            }
 
             if (Output == null) 
                 return;

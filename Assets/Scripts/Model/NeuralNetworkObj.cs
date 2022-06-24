@@ -147,11 +147,11 @@ namespace Model
         /// </summary>
         /// <param name="parent">NeuronObj</param>
         /// <param name="child">NeuronObj</param>
-        private void CreateConnection(NeuronObj parent, NeuronObj child)
+        private ConnectionObj CreateConnection(NeuronObj parent, NeuronObj child)
         {
             var connection = CreateInstance<ConnectionObj>();
             if (connection == null)
-                return;
+                return null;
 
             connection.name = "Connection";
             connection.AddParent(parent);
@@ -163,6 +163,8 @@ namespace Model
 
             AssetDatabase.AddObjectToAsset(connection, this);
             AssetDatabase.SaveAssets();
+
+            return connection;
         }
 
         /// <summary>
@@ -171,6 +173,11 @@ namespace Model
         /// <param name="connectionObj">ConnectionObj</param>
         private void RemoveConnection(ConnectionObj connectionObj)
         {
+            foreach (var networkLayerObj in layersObj)
+            {
+                networkLayerObj.RemoveConnectionValue(connectionObj);
+            }
+            
             connectionsObj.Remove(connectionObj);
             connectionObj.GetParent().connectionObjs.Remove(connectionObj);
             connectionObj.DeleteConnection();
@@ -274,17 +281,14 @@ namespace Model
             var parentNeurons = parent.GetNeurons();
             var childNeurons = child.GetNeurons();
 
-            foreach (var parentNeuron in parentNeurons)
-            {
-                // check if connection already exists if not create it
-                foreach (var childNeuron in from neuron in childNeurons
+            foreach (var connection in from parentNeuron in parentNeurons from childNeuron in from neuron in childNeurons
                          let found = connectionsObj.Where(connection =>
                              connection.GetChild() == neuron && connection.GetParent() == parentNeuron)
                          where !found.Any()
-                         select neuron)
-                {
-                    CreateConnection(parentNeuron, childNeuron);
-                }
+                         select neuron select CreateConnection(parentNeuron, childNeuron))
+            {
+                parent.CreateConnectionValue(connection);
+                child.CreateConnectionValue(connection);
             }
         }
 
@@ -330,10 +334,10 @@ namespace Model
 
                 for (var j = 0; j < layersObj[i].neurons.Count; j++)
                 {
-                    if (layersObj[i] is HiddenLayerObj)
-                    {
-                        ((HiddenNeuronObj)layersObj[i].neurons[j]).bias = network.Layers[i].bias[j];
-                    }
+                    if (layersObj[i] is not HiddenLayerObj hiddenLayerObj) 
+                        continue;
+                    ((HiddenNeuronObj)hiddenLayerObj.neurons[j]).bias = network.Layers[i].bias[j];
+                    hiddenLayerObj.UpdateNeuronValue((HiddenNeuronObj)hiddenLayerObj.neurons[j]);
                 }
             }
             
@@ -350,6 +354,14 @@ namespace Model
                             connectionObj.weight = network.Weights[i][index, index1];
                         }
                     }
+                }
+            }
+            
+            foreach (var networkLayerObj in layersObj)
+            {
+                foreach (var connectionObj in connectionsObj)
+                {
+                    networkLayerObj.UpdateConnectionValue(connectionObj);
                 }
             }
 

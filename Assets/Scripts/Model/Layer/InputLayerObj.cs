@@ -22,7 +22,7 @@ namespace Model.Layer
             if (neuron == null)
                 return;
 
-            neuron.name = "InputNeuron";
+            neuron.name = "InputNeuron" + neurons.Count;
             neuron.GenerateNewGuid();
 
             neurons.Add(neuron);
