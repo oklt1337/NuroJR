@@ -1,6 +1,21 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-8456455224177681863
+--- !u!114 &-8226873794865508542
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3799aea8bd074110bc6d6b8287b11a58, type: 3}
+  m_Name: OutputNeuron0
+  m_EditorClassIdentifier: 
+  neuronPosition: {x: 16, y: 105}
+  guid: 2430c9fc571a28c41a756c570d7790ec
+  connectionObjs: []
+--- !u!114 &-7337507327633276242
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -12,10 +27,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e7f06b3bbf44269af096971cb95c63d, type: 3}
   m_Name: Connection
   m_EditorClassIdentifier: 
-  child: {fileID: 2930784094159435505}
-  parent: {fileID: 5727835619249563102}
+  child: {fileID: 7280535843212164838}
+  parent: {fileID: 664943950196692135}
   weight: 0
---- !u!114 &-7546851690126069379
+--- !u!114 &-7218632277731428281
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -24,16 +39,42 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f859c580cc4b4f97856f94c99650c9bf, type: 3}
-  m_Name: InputNeuron1
+  m_Script: {fileID: 11500000, guid: 95539a4d51934229ac8ed54585b34944, type: 3}
+  m_Name: InputLayerObj
   m_EditorClassIdentifier: 
-  neuronPosition: {x: 16, y: 210}
-  guid: 3afb4f3f27ee3e64db6c214258ac67f1
-  connectionObjs:
-  - {fileID: -7126821643757359061}
-  - {fileID: -7178201225159567634}
-  children: []
---- !u!114 &-7305518955121195876
+  guid: 97178f63d2c7a0342bfb9e2513cb4035
+  neurons:
+  - {fileID: -5213367644652467544}
+  - {fileID: 1978979348700332166}
+  - {fileID: -528161327360672717}
+  - {fileID: 5652901902807245380}
+  connectionValues:
+  - connection: {fileID: -40365541343806728}
+    connectionFromTo: InputNeuron0_HiddenNeuron0
+    weight: 0
+  - connection: {fileID: -4140615817963552205}
+    connectionFromTo: InputNeuron1_HiddenNeuron0
+    weight: 0
+  - connection: {fileID: 3577714039316041048}
+    connectionFromTo: InputNeuron2_HiddenNeuron0
+    weight: 0
+  - connection: {fileID: 16019252784818422}
+    connectionFromTo: InputNeuron3_HiddenNeuron0
+    weight: 0
+  - connection: {fileID: -5422393816682256519}
+    connectionFromTo: InputNeuron0_HiddenNeuron1
+    weight: 0
+  - connection: {fileID: 1711005375896373552}
+    connectionFromTo: InputNeuron1_HiddenNeuron1
+    weight: 0
+  - connection: {fileID: -5894152844900416468}
+    connectionFromTo: InputNeuron2_HiddenNeuron1
+    weight: 0
+  - connection: {fileID: -3471672126576128459}
+    connectionFromTo: InputNeuron3_HiddenNeuron1
+    weight: 0
+  position: {x: 0, y: 0}
+--- !u!114 &-6161828620382652374
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -45,10 +86,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e7f06b3bbf44269af096971cb95c63d, type: 3}
   m_Name: Connection
   m_EditorClassIdentifier: 
-  child: {fileID: 2930784094159435505}
-  parent: {fileID: 1972400626428123752}
+  child: {fileID: 7280535843212164838}
+  parent: {fileID: 7916926235236789599}
   weight: 0
---- !u!114 &-7178201225159567634
+--- !u!114 &-5894152844900416468
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -60,10 +101,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e7f06b3bbf44269af096971cb95c63d, type: 3}
   m_Name: Connection
   m_EditorClassIdentifier: 
-  child: {fileID: 5727835619249563102}
-  parent: {fileID: -7546851690126069379}
+  child: {fileID: 664943950196692135}
+  parent: {fileID: -528161327360672717}
   weight: 0
---- !u!114 &-7126821643757359061
+--- !u!114 &-5422393816682256519
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -75,10 +116,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e7f06b3bbf44269af096971cb95c63d, type: 3}
   m_Name: Connection
   m_EditorClassIdentifier: 
-  child: {fileID: 1972400626428123752}
-  parent: {fileID: -7546851690126069379}
+  child: {fileID: 664943950196692135}
+  parent: {fileID: -5213367644652467544}
   weight: 0
---- !u!114 &-6338779520714404277
+--- !u!114 &-5213367644652467544
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -91,12 +132,100 @@ MonoBehaviour:
   m_Name: InputNeuron0
   m_EditorClassIdentifier: 
   neuronPosition: {x: 16, y: 105}
-  guid: 0c155fc45af039546a06899de195c688
+  guid: b1dff27294b67bc4ab65762d70831dea
   connectionObjs:
-  - {fileID: 6435950096697019906}
-  - {fileID: 6673095595217339504}
+  - {fileID: -40365541343806728}
+  - {fileID: -5422393816682256519}
   children: []
---- !u!114 &-6252682506722329815
+--- !u!114 &-4140615817963552205
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e7f06b3bbf44269af096971cb95c63d, type: 3}
+  m_Name: Connection
+  m_EditorClassIdentifier: 
+  child: {fileID: 7916926235236789599}
+  parent: {fileID: 1978979348700332166}
+  weight: 0
+--- !u!114 &-3471672126576128459
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e7f06b3bbf44269af096971cb95c63d, type: 3}
+  m_Name: Connection
+  m_EditorClassIdentifier: 
+  child: {fileID: 664943950196692135}
+  parent: {fileID: 5652901902807245380}
+  weight: 0
+--- !u!114 &-3317591053315978581
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5973f17f9f845b3b52223a7916d8650, type: 3}
+  m_Name: HiddenLayerObj
+  m_EditorClassIdentifier: 
+  guid: dfc76c00dd5e6a043a8071d65d855662
+  neurons:
+  - {fileID: 7916926235236789599}
+  - {fileID: 664943950196692135}
+  connectionValues:
+  - connection: {fileID: -40365541343806728}
+    connectionFromTo: InputNeuron0_HiddenNeuron0
+    weight: 0
+  - connection: {fileID: -4140615817963552205}
+    connectionFromTo: InputNeuron1_HiddenNeuron0
+    weight: 0
+  - connection: {fileID: 3577714039316041048}
+    connectionFromTo: InputNeuron2_HiddenNeuron0
+    weight: 0
+  - connection: {fileID: 16019252784818422}
+    connectionFromTo: InputNeuron3_HiddenNeuron0
+    weight: 0
+  - connection: {fileID: 8953027316987491765}
+    connectionFromTo: HiddenNeuron0_OutputNeuron0
+    weight: 0
+  - connection: {fileID: -6161828620382652374}
+    connectionFromTo: HiddenNeuron0_OutputNeuron1
+    weight: 0
+  - connection: {fileID: -5422393816682256519}
+    connectionFromTo: InputNeuron0_HiddenNeuron1
+    weight: 0
+  - connection: {fileID: 1711005375896373552}
+    connectionFromTo: InputNeuron1_HiddenNeuron1
+    weight: 0
+  - connection: {fileID: -5894152844900416468}
+    connectionFromTo: InputNeuron2_HiddenNeuron1
+    weight: 0
+  - connection: {fileID: -3471672126576128459}
+    connectionFromTo: InputNeuron3_HiddenNeuron1
+    weight: 0
+  - connection: {fileID: 267881621271994358}
+    connectionFromTo: HiddenNeuron1_OutputNeuron0
+    weight: 0
+  position: {x: 150, y: 0}
+  neuronValues:
+  - neuron: {fileID: 7916926235236789599}
+    neuronName: HiddenNeuron0
+    bias: 0
+  - neuron: {fileID: 664943950196692135}
+    neuronName: HiddenNeuron1
+    bias: 0
+--- !u!114 &-528161327360672717
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -106,30 +235,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f859c580cc4b4f97856f94c99650c9bf, type: 3}
-  m_Name: InputNeuron3
+  m_Name: InputNeuron2
   m_EditorClassIdentifier: 
-  neuronPosition: {x: 16, y: 420}
-  guid: 95a13a87ce57f5242bf2e2b8257652d4
+  neuronPosition: {x: 16, y: 315}
+  guid: 2aa405946be2f024980e2dfd0c19fc28
   connectionObjs:
-  - {fileID: -3492421828648259119}
-  - {fileID: 2004778106603761329}
+  - {fileID: 3577714039316041048}
+  - {fileID: -5894152844900416468}
   children: []
---- !u!114 &-4904237363484588592
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3799aea8bd074110bc6d6b8287b11a58, type: 3}
-  m_Name: OutputNeuron1
-  m_EditorClassIdentifier: 
-  neuronPosition: {x: 16, y: 210}
-  guid: 05737fa603114af4287018a0fdc4d023
-  connectionObjs: []
---- !u!114 &-4392040483480433233
+--- !u!114 &-40365541343806728
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -141,23 +255,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e7f06b3bbf44269af096971cb95c63d, type: 3}
   m_Name: Connection
   m_EditorClassIdentifier: 
-  child: {fileID: 1972400626428123752}
-  parent: {fileID: 1762867119291380110}
-  weight: 0
---- !u!114 &-3492421828648259119
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9e7f06b3bbf44269af096971cb95c63d, type: 3}
-  m_Name: Connection
-  m_EditorClassIdentifier: 
-  child: {fileID: 1972400626428123752}
-  parent: {fileID: -6252682506722329815}
+  child: {fileID: 7916926235236789599}
+  parent: {fileID: -5213367644652467544}
   weight: 0
 --- !u!114 &11400000
 MonoBehaviour:
@@ -172,93 +271,29 @@ MonoBehaviour:
   m_Name: New Neural Network
   m_EditorClassIdentifier: 
   layersObj:
-  - {fileID: 5245775879935082194}
-  - {fileID: 2816502167006717742}
-  - {fileID: 1190484676535175709}
+  - {fileID: -7218632277731428281}
+  - {fileID: -3317591053315978581}
+  - {fileID: 8191759839364464418}
   connectionsObj:
-  - {fileID: 6435950096697019906}
-  - {fileID: -7126821643757359061}
-  - {fileID: -4392040483480433233}
-  - {fileID: -3492421828648259119}
-  - {fileID: -7305518955121195876}
-  - {fileID: 7926853999662273302}
-  - {fileID: 6673095595217339504}
-  - {fileID: -7178201225159567634}
-  - {fileID: 6883659488192051387}
-  - {fileID: 2004778106603761329}
-  - {fileID: -8456455224177681863}
-  - {fileID: 4413097870622406130}
+  - {fileID: -40365541343806728}
+  - {fileID: -4140615817963552205}
+  - {fileID: 3577714039316041048}
+  - {fileID: 16019252784818422}
+  - {fileID: 8953027316987491765}
+  - {fileID: -6161828620382652374}
+  - {fileID: -5422393816682256519}
+  - {fileID: 1711005375896373552}
+  - {fileID: -5894152844900416468}
+  - {fileID: -3471672126576128459}
+  - {fileID: 267881621271994358}
+  - {fileID: -7337507327633276242}
   algorithm: 0
   generation: 0
   fitness: 0
   lifeTime: 0
   avgFitness: 0
   avgLifeTime: 0
---- !u!114 &1190484676535175709
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dda32112acac409fb0c3e7eb902a85b9, type: 3}
-  m_Name: OutputLayerObj
-  m_EditorClassIdentifier: 
-  guid: 6afbfc784a7a75a4fa573615e2ca4a26
-  neurons:
-  - {fileID: 2930784094159435505}
-  - {fileID: -4904237363484588592}
-  connectionValues:
-  - connection: {fileID: -7305518955121195876}
-    connectionFromTo: HiddenNeuron0_OutputNeuron0
-    weight: 0
-  - connection: {fileID: 7926853999662273302}
-    connectionFromTo: HiddenNeuron0_OutputNeuron1
-    weight: 0
-  - connection: {fileID: -8456455224177681863}
-    connectionFromTo: HiddenNeuron1_OutputNeuron0
-    weight: 0
-  position: {x: 300, y: 0}
---- !u!114 &1762867119291380110
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f859c580cc4b4f97856f94c99650c9bf, type: 3}
-  m_Name: InputNeuron2
-  m_EditorClassIdentifier: 
-  neuronPosition: {x: 16, y: 315}
-  guid: f2b401d4e131c3742b1fdb57629c8329
-  connectionObjs:
-  - {fileID: -4392040483480433233}
-  - {fileID: 6883659488192051387}
-  children: []
---- !u!114 &1972400626428123752
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e027dfdc82e440caac26a3e9c42eb39c, type: 3}
-  m_Name: HiddenNeuron0
-  m_EditorClassIdentifier: 
-  neuronPosition: {x: 16, y: 105}
-  guid: 16e92fb724c81c84ca80a341cabbcc6c
-  connectionObjs:
-  - {fileID: -7305518955121195876}
-  - {fileID: 7926853999662273302}
-  children: []
-  bias: 0
---- !u!114 &2004778106603761329
+--- !u!114 &16019252784818422
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -270,83 +305,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e7f06b3bbf44269af096971cb95c63d, type: 3}
   m_Name: Connection
   m_EditorClassIdentifier: 
-  child: {fileID: 5727835619249563102}
-  parent: {fileID: -6252682506722329815}
+  child: {fileID: 7916926235236789599}
+  parent: {fileID: 5652901902807245380}
   weight: 0
---- !u!114 &2816502167006717742
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c5973f17f9f845b3b52223a7916d8650, type: 3}
-  m_Name: HiddenLayerObj
-  m_EditorClassIdentifier: 
-  guid: dff766b3677a4114dad4d4a1b7379b60
-  neurons:
-  - {fileID: 1972400626428123752}
-  - {fileID: 5727835619249563102}
-  connectionValues:
-  - connection: {fileID: 6435950096697019906}
-    connectionFromTo: InputNeuron0_HiddenNeuron0
-    weight: 0
-  - connection: {fileID: -7126821643757359061}
-    connectionFromTo: InputNeuron1_HiddenNeuron0
-    weight: 0
-  - connection: {fileID: -4392040483480433233}
-    connectionFromTo: InputNeuron2_HiddenNeuron0
-    weight: 0
-  - connection: {fileID: -3492421828648259119}
-    connectionFromTo: InputNeuron3_HiddenNeuron0
-    weight: 0
-  - connection: {fileID: -7305518955121195876}
-    connectionFromTo: HiddenNeuron0_OutputNeuron0
-    weight: 0
-  - connection: {fileID: 7926853999662273302}
-    connectionFromTo: HiddenNeuron0_OutputNeuron1
-    weight: 0
-  - connection: {fileID: 6673095595217339504}
-    connectionFromTo: InputNeuron0_HiddenNeuron1
-    weight: 0
-  - connection: {fileID: -7178201225159567634}
-    connectionFromTo: InputNeuron1_HiddenNeuron1
-    weight: 0
-  - connection: {fileID: 6883659488192051387}
-    connectionFromTo: InputNeuron2_HiddenNeuron1
-    weight: 0
-  - connection: {fileID: 2004778106603761329}
-    connectionFromTo: InputNeuron3_HiddenNeuron1
-    weight: 0
-  - connection: {fileID: -8456455224177681863}
-    connectionFromTo: HiddenNeuron1_OutputNeuron0
-    weight: 0
-  position: {x: 150, y: 0}
-  neuronValues:
-  - neuron: {fileID: 1972400626428123752}
-    neuronName: HiddenNeuron0
-    bias: 0
-  - neuron: {fileID: 5727835619249563102}
-    neuronName: HiddenNeuron1
-    bias: 0
---- !u!114 &2930784094159435505
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3799aea8bd074110bc6d6b8287b11a58, type: 3}
-  m_Name: OutputNeuron0
-  m_EditorClassIdentifier: 
-  neuronPosition: {x: 16, y: 105}
-  guid: 1284d54a9aa4a304d9da740aa93ce549
-  connectionObjs: []
---- !u!114 &4413097870622406130
+--- !u!114 &267881621271994358
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -358,54 +320,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e7f06b3bbf44269af096971cb95c63d, type: 3}
   m_Name: Connection
   m_EditorClassIdentifier: 
-  child: {fileID: -4904237363484588592}
-  parent: {fileID: 5727835619249563102}
+  child: {fileID: -8226873794865508542}
+  parent: {fileID: 664943950196692135}
   weight: 0
---- !u!114 &5245775879935082194
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 95539a4d51934229ac8ed54585b34944, type: 3}
-  m_Name: InputLayerObj
-  m_EditorClassIdentifier: 
-  guid: 625aafeecdb8a6848acb43f38a3bec07
-  neurons:
-  - {fileID: -6338779520714404277}
-  - {fileID: -7546851690126069379}
-  - {fileID: 1762867119291380110}
-  - {fileID: -6252682506722329815}
-  connectionValues:
-  - connection: {fileID: 6435950096697019906}
-    connectionFromTo: InputNeuron0_HiddenNeuron0
-    weight: 0
-  - connection: {fileID: -7126821643757359061}
-    connectionFromTo: InputNeuron1_HiddenNeuron0
-    weight: 0
-  - connection: {fileID: -4392040483480433233}
-    connectionFromTo: InputNeuron2_HiddenNeuron0
-    weight: 0
-  - connection: {fileID: -3492421828648259119}
-    connectionFromTo: InputNeuron3_HiddenNeuron0
-    weight: 0
-  - connection: {fileID: 6673095595217339504}
-    connectionFromTo: InputNeuron0_HiddenNeuron1
-    weight: 0
-  - connection: {fileID: -7178201225159567634}
-    connectionFromTo: InputNeuron1_HiddenNeuron1
-    weight: 0
-  - connection: {fileID: 6883659488192051387}
-    connectionFromTo: InputNeuron2_HiddenNeuron1
-    weight: 0
-  - connection: {fileID: 2004778106603761329}
-    connectionFromTo: InputNeuron3_HiddenNeuron1
-    weight: 0
-  position: {x: 0, y: 0}
---- !u!114 &5727835619249563102
+--- !u!114 &664943950196692135
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -418,13 +336,13 @@ MonoBehaviour:
   m_Name: HiddenNeuron1
   m_EditorClassIdentifier: 
   neuronPosition: {x: 0, y: 0}
-  guid: d90c1d8b6562d3a4a8f174b4891a056f
+  guid: 03fb4c978bb8f5f45ba12118b70d7bca
   connectionObjs:
-  - {fileID: -8456455224177681863}
-  - {fileID: 4413097870622406130}
+  - {fileID: 267881621271994358}
+  - {fileID: -7337507327633276242}
   children: []
   bias: 0
---- !u!114 &6435950096697019906
+--- !u!114 &1711005375896373552
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -436,10 +354,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e7f06b3bbf44269af096971cb95c63d, type: 3}
   m_Name: Connection
   m_EditorClassIdentifier: 
-  child: {fileID: 1972400626428123752}
-  parent: {fileID: -6338779520714404277}
+  child: {fileID: 664943950196692135}
+  parent: {fileID: 1978979348700332166}
   weight: 0
---- !u!114 &6673095595217339504
+--- !u!114 &1978979348700332166
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f859c580cc4b4f97856f94c99650c9bf, type: 3}
+  m_Name: InputNeuron1
+  m_EditorClassIdentifier: 
+  neuronPosition: {x: 16, y: 210}
+  guid: 5fb7bfaeca6b1884da8c817d58376ab3
+  connectionObjs:
+  - {fileID: -4140615817963552205}
+  - {fileID: 1711005375896373552}
+  children: []
+--- !u!114 &3577714039316041048
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -451,10 +387,89 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e7f06b3bbf44269af096971cb95c63d, type: 3}
   m_Name: Connection
   m_EditorClassIdentifier: 
-  child: {fileID: 5727835619249563102}
-  parent: {fileID: -6338779520714404277}
+  child: {fileID: 7916926235236789599}
+  parent: {fileID: -528161327360672717}
   weight: 0
---- !u!114 &6883659488192051387
+--- !u!114 &5652901902807245380
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f859c580cc4b4f97856f94c99650c9bf, type: 3}
+  m_Name: InputNeuron3
+  m_EditorClassIdentifier: 
+  neuronPosition: {x: 16, y: 420}
+  guid: 0e552becd8b56c646b70bbecba452492
+  connectionObjs:
+  - {fileID: 16019252784818422}
+  - {fileID: -3471672126576128459}
+  children: []
+--- !u!114 &7280535843212164838
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3799aea8bd074110bc6d6b8287b11a58, type: 3}
+  m_Name: OutputNeuron1
+  m_EditorClassIdentifier: 
+  neuronPosition: {x: 16, y: 210}
+  guid: ff85020f848565440a8c28c14e2b47db
+  connectionObjs: []
+--- !u!114 &7916926235236789599
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e027dfdc82e440caac26a3e9c42eb39c, type: 3}
+  m_Name: HiddenNeuron0
+  m_EditorClassIdentifier: 
+  neuronPosition: {x: 16, y: 105}
+  guid: e06b71982af26ce49a837e584f754cc9
+  connectionObjs:
+  - {fileID: 8953027316987491765}
+  - {fileID: -6161828620382652374}
+  children: []
+  bias: 0
+--- !u!114 &8191759839364464418
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dda32112acac409fb0c3e7eb902a85b9, type: 3}
+  m_Name: OutputLayerObj
+  m_EditorClassIdentifier: 
+  guid: f9be470a15e332d4abcb76c803e515f7
+  neurons:
+  - {fileID: -8226873794865508542}
+  - {fileID: 7280535843212164838}
+  connectionValues:
+  - connection: {fileID: 8953027316987491765}
+    connectionFromTo: HiddenNeuron0_OutputNeuron0
+    weight: 0
+  - connection: {fileID: -6161828620382652374}
+    connectionFromTo: HiddenNeuron0_OutputNeuron1
+    weight: 0
+  - connection: {fileID: 267881621271994358}
+    connectionFromTo: HiddenNeuron1_OutputNeuron0
+    weight: 0
+  position: {x: 300, y: 0}
+--- !u!114 &8953027316987491765
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -466,21 +481,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e7f06b3bbf44269af096971cb95c63d, type: 3}
   m_Name: Connection
   m_EditorClassIdentifier: 
-  child: {fileID: 5727835619249563102}
-  parent: {fileID: 1762867119291380110}
-  weight: 0
---- !u!114 &7926853999662273302
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9e7f06b3bbf44269af096971cb95c63d, type: 3}
-  m_Name: Connection
-  m_EditorClassIdentifier: 
-  child: {fileID: -4904237363484588592}
-  parent: {fileID: 1972400626428123752}
+  child: {fileID: -8226873794865508542}
+  parent: {fileID: 7916926235236789599}
   weight: 0

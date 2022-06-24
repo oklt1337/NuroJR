@@ -94,6 +94,29 @@ namespace Editor
             SetView(changeEvent.newValue);
         }
 
+        private void RemoveNetwork(NeuralNetworkObj networkObj)
+        {
+            if (!neuralNetworks.Contains(networkObj)) 
+                return;
+            
+            dropdownField.choices.Remove(networkObj.name);
+            neuralNetworks.Remove(networkObj);
+
+            if (dropdownField.value != networkObj.name) 
+                return;
+            if (dropdownField.choices.Count != 0)
+            {
+                dropdownField.value = dropdownField.choices[0];
+                SetView(dropdownField.value);
+            }
+            else
+            {
+                _inspectorView.Clear();
+                _neuralNetworkView.UnPopulateView();
+                dropdownField.value = "NULL";
+            }
+        }
+
         /// <summary>
         /// Refreshes Dropdown Choices
         /// </summary>
@@ -105,8 +128,13 @@ namespace Editor
             var networks = Resources.FindObjectsOfTypeAll<NeuralNetworkObj>().ToList();
             if (networks.Count != 0)
             {
-                networks.ForEach(x => dropdownField.choices.Add(x.name));
                 neuralNetworks = networks;
+                
+                foreach (var neuralNetworkObj in networks)
+                {
+                    dropdownField.choices.Add(neuralNetworkObj.name);
+                    neuralNetworkObj.OnDestroyed += RemoveNetwork;
+                }
 
                 if (dropdownField.value is not ("NULL" or "" or null))
                     return;
@@ -133,7 +161,11 @@ namespace Editor
                 return;
 
             if (neuralNetworks[index] == null)
+            {
+                _neuralNetworkView.UnPopulateView();
+                _inspectorView.Clear();
                 RefreshDropdownChoices();
+            }
             else
             {
                 _neuralNetworkView.UnPopulateView();

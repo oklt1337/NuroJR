@@ -26,7 +26,8 @@ namespace Model
         public float avgLifeTime;
 
         public event Action<NetworkLayerObj> OnLayerCreated;
-        public Action<NeuronObj> OnConnectionCreated;
+        public event Action<NeuronObj> OnConnectionCreated;
+        public event Action<NeuralNetworkObj> OnDestroyed;
 
         #region Layer
 
@@ -310,6 +311,14 @@ namespace Model
         #endregion
 
         #region General
+
+        /// <summary>
+        /// Called When Unity Deletes Object
+        /// </summary>
+        public void Delete()
+        {
+            OnDestroyed?.Invoke(this);
+        }
 
         /// <summary>
         /// Saves Values of Neural Network in Scriptable Object
