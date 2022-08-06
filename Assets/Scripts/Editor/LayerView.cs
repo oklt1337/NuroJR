@@ -128,6 +128,7 @@ namespace Editor
             }
             else if (NetworkLayerObj.GetType() == typeof(HiddenLayerObj))
             {
+                neuronView.style.backgroundColor = Color.grey;
             }
             
             Add(neuronView);

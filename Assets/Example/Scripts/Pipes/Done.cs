@@ -12,6 +12,7 @@ namespace Example.Scripts.Pipes
         {
             if (!other.CompareTag("Learner")) 
                 return;
+            // Reward Learner
             var learner = other.GetComponent<LearnerSkeleton>();
             learner.AddFitness(reward);
             pipesMovementBehaviour.Delete();

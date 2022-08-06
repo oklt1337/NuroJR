@@ -9,8 +9,7 @@ namespace Example.Scripts.Pipes
     {
         public static PipeManager Instance;
 
-        [SerializeField, Tooltip("If false all pipes will have different spawn Heights")]
-        private bool pipesAtSameHeight;
+        [SerializeField, Tooltip("If false all pipes will have different spawn Heights")] private bool pipesAtSameHeight;
         [SerializeField] private float spawnTime;
         [SerializeField] private float minHeight;
         [SerializeField] private float maxHeight;
@@ -62,6 +61,7 @@ namespace Example.Scripts.Pipes
         {
             Vector3 pos;
             var position = spawnPos.position;
+            // Generate Pipe SpawnHeight Random or Same
             if (pipesAtSameHeight)
                 pos = position + Vector3.down;
             else

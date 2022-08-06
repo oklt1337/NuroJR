@@ -35,7 +35,8 @@ namespace Example.Scripts.Player
             if (timer >= fitnessInterval)
             {
                 var firstPipe = PipeManager.Instance.pipes.First();
-                
+                // Add Fitness to Learner Depending on Its own Position
+                // if Learner is between Pipe Add more Fitness
                 if (transform.position.y < firstPipe.Top.y && 
                     transform.position.y > firstPipe.Bottom.y)
                 {

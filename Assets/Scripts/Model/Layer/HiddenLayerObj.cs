@@ -39,6 +39,10 @@ namespace Model.Layer
         
         #region NeuronValues
 
+        /// <summary>
+        /// Create NeuronValue and add to List
+        /// </summary>
+        /// <param name="neuronObj">HiddenNeuronObj</param>
         private void CreateNeuronValue(HiddenNeuronObj neuronObj)
         {
             var obj = new NeuronValues
@@ -50,6 +54,10 @@ namespace Model.Layer
             neuronValues.Add(obj);
         }
 
+        /// <summary>
+        /// Update NeuronValue
+        /// </summary>
+        /// <param name="neuronObj">HiddenNeuronObj</param>
         public void UpdateNeuronValue(HiddenNeuronObj neuronObj)
         {
             var index = neuronValues.FindIndex(x => x.neuron == neuronObj);
@@ -61,6 +69,10 @@ namespace Model.Layer
             neuronValues[index] = obj;
         }
 
+        /// <summary>
+        /// Remove NeuronValue
+        /// </summary>
+        /// <param name="neuronObj">HiddenNeuronObj</param>
         public void RemoveNeuronValue(HiddenNeuronObj neuronObj)
         {
             var index = neuronValues.FindIndex(x => x.neuron == neuronObj);

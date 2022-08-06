@@ -314,6 +314,10 @@ namespace Editor
             {
                 layerView.style.backgroundColor = Color.red;
             }
+            else if (networkLayerObj.GetType() == typeof(HiddenLayerObj)) 
+            {
+                layerView.style.backgroundColor = Color.grey;
+            }
 
             AddElements(layerView);
             AddElement(layerView);

@@ -13,6 +13,8 @@ namespace Editor
         public EdgeView()
         {
             capabilities = Capabilities.Selectable;
+            
+            
         }
 
         /// <summary>

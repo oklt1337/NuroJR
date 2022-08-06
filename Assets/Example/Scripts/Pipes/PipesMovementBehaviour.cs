@@ -32,6 +32,7 @@ namespace Example.Scripts.Pipes
             if (_timer > MaxLifetime)
                 Destroy(gameObject);
 
+            // Move Pipes
             _timer += Time.deltaTime;
             transform.position += Vector3.left * (Speed * Time.deltaTime);
         }
