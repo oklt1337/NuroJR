@@ -880,11 +880,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   reference: {fileID: 11400000, guid: 59aa0720b6a5450458a2bcb2d5de2099, type: 2}
-  algorithm: 1
-  populationSize: 100
+  algorithm: 2
+  populationSize: 250
   learnerPrefab: {fileID: 3099393493073357100, guid: 9a6d17dff6238e04ea584259ed46596d, type: 3}
   generation: 0
-  mutationChance: 0.25
+  mutationChance: 1
   mutationStrength: 0.5
 --- !u!1 &2139214283
 GameObject:

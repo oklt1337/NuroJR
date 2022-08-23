@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: OutputNeuron0
   m_EditorClassIdentifier: 
   neuronPosition: {x: 16, y: 105}
-  guid: 2430c9fc571a28c41a756c570d7790ec
+  guid: fbd84cdedc263f74892ce1fc371cfc46
   connectionObjs: []
 --- !u!114 &-7337507327633276242
 MonoBehaviour:
@@ -29,7 +29,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   child: {fileID: 7280535843212164838}
   parent: {fileID: 664943950196692135}
-  weight: 0
+  weight: 0.68281734
 --- !u!114 &-7218632277731428281
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -42,7 +42,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95539a4d51934229ac8ed54585b34944, type: 3}
   m_Name: InputLayerObj
   m_EditorClassIdentifier: 
-  guid: 97178f63d2c7a0342bfb9e2513cb4035
+  guid: 1a0b450118c782a4abbbf6341ff35cd9
   neurons:
   - {fileID: -5213367644652467544}
   - {fileID: 1978979348700332166}
@@ -51,28 +51,28 @@ MonoBehaviour:
   connectionValues:
   - connection: {fileID: -40365541343806728}
     connectionFromTo: InputNeuron0_HiddenNeuron0
-    weight: 0
+    weight: -0.021964401
   - connection: {fileID: -4140615817963552205}
     connectionFromTo: InputNeuron1_HiddenNeuron0
-    weight: 0
+    weight: -1.203536
   - connection: {fileID: 3577714039316041048}
     connectionFromTo: InputNeuron2_HiddenNeuron0
-    weight: 0
+    weight: -0.5648908
   - connection: {fileID: 16019252784818422}
     connectionFromTo: InputNeuron3_HiddenNeuron0
-    weight: 0
+    weight: -0.7440504
   - connection: {fileID: -5422393816682256519}
     connectionFromTo: InputNeuron0_HiddenNeuron1
-    weight: 0
+    weight: 0.6382042
   - connection: {fileID: 1711005375896373552}
     connectionFromTo: InputNeuron1_HiddenNeuron1
-    weight: 0
+    weight: -0.89160675
   - connection: {fileID: -5894152844900416468}
     connectionFromTo: InputNeuron2_HiddenNeuron1
-    weight: 0
+    weight: -0.20805159
   - connection: {fileID: -3471672126576128459}
     connectionFromTo: InputNeuron3_HiddenNeuron1
-    weight: 0
+    weight: -0.93485475
   position: {x: 0, y: 0}
 --- !u!114 &-6161828620382652374
 MonoBehaviour:
@@ -88,7 +88,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   child: {fileID: 7280535843212164838}
   parent: {fileID: 7916926235236789599}
-  weight: 0
+  weight: -0.011551827
 --- !u!114 &-5894152844900416468
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -103,7 +103,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   child: {fileID: 664943950196692135}
   parent: {fileID: -528161327360672717}
-  weight: 0
+  weight: -0.20805159
 --- !u!114 &-5422393816682256519
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -118,7 +118,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   child: {fileID: 664943950196692135}
   parent: {fileID: -5213367644652467544}
-  weight: 0
+  weight: 0.6382042
 --- !u!114 &-5213367644652467544
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -132,7 +132,7 @@ MonoBehaviour:
   m_Name: InputNeuron0
   m_EditorClassIdentifier: 
   neuronPosition: {x: 16, y: 105}
-  guid: b1dff27294b67bc4ab65762d70831dea
+  guid: ed5604fcccee3684f87b7a9fc1aebb72
   connectionObjs:
   - {fileID: -40365541343806728}
   - {fileID: -5422393816682256519}
@@ -151,7 +151,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   child: {fileID: 7916926235236789599}
   parent: {fileID: 1978979348700332166}
-  weight: 0
+  weight: -1.203536
 --- !u!114 &-3471672126576128459
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -166,7 +166,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   child: {fileID: 664943950196692135}
   parent: {fileID: 5652901902807245380}
-  weight: 0
+  weight: -0.93485475
 --- !u!114 &-3317591053315978581
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -179,52 +179,52 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5973f17f9f845b3b52223a7916d8650, type: 3}
   m_Name: HiddenLayerObj
   m_EditorClassIdentifier: 
-  guid: dfc76c00dd5e6a043a8071d65d855662
+  guid: 044f1ed9044b7914282827b1435abe7d
   neurons:
   - {fileID: 7916926235236789599}
   - {fileID: 664943950196692135}
   connectionValues:
   - connection: {fileID: -40365541343806728}
     connectionFromTo: InputNeuron0_HiddenNeuron0
-    weight: 0
+    weight: -0.021964401
   - connection: {fileID: -4140615817963552205}
     connectionFromTo: InputNeuron1_HiddenNeuron0
-    weight: 0
+    weight: -1.203536
   - connection: {fileID: 3577714039316041048}
     connectionFromTo: InputNeuron2_HiddenNeuron0
-    weight: 0
+    weight: -0.5648908
   - connection: {fileID: 16019252784818422}
     connectionFromTo: InputNeuron3_HiddenNeuron0
-    weight: 0
+    weight: -0.7440504
   - connection: {fileID: 8953027316987491765}
     connectionFromTo: HiddenNeuron0_OutputNeuron0
-    weight: 0
+    weight: 0.8151644
   - connection: {fileID: -6161828620382652374}
     connectionFromTo: HiddenNeuron0_OutputNeuron1
-    weight: 0
+    weight: -0.011551827
   - connection: {fileID: -5422393816682256519}
     connectionFromTo: InputNeuron0_HiddenNeuron1
-    weight: 0
+    weight: 0.6382042
   - connection: {fileID: 1711005375896373552}
     connectionFromTo: InputNeuron1_HiddenNeuron1
-    weight: 0
+    weight: -0.89160675
   - connection: {fileID: -5894152844900416468}
     connectionFromTo: InputNeuron2_HiddenNeuron1
-    weight: 0
+    weight: -0.20805159
   - connection: {fileID: -3471672126576128459}
     connectionFromTo: InputNeuron3_HiddenNeuron1
-    weight: 0
+    weight: -0.93485475
   - connection: {fileID: 267881621271994358}
     connectionFromTo: HiddenNeuron1_OutputNeuron0
-    weight: 0
+    weight: -0.7678882
   position: {x: 150, y: 0}
   neuronValues:
   - neuron: {fileID: 7916926235236789599}
     neuronName: HiddenNeuron0
-    bias: 0
+    bias: 0.5858476
   - neuron: {fileID: 664943950196692135}
     neuronName: HiddenNeuron1
-    bias: 0
+    bias: 1.1985794
 --- !u!114 &-528161327360672717
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -238,7 +238,7 @@ MonoBehaviour:
   m_Name: InputNeuron2
   m_EditorClassIdentifier: 
   neuronPosition: {x: 16, y: 315}
-  guid: 2aa405946be2f024980e2dfd0c19fc28
+  guid: d888c3d13b223a94d92e377093c4c284
   connectionObjs:
   - {fileID: 3577714039316041048}
   - {fileID: -5894152844900416468}
@@ -257,7 +257,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   child: {fileID: 7916926235236789599}
   parent: {fileID: -5213367644652467544}
-  weight: 0
+  weight: -0.021964401
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -287,12 +287,12 @@ MonoBehaviour:
   - {fileID: -3471672126576128459}
   - {fileID: 267881621271994358}
   - {fileID: -7337507327633276242}
-  algorithm: 0
-  generation: 0
-  fitness: 0
-  lifeTime: 0
-  avgFitness: 0
-  avgLifeTime: 0
+  algorithm: 2
+  generation: 10
+  fitness: 1.0531255
+  lifeTime: 2.4799984
+  avgFitness: 0.2403246
+  avgLifeTime: 1.6678411
 --- !u!114 &16019252784818422
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -307,7 +307,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   child: {fileID: 7916926235236789599}
   parent: {fileID: 5652901902807245380}
-  weight: 0
+  weight: -0.7440504
 --- !u!114 &267881621271994358
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -322,7 +322,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   child: {fileID: -8226873794865508542}
   parent: {fileID: 664943950196692135}
-  weight: 0
+  weight: -0.7678882
 --- !u!114 &664943950196692135
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -335,13 +335,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e027dfdc82e440caac26a3e9c42eb39c, type: 3}
   m_Name: HiddenNeuron1
   m_EditorClassIdentifier: 
-  neuronPosition: {x: 0, y: 0}
-  guid: 03fb4c978bb8f5f45ba12118b70d7bca
+  neuronPosition: {x: 16, y: 210}
+  guid: 341e33f0b3fffed46a9a6404f1deee7c
   connectionObjs:
   - {fileID: 267881621271994358}
   - {fileID: -7337507327633276242}
   children: []
-  bias: 0
+  bias: 1.1985794
 --- !u!114 &1711005375896373552
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -356,7 +356,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   child: {fileID: 664943950196692135}
   parent: {fileID: 1978979348700332166}
-  weight: 0
+  weight: -0.89160675
 --- !u!114 &1978979348700332166
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -370,7 +370,7 @@ MonoBehaviour:
   m_Name: InputNeuron1
   m_EditorClassIdentifier: 
   neuronPosition: {x: 16, y: 210}
-  guid: 5fb7bfaeca6b1884da8c817d58376ab3
+  guid: 7c89be6a6474bac44af5a85d22de12e3
   connectionObjs:
   - {fileID: -4140615817963552205}
   - {fileID: 1711005375896373552}
@@ -389,7 +389,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   child: {fileID: 7916926235236789599}
   parent: {fileID: -528161327360672717}
-  weight: 0
+  weight: -0.5648908
 --- !u!114 &5652901902807245380
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -403,7 +403,7 @@ MonoBehaviour:
   m_Name: InputNeuron3
   m_EditorClassIdentifier: 
   neuronPosition: {x: 16, y: 420}
-  guid: 0e552becd8b56c646b70bbecba452492
+  guid: e0f939a6da9a77f47a89c6f62c88815b
   connectionObjs:
   - {fileID: 16019252784818422}
   - {fileID: -3471672126576128459}
@@ -421,7 +421,7 @@ MonoBehaviour:
   m_Name: OutputNeuron1
   m_EditorClassIdentifier: 
   neuronPosition: {x: 16, y: 210}
-  guid: ff85020f848565440a8c28c14e2b47db
+  guid: c6a97de0ebc053b42baa9336ebce1faf
   connectionObjs: []
 --- !u!114 &7916926235236789599
 MonoBehaviour:
@@ -436,12 +436,12 @@ MonoBehaviour:
   m_Name: HiddenNeuron0
   m_EditorClassIdentifier: 
   neuronPosition: {x: 16, y: 105}
-  guid: e06b71982af26ce49a837e584f754cc9
+  guid: f48e979bbb3af1d4db24451751184685
   connectionObjs:
   - {fileID: 8953027316987491765}
   - {fileID: -6161828620382652374}
   children: []
-  bias: 0
+  bias: 0.5858476
 --- !u!114 &8191759839364464418
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -454,20 +454,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dda32112acac409fb0c3e7eb902a85b9, type: 3}
   m_Name: OutputLayerObj
   m_EditorClassIdentifier: 
-  guid: f9be470a15e332d4abcb76c803e515f7
+  guid: c989fb878892a3240a0fa05a1ed0a2a1
   neurons:
   - {fileID: -8226873794865508542}
   - {fileID: 7280535843212164838}
   connectionValues:
   - connection: {fileID: 8953027316987491765}
     connectionFromTo: HiddenNeuron0_OutputNeuron0
-    weight: 0
+    weight: 0.8151644
   - connection: {fileID: -6161828620382652374}
     connectionFromTo: HiddenNeuron0_OutputNeuron1
-    weight: 0
+    weight: -0.011551827
   - connection: {fileID: 267881621271994358}
     connectionFromTo: HiddenNeuron1_OutputNeuron0
-    weight: 0
+    weight: -0.7678882
   position: {x: 300, y: 0}
 --- !u!114 &8953027316987491765
 MonoBehaviour:
@@ -483,4 +483,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   child: {fileID: -8226873794865508542}
   parent: {fileID: 7916926235236789599}
-  weight: 0
+  weight: 0.8151644
